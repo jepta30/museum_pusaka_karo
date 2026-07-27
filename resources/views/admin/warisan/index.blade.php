@@ -5,83 +5,8 @@
 @section('content')
 <style>
     .page-header { margin-bottom: 25px; }
-    .page-title h3 { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--text-dark); margin-bottom: 8px; }
-    .page-title p { font-size: 14px; color: var(--text-gray); }
-    
-    .filter-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 30px; margin-bottom: 25px; }
-    .filter-group { display: flex; gap: 15px; align-items: center; }
-    .search-input, .select-input { padding: 10px 15px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px; outline: none; }
     .search-input { width: 300px; }
-    .select-input { background-color: white; min-width: 150px; }
-    
-    .btn-search { background-color: #1f2937; color: white; padding: 10px 20px; border-radius: 4px; border: none; font-size: 13px; font-weight: 500; cursor: pointer; }
-    .btn-add { background-color: #f3f4f6; color: var(--text-dark); border: 1px solid var(--border-color); padding: 10px 18px; border-radius: 4px; text-decoration: none; font-size: 13px; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
-
-    .table-container { background-color: #fff; border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; }
-    .data-table { width: 100%; border-collapse: collapse; }
-    .data-table th { background-color: #f6f5f3; text-align: left; padding: 15px 25px; font-size: 11px; font-weight: 700; text-transform: uppercase; color: #4b5563; border-bottom: 1px solid var(--border-color); letter-spacing: 0.5px; }
-    .data-table td { padding: 20px 25px; font-size: 13px; color: var(--text-dark); border-bottom: 1px solid var(--border-color); vertical-align: middle; }
-    
-    .badge { padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 500; background-color: #f3f4f6; color: #4b5563; }
-    .badge.draft { background-color: #e5e7eb; }
-
-    .action-icons { display: flex; gap: 8px; }
-    .btn-action-square { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-gray); background-color: #fff; cursor: pointer; text-decoration: none; font-size: 13px; }
-    
-    .table-footer { padding: 15px 25px; border-top: 1px solid var(--border-color); display: flex; justify-content: center; align-items: center; font-size: 13px; color: var(--text-gray); }
-    .pagination-controls { display: flex; gap: 5px; }
-    .page-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-color); background-color: #fff; color: var(--text-dark); text-decoration: none; border-radius: 4px; font-size: 13px; }
-    .page-btn.active { background-color: #1f2937; color: #fff; border-color: #1f2937; }
-
-    /* Modal Styles */
-    .modal-overlay {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background-color: rgba(0, 0, 0, 0.4);
-        display: none; justify-content: center; align-items: center;
-        z-index: 1000;
-    }
-    .modal-overlay.active { display: flex; }
-    
-    .modal-content {
-        background-color: #fff; width: 700px; max-width: 90%;
-        border-radius: 4px; box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-        display: flex; flex-direction: column;
-        max-height: 90vh; overflow-y: auto;
-    }
-    
-    .modal-header {
-        display: flex; justify-content: space-between; align-items: center;
-        padding: 20px 25px; border-bottom: 1px solid var(--border-color);
-    }
-    .modal-header h4 { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-    .btn-close { background: none; border: none; font-size: 18px; color: var(--text-gray); cursor: pointer; }
-    
-    .modal-body { padding: 25px; }
-    
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-    .form-group { display: flex; flex-direction: column; gap: 8px; }
-    .form-label { font-size: 12px; font-weight: 600; text-transform: uppercase; color: var(--text-dark); }
-    .form-control { padding: 12px 15px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px; outline: none; font-family: 'Inter', sans-serif; }
-    .form-control:focus { border-color: #1f2937; }
-    
-    .upload-area {
-        border: 2px dashed #d1d5db; border-radius: 4px; padding: 40px 20px;
-        text-align: center; cursor: pointer; background-color: #fafafa;
-        transition: background-color 0.2s; position: relative;
-    }
-    .upload-area:hover { background-color: #f3f4f6; }
-    .upload-icon { font-size: 24px; color: #4b5563; margin-bottom: 10px; }
-    .upload-text { font-size: 13px; color: #4b5563; margin-bottom: 5px; }
-    .upload-subtext { font-size: 11px; color: var(--text-gray); }
-    .upload-input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
-    
-    .modal-footer {
-        padding: 20px 25px; border-top: 1px solid var(--border-color);
-        display: flex; justify-content: flex-end; gap: 15px;
-    }
-    
-    .btn-cancel { padding: 10px 25px; border: 1px solid var(--border-color); background: white; color: var(--text-dark); border-radius: 4px; font-size: 13px; font-weight: 500; cursor: pointer; }
-    .btn-save { padding: 10px 25px; background: #0f172a; color: white; border: none; border-radius: 4px; font-size: 13px; font-weight: 500; cursor: pointer; }
+    .action-icons { gap: 8px; }
 </style>
 
 <div class="page-header">
@@ -187,20 +112,7 @@
             @endif
 
             {{-- Pagination Elements --}}
-            @foreach ($warisans->links()->elements as $element)
-                @if (is_string($element))
-                    <span class="page-btn" style="border: none;">{{ $element }}</span>
-                @endif
-                @if (is_array($element))
-                    @foreach ($element as $page => $url)
-                        @if ($page == $warisans->currentPage())
-                            <span class="page-btn active">{{ $page }}</span>
-                        @else
-                            <a href="{{ $url }}" class="page-btn">{{ $page }}</a>
-                        @endif
-                    @endforeach
-                @endif
-            @endforeach
+            <span class="page-btn active">{{ $warisans->currentPage() }}</span>
 
             {{-- Next Page Link --}}
             @if ($warisans->hasMorePages())

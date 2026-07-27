@@ -19,6 +19,10 @@
             --dark-red: #5C1010;
             --gold: #D4AF37;
             --cream: #Fdfbf7;
+            --bg-color: #Fdfbf7;
+            --surface-bg: #ffffff;
+            --surface-light: #f8fafc;
+            --border-color: #e2e8f0;
             --text-dark: #2d3748;
             --text-gray: #4a5568;
             --text-light: #f7fafc;
@@ -33,7 +37,7 @@
         body {
             font-family: 'Inter', sans-serif;
             color: var(--text-dark);
-            background-color: var(--cream);
+            background-color: var(--bg-color);
             line-height: 1.6;
             overflow-x: hidden;
         }
@@ -93,7 +97,7 @@
         
         /* PILL NAVIGATION (Like Image 2) */
         .nav-pill {
-            background-color: #f0ebe1;
+            background-color: var(--surface-light);
             border-radius: 50px;
             display: flex;
             align-items: center;
@@ -121,8 +125,8 @@
         
         /* FOOTER (Like Image 1) */
         footer {
-            background-color: white;
-            border-top: 1px solid #e2e8f0;
+            background-color: var(--surface-bg);
+            border-top: 1px solid var(--border-color);
             padding: 60px 5% 20px;
         }
         
@@ -251,8 +255,9 @@
         <div class="nav-pill">
             <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">Beranda</a>
             <a href="{{ route('katalog.index') }}" class="nav-link {{ request()->routeIs('katalog.*') ? 'active' : '' }}">Katalog Warisan</a>
-            <a href="#" class="nav-link">Peta Persebaran</a>
-            <a href="#" class="nav-link">Tentang Kami</a>
+            <a href="{{ route('peta.persebaran') }}" class="nav-link {{ request()->routeIs('peta.persebaran') ? 'active' : '' }}">Peta Persebaran</a>
+            <a href="{{ route('tentang') }}" class="nav-link {{ request()->routeIs('tentang') ? 'active' : '' }}">Tentang Kami</a>
+            <a href="{{ route('buku-tamu') }}" class="nav-link {{ request()->routeIs('buku-tamu') ? 'active' : '' }}">Buku Tamu</a>
             <a href="{{ route('login') }}" class="nav-link" style="padding: 10px 15px;"><i class="fa-solid fa-user"></i></a>
         </div>
     </header>
@@ -285,8 +290,9 @@
                     <ul class="footer-links">
                         <li><a href="{{ route('home') }}">Beranda</a></li>
                         <li><a href="{{ route('katalog.index') }}">Katalog Budaya</a></li>
-                        <li><a href="#">Peta Persebaran</a></li>
-                        <li><a href="#">Tentang Kami</a></li>
+                        <li><a href="{{ route('peta.persebaran') }}">Peta Persebaran</a></li>
+                        <li><a href="{{ route('tentang') }}">Tentang Kami</a></li>
+                        <li><a href="{{ route('buku-tamu') }}">Buku Tamu</a></li>
                     </ul>
                 </div>
                 

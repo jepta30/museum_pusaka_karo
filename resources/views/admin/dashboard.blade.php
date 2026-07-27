@@ -2,139 +2,17 @@
 
 @section('content')
 <style>
-    /* KPI Cards Grid */
-    .kpi-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
-        margin-bottom: 25px;
-    }
-
-    .kpi-card {
-        background-color: #fff;
-        border: 1px solid var(--border-color);
-        border-radius: 6px;
-        padding: 25px 20px;
-        text-align: center;
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-    
-    .kpi-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        border-color: var(--primary-red);
-    }
-
-    .kpi-title {
-        font-size: 11px;
-        font-weight: 600;
-        text-transform: uppercase;
-        color: var(--text-dark);
-        letter-spacing: 0.5px;
-        margin-bottom: 12px;
-    }
-
-    .kpi-value {
-        font-family: 'Playfair Display', serif;
-        font-size: 34px;
-        font-weight: 700;
-        color: var(--text-dark);
-        margin-bottom: 8px;
-    }
-
-    .kpi-desc {
-        font-size: 12px;
-        color: var(--text-gray);
-    }
-
-    /* Chart Section */
-    .chart-header {
-        font-family: 'Playfair Display', serif;
-        font-size: 18px;
-        font-weight: 700;
-        margin-bottom: 20px;
-        color: var(--text-dark);
-        border-bottom: 1px solid var(--border-color);
-        padding-bottom: 15px;
-    }
-
-    .chart-container {
-        height: 280px;
-        width: 100%;
-    }
-
-    /* Table Section */
-    .table-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-        border-bottom: 1px solid var(--border-color);
-        padding-bottom: 15px;
-    }
-
-    .table-title {
-        font-family: 'Playfair Display', serif;
-        font-size: 18px;
-        font-weight: 700;
-        color: var(--text-dark);
-    }
-
-    .table-link {
-        font-size: 13px;
-        font-weight: 500;
-        color: var(--text-dark);
-        text-decoration: none;
-    }
-    
-    .table-link:hover {
-        color: var(--primary-red);
-    }
-
-    .data-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    .data-table th {
-        text-align: left;
-        padding: 12px 15px;
-        font-size: 11px;
-        font-weight: 600;
-        text-transform: uppercase;
-        color: var(--text-gray);
-        border-bottom: 1px solid var(--border-color);
-    }
-
-    .data-table td {
-        padding: 15px;
-        font-size: 13px;
-        color: var(--text-dark);
-        border-bottom: 1px solid var(--border-color);
-        vertical-align: middle;
-    }
-
-    .data-table tr:last-child td {
-        border-bottom: none;
-    }
-
-    .action-icons {
-        display: flex;
-        gap: 15px;
-    }
-
-    .action-icons a, .action-icons button {
-        color: var(--text-gray);
-        background: none;
-        border: none;
-        cursor: pointer;
-        font-size: 15px;
-        transition: color 0.2s;
-    }
-
-    .action-icons a:hover, .action-icons button:hover {
-        color: var(--primary-red);
-    }
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-bottom: 25px; }
+    .kpi-card { background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,1)); border: 1px solid rgba(216, 224, 235, 0.75); border-radius: 20px; padding: 28px 24px; text-align: center; transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; box-shadow: 0 20px 40px rgba(15, 23, 42, 0.06); }
+    .kpi-card:hover { transform: translateY(-4px); box-shadow: 0 24px 50px rgba(15, 23, 42, 0.1); border-color: rgba(197, 50, 50, 0.9); }
+    .kpi-title { font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--text-gray); letter-spacing: 0.2em; margin-bottom: 14px; }
+    .kpi-value { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; color: var(--text-dark); margin-bottom: 10px; }
+    .kpi-desc { font-size: 13px; color: var(--text-gray); line-height: 1.7; }
+    .chart-header { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; margin-bottom: 20px; color: var(--text-dark); border-bottom: 1px solid rgba(216, 224, 235, 0.85); padding-bottom: 16px; }
+    .chart-container { height: 320px; width: 100%; background: linear-gradient(180deg, rgba(244,247,250,0.85), rgba(255,255,255,0.95)); border-radius: 18px; padding: 18px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.8); }
+    .table-title { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 700; color: var(--text-dark); }
+    .table-link { font-size: 13px; font-weight: 500; color: var(--text-dark); text-decoration: none; }
+    .table-link:hover { color: var(--primary-red); }
 </style>
 
 <!-- KPI Cards -->

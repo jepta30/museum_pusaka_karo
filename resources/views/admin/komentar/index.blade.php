@@ -4,28 +4,9 @@
 
 @section('content')
 <style>
-    .table-container { background-color: #fff; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; }
-    .table-header { padding: 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
-    .table-header h3 { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--text-dark); }
-    .select-input { padding: 10px 15px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px; outline: none; background-color: white; min-width: 150px; }
-
-    .data-table { width: 100%; border-collapse: collapse; }
-    .data-table th { background-color: #fff; text-align: left; padding: 20px 30px; font-size: 11px; font-weight: 700; text-transform: uppercase; color: #4b5563; border-bottom: 1px solid var(--border-color); letter-spacing: 0.5px; }
-    .data-table td { padding: 25px 30px; font-size: 13px; color: var(--text-dark); border-bottom: 1px solid var(--border-color); vertical-align: top; }
-    .comment-text { color: #6b7280; line-height: 1.5; }
-
-    .badge { padding: 6px 15px; border-radius: 20px; font-size: 11px; font-weight: 600; background-color: #f3f4f6; color: #4b5563; }
-    .badge.approved { background-color: #1f2937; color: white; }
-    .badge.rejected { background-color: #fff; border: 1px solid var(--border-color); color: #9ca3af; }
-
-    .action-icons { display: flex; gap: 10px; }
-    .btn-action-square { width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-color); border-radius: 4px; color: #9ca3af; background-color: #fff; cursor: pointer; text-decoration: none; font-size: 14px; transition: all 0.2s;}
-    .btn-action-square:hover { color: var(--text-dark); border-color: var(--text-dark); }
-    
-    .table-footer { padding: 20px; background-color: #fff; display: flex; justify-content: space-between; align-items: center; }
-    .pagination-controls { display: flex; gap: 5px; }
-    .page-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-color); background-color: #fff; color: var(--text-dark); text-decoration: none; font-size: 13px; border-radius: 4px; transition: all 0.2s;}
-    .page-btn.active { background-color: #1f2937; color: #fff; border-color: #1f2937; }
+    .table-header { padding: 28px; }
+    .table-header h3 { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--text-dark); margin: 0; }
+    .comment-text { color: #6b7280; line-height: 1.75; }
 </style>
 
 @if(session('success'))
@@ -119,20 +100,7 @@
                 <a href="{{ $komentars->previousPageUrl() }}" class="page-btn"><i class="fa-solid fa-chevron-left"></i></a>
             @endif
 
-            @foreach ($komentars->links()->elements as $element)
-                @if (is_string($element))
-                    <span class="page-btn" style="border: none;">{{ $element }}</span>
-                @endif
-                @if (is_array($element))
-                    @foreach ($element as $page => $url)
-                        @if ($page == $komentars->currentPage())
-                            <span class="page-btn active">{{ $page }}</span>
-                        @else
-                            <a href="{{ $url }}" class="page-btn">{{ $page }}</a>
-                        @endif
-                    @endforeach
-                @endif
-            @endforeach
+            <span class="page-btn active">{{ $komentars->currentPage() }}</span>
 
             @if ($komentars->hasMorePages())
                 <a href="{{ $komentars->nextPageUrl() }}" class="page-btn"><i class="fa-solid fa-chevron-right"></i></a>

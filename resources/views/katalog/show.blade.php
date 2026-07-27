@@ -456,14 +456,14 @@
             <h4 class="widget-title">Galeri Media</h4>
             <div class="gallery-grid">
                 @foreach($warisan->medias as $media)
-                    @if($media->jenis_media == 'gambar')
+                    @if($media->jenis_media == 'foto')
                         <div class="gallery-item">
-                            <img src="{{ Storage::url($media->file_path) }}" alt="Galeri">
+                            <img src="{{ Storage::url($media->file_media) }}" alt="{{ $media->keterangan }}">
                         </div>
                     @elseif($media->jenis_media == 'video')
                         <div class="gallery-item">
                             <!-- Show video frame or thumbnail -->
-                            <video src="{{ Storage::url($media->file_path) }}" muted style="object-fit: cover; width: 100%; height: 100%;"></video>
+                            <video src="{{ Storage::url($media->file_media) }}" muted style="object-fit: cover; width: 100%; height: 100%;"></video>
                             <i class="fa-solid fa-play play-icon"></i>
                         </div>
                     @endif

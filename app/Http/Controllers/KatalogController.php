@@ -15,8 +15,10 @@ class KatalogController extends Controller
         // Filter based on search input
         if ($request->filled('q')) {
             $searchTerm = $request->q;
-            $query->where('judul', 'like', "%{$searchTerm}%")
-                  ->orWhere('deskripsi', 'like', "%{$searchTerm}%");
+            $query->where(function ($sub) use ($searchTerm) {
+                $sub->where('judul', 'like', "%{$searchTerm}%")
+                    ->orWhere('deskripsi', 'like', "%{$searchTerm}%");
+            });
         }
 
         // Filter based on category
@@ -35,7 +37,7 @@ class KatalogController extends Controller
     public function show($id)
     {
         $warisan = WarisanBudaya::with(['kategori', 'medias', 'komentars' => function($q) {
-            $q->where('status', 'disetujui')->latest();
+            $q->where('status', 'approved')->latest();
         }])->findOrFail($id);
 
         // Fetch related items from the same category

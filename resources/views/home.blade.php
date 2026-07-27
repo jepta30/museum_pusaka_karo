@@ -3,6 +3,7 @@
 @section('title', 'Beranda')
 
 @push('styles')
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
 <style>
     /* HERO SECTION */
     .hero-section {
@@ -254,6 +255,95 @@
         letter-spacing: 0.5px;
     }
 
+    .featured-section {
+        padding-top: 40px;
+        margin-top: 30px;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .featured-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    .featured-card {
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+        transition: transform 0.2s ease, border-color 0.2s ease;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .featured-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--primary-red);
+    }
+
+    .featured-image {
+        width: 100%;
+        height: 210px;
+        object-fit: cover;
+        background-color: #f1f5f9;
+    }
+
+    .featured-content {
+        padding: 24px;
+        display: grid;
+        gap: 12px;
+        flex: 1;
+    }
+
+    .featured-badge {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--primary-red);
+    }
+
+    .featured-title {
+        font-size: 18px;
+        color: var(--text-dark);
+        margin-bottom: 10px;
+    }
+
+    .featured-desc {
+        color: var(--text-gray);
+        font-size: 14px;
+        line-height: 1.7;
+        margin-bottom: 0;
+    }
+
+    @media (max-width: 980px) {
+        .hero-container {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .hero-image {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .hero-image-frame {
+            max-width: 100%;
+            height: 320px;
+        }
+
+        .category-grid,
+        .featured-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .map-section {
+            flex-direction: column;
+        }
+    }
+
     /* MAP SECTION */
     .map-section {
         display: flex;
@@ -307,18 +397,62 @@
         flex: 1.5;
         background-color: #f1f5f9;
         height: 300px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: block;
         border: 1px solid #e2e8f0;
         overflow: hidden;
+        border-radius: 18px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
     }
-    
-    .map-image img {
+
+    #homeMap {
         width: 100%;
         height: 100%;
-        object-fit: cover;
-        opacity: 0.8;
+        min-height: 300px;
+    }
+
+    .highlight-section {
+        max-width: 1200px;
+        margin: 0 auto 50px;
+        padding: 0 5%;
+    }
+
+    .highlight-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    .highlight-card {
+        background: white;
+        border-radius: 20px;
+        padding: 28px;
+        box-shadow: 0 18px 40px rgba(0,0,0,0.06);
+        border: 1px solid #e2e8f0;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .highlight-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 22px 45px rgba(0,0,0,0.09);
+    }
+
+    .highlight-card h3 {
+        font-size: 18px;
+        margin-bottom: 16px;
+        color: var(--text-dark);
+    }
+
+    .highlight-card p {
+        color: var(--text-gray);
+        line-height: 1.8;
+        font-size: 14px;
+        margin-bottom: 0;
+    }
+
+    @media (max-width: 980px) {
+        .highlight-grid {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
 @endpush
@@ -341,8 +475,7 @@
         
         <div class="hero-image">
             <div class="hero-image-frame">
-                <!-- Using a placeholder matching the requested color scheme -->
-                <img src="https://via.placeholder.com/600x400/5C1010/FFFFFF?text=Ilustrasi+Koleksi+Unggulan" alt="Hero Image">
+                <img src="{{ asset('images/gedung-museum.svg') }}" alt="Gedung Museum Pusaka Karo" class="hero-image">
             </div>
         </div>
     </div>
@@ -370,13 +503,30 @@
     </div>
 </div>
 
+<div class="highlight-section">
+    <div class="highlight-grid">
+        <div class="highlight-card">
+            <h3>Eksplorasi Budaya Karo</h3>
+            <p>Pelajari cerita di balik setiap artefak, dari pakaian adat hingga alat musik tradisional, yang merekam sejarah dan nilai masyarakat Karo.</p>
+        </div>
+        <div class="highlight-card">
+            <h3>Edukasi dan Pelestarian</h3>
+            <p>Ikuti rangkaian program edukasi dan museum digital yang membantu generasi muda memahami dan membanggakan identitas budaya mereka.</p>
+        </div>
+        <div class="highlight-card">
+            <h3>Kunjungan Interaktif</h3>
+            <p>Rencanakan kunjungan Anda dengan peta interaktif dan temukan cara mudah untuk menjelajahi koleksi unggulan kami.</p>
+        </div>
+    </div>
+</div>
+
 <!-- Category Section -->
 <section class="section">
     <div class="section-header">
         <h2 class="section-title">Kategori Budaya</h2>
         <a href="{{ route('katalog.index') }}" class="link-all">Lihat Semua ></a>
     </div>
-    
+
     <div class="category-grid">
         @php
             // Fallback icons if not set in DB
@@ -388,10 +538,9 @@
                 'Tari Tradisional' => 'fa-users'
             ];
         @endphp
-        
+
         @forelse($kategoris as $kat)
             @php
-                // Try to find a matching icon based on name, default to fa-box
                 $defaultIcon = 'fa-box';
                 foreach($iconMap as $key => $iconClass) {
                     if(stripos($kat->nama, $key) !== false) {
@@ -407,7 +556,6 @@
                 <div class="category-name">{{ $kat->nama }}</div>
             </a>
         @empty
-            <!-- Demo Categories matching the wireframe -->
             <a href="#" class="category-card">
                 <div class="category-icon"><i class="fa-solid fa-house-chimney"></i></div>
                 <div class="category-name">RUMAH ADAT</div>
@@ -431,17 +579,90 @@
         @endforelse
     </div>
     
+    <div class="featured-section">
+        <div class="section-header">
+            <h2 class="section-title">Koleksi Unggulan</h2>
+            <a href="{{ route('katalog.index') }}" class="link-all">Lihat Semua Koleksi ></a>
+        </div>
+
+        <div class="featured-grid">
+            @forelse($featured as $item)
+                @php
+                    $mediaFile = $item->medias->first()?->file_media;
+                    $mediaUrl = $mediaFile ? asset('storage/' . ltrim($mediaFile, '/')) : asset('images/logo.png');
+                    $categoryName = $item->kategori->nama ?? 'Warisan';
+                @endphp
+                <a href="{{ route('katalog.index', ['kategori_id' => $item->kategori_id]) }}" class="featured-card">
+                    <img src="{{ $mediaUrl }}" alt="{{ $item->judul }}" class="featured-image">
+                    <div class="featured-content">
+                        <span class="featured-badge">{{ strtoupper($categoryName) }}</span>
+                        <h3 class="featured-title">{{ $item->judul }}</h3>
+                        <p class="featured-desc">{{ Str::limit($item->deskripsi ?? 'Telusuri koleksi warisan budaya Karo yang menarik dan penuh makna.', 120) }}</p>
+                    </div>
+                </a>
+            @empty
+                <div class="featured-card">
+                    <img src="{{ asset('images/logo.png') }}" alt="Koleksi Unggulan" class="featured-image">
+                    <div class="featured-content">
+                        <span class="featured-badge">WARISAN ADAT</span>
+                        <h3 class="featured-title">Koleksi Pilihan</h3>
+                        <p class="featured-desc">Jelajahi koleksi terbaik Museum Pusaka Karo dan temukan warisan budaya yang kaya akan cerita.</p>
+                    </div>
+                </div>
+                <div class="featured-card">
+                    <img src="{{ asset('images/logo.png') }}" alt="Koleksi Unggulan" class="featured-image">
+                    <div class="featured-content">
+                        <span class="featured-badge">ALAT MUSIK</span>
+                        <h3 class="featured-title">Alat Musik Tradisional</h3>
+                        <p class="featured-desc">Dengarkan kisah dari setiap alat musik khas Karo yang menjadi simbol identitas budaya.</p>
+                    </div>
+                </div>
+                <div class="featured-card">
+                    <img src="{{ asset('images/logo.png') }}" alt="Koleksi Unggulan" class="featured-image">
+                    <div class="featured-content">
+                        <span class="featured-badge">PAKAIAN ADAT</span>
+                        <h3 class="featured-title">Tenunan Lokal</h3>
+                        <p class="featured-desc">Pakaian adat Karo yang dirancang dengan detail motif tradisional dan nilai historis.</p>
+                    </div>
+                </div>
+            @endforelse
+        </div>
+    </div>
+
     <!-- Map Section -->
     <div class="map-section">
         <div class="map-content">
             <h2 class="map-title">Peta Museum</h2>
             <p class="map-desc">Temukan lokasi museum kami dan jelajahi tata letak galeri secara virtual sebelum Anda berkunjung.</p>
-            <a href="#" class="btn-map">Buka Peta Interaktif</a>
+            <a href="{{ route('peta.persebaran') }}" class="btn-map">Buka Peta Interaktif</a>
         </div>
         <div class="map-image">
-            <img src="https://via.placeholder.com/800x400/f1f5f9/64748b?text=MUSEUM+PUSAKA+KARO+-+SITE+PLAN" alt="Peta Museum">
+            <div id="homeMap"></div>
         </div>
     </div>
 </section>
+
+@push('scripts')
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const homeMap = document.getElementById('homeMap');
+        if (!homeMap) return;
+
+        const map = L.map('homeMap', {
+            scrollWheelZoom: false,
+            attributionControl: false,
+        }).setView([3.13220, 98.46650], 14);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+
+        L.marker([3.13220, 98.46650]).addTo(map)
+            .bindPopup('<strong>Museum Pusaka Karo</strong><br>Jl. Perwira No. 3, Berastagi')
+            .openPopup();
+    });
+</script>
+@endpush
 
 @endsection

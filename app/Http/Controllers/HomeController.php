@@ -41,19 +41,13 @@ class HomeController extends Controller
 
     public function petaPersebaran()
     {
-        $warisans = WarisanBudaya::select('warisan_budaya_id', 'judul', 'lokasi')->get();
+        $warisans = WarisanBudaya::select('warisan_budaya_id', 'judul', 'lokasi', 'latitude', 'longitude')->get();
 
-        $locationCoords = [
-            'Kaban Jahe' => [3.12095, 98.42346],
-            'Kabanjahe' => [3.13220, 98.46650],
-            'Lingga Budaya' => [3.12520, 98.42580],
-        ];
-
-        $markerPoints = $warisans->map(function ($warisan) use ($locationCoords) {
+        $markerPoints = $warisans->map(function ($warisan) {
             return [
                 'judul' => $warisan->judul,
                 'lokasi' => $warisan->lokasi,
-                'coords' => $locationCoords[$warisan->lokasi] ?? null,
+                'coords' => ($warisan->latitude && $warisan->longitude) ? [(float) $warisan->latitude, (float) $warisan->longitude] : null,
             ];
         })->filter(function ($item) {
             return $item['coords'] !== null;

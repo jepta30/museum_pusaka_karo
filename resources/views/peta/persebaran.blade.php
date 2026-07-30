@@ -137,6 +137,26 @@
         margin-top: 2px;
     }
 
+    .map-list-container {
+        max-height: 400px;
+        overflow-y: auto;
+        padding-right: 10px;
+    }
+
+    .map-list-container::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    .map-list-container::-webkit-scrollbar-track {
+        background: rgba(0,0,0,0.05);
+        border-radius: 4px;
+    }
+    
+    .map-list-container::-webkit-scrollbar-thumb {
+        background: rgba(122, 27, 27, 0.4);
+        border-radius: 4px;
+    }
+
     .map-item-content {
         flex: 1;
     }
@@ -225,9 +245,6 @@
         <div class="grid gap-10 lg:grid-cols-[1.45fr_0.95fr]">
             <div class="glass-panel overflow-hidden">
                 <div class="relative">
-                    <div class="absolute top-6 left-6 rounded-full bg-white/90 px-4 py-3 text-sm font-semibold text-slate-900 shadow-lg backdrop-blur-sm">
-                        Museum Pusaka Karo
-                    </div>
                     <div id="mapPersebaran"></div>
                 </div>
                 <div class="px-8 py-6">
@@ -260,32 +277,34 @@
                             <span>Kabupaten Karo</span>
                         </div>
                         <div class="stat-card">
-                            <h3>{{ $warisans->count() }}</h3>
-                            <span>Titik Warisan Budaya</span>
+                            <h3>{{ count($markerPoints) }}</h3>
+                            <span>Titik Lokasi Budaya</span>
                         </div>
                     </div>
                 </div>
                 <div class="glass-panel detail-card">
                     <h3 class="text-2xl font-semibold text-slate-900">Titik Warisan Budaya</h3>
-                    <ul>
-                        @forelse($markerPoints as $point)
-                            <li class="map-item" data-index="{{ $loop->index }}" data-coords="{{ implode(',', $point['coords']) }}">
-                                <div class="map-item-content">
-                                    <h4 class="text-lg font-semibold text-slate-900">{{ $point['judul'] }}</h4>
-                                    <p class="text-slate-600">{{ $point['lokasi'] }}</p>
-                                </div>
-                                <a href="https://www.google.com/maps/dir/?api=1&origin=3.12095,98.42346&destination={{ implode(',', $point['coords']) }}&travelmode=driving" target="_blank" rel="noopener" class="btn-direction" onclick="event.stopPropagation()">
-                                    Arahkan
-                                </a>
-                            </li>
-                        @empty
-                            <li>
-                                <div>
-                                    <p class="text-slate-600">Belum ada data warisan budaya untuk ditampilkan.</p>
-                                </div>
-                            </li>
-                        @endforelse
-                    </ul>
+                    <div class="map-list-container">
+                        <ul>
+                            @forelse($markerPoints as $point)
+                                <li class="map-item" data-index="{{ $loop->index }}" data-coords="{{ implode(',', $point['coords']) }}">
+                                    <div class="map-item-content">
+                                        <h4 class="text-lg font-semibold text-slate-900">{{ $point['judul'] }}</h4>
+                                        <p class="text-slate-600">{{ $point['lokasi'] }}</p>
+                                    </div>
+                                    <a href="https://www.google.com/maps/dir/?api=1&origin=3.12095,98.42346&destination={{ implode(',', $point['coords']) }}&travelmode=driving" target="_blank" rel="noopener" class="btn-direction" onclick="event.stopPropagation()">
+                                        Arahkan
+                                    </a>
+                                </li>
+                            @empty
+                                <li>
+                                    <div>
+                                        <p class="text-slate-600">Belum ada titik lokasi dengan koordinat peta.</p>
+                                    </div>
+                                </li>
+                            @endforelse
+                        </ul>
+                    </div>
                 </div>
                 <div class="glass-panel detail-card text-center">
                     <a href="{{ route('home') }}" class="btn-primary">Kembali ke Beranda</a>

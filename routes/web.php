@@ -15,9 +15,6 @@ Route::get('/katalog/{id}', [KatalogController::class, 'show'])->name('katalog.s
 Route::post('/katalog/{id}/komentar', [KatalogController::class, 'storeKomentar'])->name('katalog.komentar');
 
 // Buku Tamu (Pengunjung mengisi mandiri, tidak perlu login)
-Route::get('/buku-tamu', function () {
-    return view('buku-tamu');
-})->name('buku-tamu');
 Route::post('/buku-tamu', [\App\Http\Controllers\Admin\PengunjungController::class, 'storeMandiri'])->name('buku-tamu.store');
 
 // Autentikasi

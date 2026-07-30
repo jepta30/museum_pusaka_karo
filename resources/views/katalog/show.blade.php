@@ -4,49 +4,17 @@
 
 @push('styles')
 <style>
-    /* HERO DETAIL SECTION */
-    .detail-hero {
-        position: relative;
-        width: 100%;
-        height: 50vh;
-        min-height: 400px;
-        background-color: #1a202c;
-        display: flex;
-        align-items: flex-end;
-        overflow: hidden;
-    }
-    
-    .detail-hero-bg {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        opacity: 0.6;
-    }
-    
-    .detail-hero-content {
-        position: relative;
-        z-index: 10;
-        width: 100%;
+    /* PAGE CONTAINER */
+    .detail-page-container {
         max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 5% 50px;
-        color: white;
+        margin: 40px auto 60px;
+        padding: 0 5%;
+        color: var(--text-dark);
     }
     
-    .detail-category {
-        display: inline-block;
-        background-color: var(--primary-red);
-        color: white;
-        padding: 5px 15px;
-        font-size: 11px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        border-radius: 4px;
-        margin-bottom: 15px;
+    /* HEADER SECTION */
+    .detail-header {
+        margin-bottom: 30px;
     }
     
     .detail-title {
@@ -55,6 +23,7 @@
         font-weight: 700;
         margin-bottom: 10px;
         line-height: 1.2;
+        color: #000;
     }
     
     .detail-location {
@@ -62,122 +31,186 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        color: rgba(255,255,255,0.8);
+        color: var(--text-gray);
     }
 
-    /* MAIN CONTENT */
-    .detail-container {
-        max-width: 1200px;
-        margin: -40px auto 60px;
-        padding: 0 5%;
-        position: relative;
-        z-index: 20;
+    /* TOP SPLIT SECTION */
+    .detail-top-split {
         display: flex;
-        gap: 40px;
-        align-items: flex-start;
+        gap: 30px;
+        margin-bottom: 40px;
     }
     
-    .main-content {
+    .detail-media-container {
         flex: 2;
-        background: white;
-        padding: 40px;
+        background-color: #f1f5f9;
         border-radius: 8px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: 16/10;
     }
     
-    /* CKEditor Content Styling */
-    .article-body {
-        font-size: 15px;
-        line-height: 1.8;
-        color: var(--text-dark);
+    .detail-media-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
     
-    .article-body p { margin-bottom: 20px; }
-    .article-body h2, .article-body h3 {
-        font-family: 'Playfair Display', serif;
-        margin: 30px 0 15px;
-        color: var(--primary-red);
-    }
-    .article-body img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 4px;
-        margin: 20px 0;
-    }
-    .article-body ul, .article-body ol { margin: 0 0 20px 20px; }
-    
-    /* SIDEBAR */
-    .sidebar {
+    .detail-info-card {
         flex: 1;
+        background: white;
+        border: 1px solid #e2e8f0;
+        padding: 30px;
+        border-radius: 8px;
         display: flex;
         flex-direction: column;
-        gap: 30px;
     }
     
-    .sidebar-widget {
-        background: white;
-        padding: 25px;
-        border-radius: 8px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.03);
-        border: 1px solid #f1f5f9;
-    }
-    
-    .widget-title {
-        font-family: 'Playfair Display', serif;
+    .info-card-title {
         font-size: 18px;
         font-weight: 700;
-        margin-bottom: 20px;
-        color: var(--text-dark);
-        border-bottom: 2px solid var(--primary-red);
-        padding-bottom: 10px;
-        display: inline-block;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #e2e8f0;
+        color: #000;
     }
     
-    .meta-list {
+    .info-list {
         list-style: none;
+        padding: 0;
+        margin: 0;
+        flex: 1;
     }
     
-    .meta-item {
+    .info-item {
+        display: flex;
+        justify-content: space-between;
         margin-bottom: 15px;
         padding-bottom: 15px;
-        border-bottom: 1px solid #f1f5f9;
+        border-bottom: 1px dashed #e2e8f0;
+        font-size: 14px;
     }
     
-    .meta-item:last-child {
-        margin-bottom: 0;
-        padding-bottom: 0;
-        border-bottom: none;
-    }
-    
-    .meta-label {
-        font-size: 11px;
+    .info-label {
+        color: var(--text-gray);
         font-weight: 600;
         text-transform: uppercase;
-        color: var(--text-gray);
+        font-size: 11px;
         letter-spacing: 0.5px;
-        margin-bottom: 5px;
+    }
+    
+    .info-value {
+        font-weight: 600;
+        color: #000;
+        text-align: right;
+    }
+    
+    .status-badge {
+        background-color: #f1f5f9;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .btn-plan-visit {
+        background-color: #000;
+        color: white;
+        text-align: center;
+        padding: 15px;
+        font-weight: 600;
+        font-size: 13px;
+        letter-spacing: 1px;
+        margin-top: 20px;
+        border-radius: 4px;
+        text-decoration: none;
+        transition: background-color 0.2s;
+    }
+    
+    .btn-plan-visit:hover {
+        background-color: var(--primary-red);
+        color: white;
+    }
+
+    /* TABS SECTION */
+    .tabs-nav {
+        display: flex;
+        gap: 30px;
+        border-bottom: 1px solid #e2e8f0;
+        margin-bottom: 30px;
+    }
+    
+    .tab-btn {
+        background: none;
+        border: none;
+        padding: 15px 0;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text-gray);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+        position: relative;
+    }
+    
+    .tab-btn.active {
+        color: #000;
+    }
+    
+    .tab-btn.active::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: var(--primary-red);
+    }
+    
+    .tab-content {
+        display: none;
+        background: white;
+        border: 1px solid #e2e8f0;
+        padding: 40px;
+        border-radius: 8px;
+        min-height: 200px;
+        line-height: 1.8;
+        font-size: 15px;
+    }
+    
+    .tab-content.active {
         display: block;
     }
     
-    .meta-value {
-        font-size: 14px;
-        font-weight: 500;
-        color: var(--text-dark);
+    /* HTML CONTENT (CKEditor) inside tabs */
+    .tab-content h2, .tab-content h3 {
+        font-family: 'Playfair Display', serif;
+        margin: 20px 0 15px;
+        color: var(--primary-red);
     }
     
-    /* GALLERY GRID */
+    .tab-content p {
+        margin-bottom: 20px;
+    }
+
+    /* GALLERY GRID in Tab */
     .gallery-grid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
     }
     
     .gallery-item {
         width: 100%;
         aspect-ratio: 1;
-        border-radius: 4px;
+        border-radius: 8px;
         overflow: hidden;
-        cursor: pointer;
+        background-color: #f1f5f9;
         position: relative;
     }
     
@@ -185,34 +218,19 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.3s;
     }
-    
-    .gallery-item:hover img { transform: scale(1.1); }
-    
+
     .play-icon {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        font-size: 24px;
+        font-size: 30px;
         color: white;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        text-shadow: 0 2px 5px rgba(0,0,0,0.5);
     }
 
-    /* COMMENTS SECTION */
-    .comments-section {
-        margin-top: 50px;
-        border-top: 1px solid #e2e8f0;
-        padding-top: 40px;
-    }
-    
-    .comments-title {
-        font-family: 'Playfair Display', serif;
-        font-size: 24px;
-        margin-bottom: 30px;
-    }
-    
+    /* COMMENTS SECTION in Tab */
     .comment-list {
         margin-bottom: 40px;
     }
@@ -239,7 +257,7 @@
         flex-shrink: 0;
     }
     
-    .comment-content { flex: 1; }
+    .comment-content-box { flex: 1; }
     
     .comment-header {
         display: flex;
@@ -258,17 +276,12 @@
         color: var(--text-gray);
     }
     
-    .comment-text {
-        font-size: 14px;
-        line-height: 1.6;
-        color: var(--text-dark);
-    }
-    
     /* COMMENT FORM */
     .comment-form-wrapper {
         background: #f8fafc;
         padding: 30px;
         border-radius: 8px;
+        border: 1px solid #e2e8f0;
     }
     
     .form-row {
@@ -297,12 +310,7 @@
         font-family: 'Inter', sans-serif;
         font-size: 14px;
         outline: none;
-        transition: border-color 0.2s;
     }
-    
-    .form-control:focus { border-color: var(--primary-red); }
-    
-    textarea.form-control { resize: vertical; min-height: 120px; }
     
     .btn-submit {
         background-color: var(--primary-red);
@@ -312,11 +320,75 @@
         border-radius: 4px;
         font-weight: 600;
         cursor: pointer;
-        transition: background-color 0.2s;
+    }
+
+    /* RELATED SECTION */
+    .related-section {
+        margin-top: 60px;
+        border-top: 1px solid #e2e8f0;
+        padding-top: 40px;
     }
     
-    .btn-submit:hover { background-color: var(--dark-red); }
-
+    .related-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+    
+    .related-title {
+        font-size: 18px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    .btn-view-all {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-gray);
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .related-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    }
+    
+    .related-card {
+        text-decoration: none;
+        color: inherit;
+    }
+    
+    .related-image {
+        width: 100%;
+        aspect-ratio: 16/10;
+        background-color: #e2e8f0;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        overflow: hidden;
+    }
+    
+    .related-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .related-card-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+    
+    .related-card-cat {
+        font-size: 12px;
+        color: var(--text-gray);
+    }
+    
     /* Alert Message */
     .alert-success {
         background-color: #dcfce7;
@@ -326,134 +398,93 @@
         margin-bottom: 20px;
         border-left: 4px solid #22c55e;
     }
-    
+
     /* RESPONSIVE */
-    @media (max-width: 768px) {
-        .detail-container { flex-direction: column; }
-        .sidebar { width: 100%; }
-        .form-row { flex-direction: column; gap: 15px; }
+    @media (max-width: 900px) {
+        .detail-top-split { flex-direction: column; }
+        .related-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+        .form-row { flex-direction: column; }
+        .tabs-nav { overflow-x: auto; white-space: nowrap; }
+        .gallery-grid { grid-template-columns: repeat(2, 1fr); }
     }
 </style>
 @endpush
 
 @section('content')
-
-<!-- HERO SECTION -->
-<div class="detail-hero">
-    @if($warisan->gambar && Storage::disk('public')->exists($warisan->gambar))
-        <img src="{{ Storage::url($warisan->gambar) }}" class="detail-hero-bg" alt="{{ $warisan->judul }}">
-    @else
-        <img src="https://via.placeholder.com/1200x600/5C1010/ffffff?text={{ urlencode($warisan->judul) }}" class="detail-hero-bg" alt="Placeholder">
-    @endif
+<div class="detail-page-container">
     
-    <div class="detail-hero-content">
-        <div class="detail-category">{{ $warisan->kategori->nama ?? 'Umum' }}</div>
+    <!-- HEADER -->
+    <div class="detail-header">
         <h1 class="detail-title">{{ $warisan->judul }}</h1>
         <div class="detail-location">
             <i class="fa-solid fa-location-dot"></i> {{ $warisan->lokasi }}
         </div>
     </div>
-</div>
 
-<!-- MAIN CONTENT -->
-<div class="detail-container">
-    
-    <!-- Left Column: Article -->
-    <div class="main-content">
-        <div class="article-body">
-            <!-- Render HTML from CKEditor safely -->
-            {!! $warisan->deskripsi !!}
-        </div>
-        
-        <!-- Comments Section -->
-        <div class="comments-section">
-            <h3 class="comments-title">Komentar Pengunjung ({{ $warisan->komentars->count() }})</h3>
-            
-            @if(session('success'))
-                <div class="alert-success">
-                    <i class="fa-solid fa-check-circle"></i> {{ session('success') }}
+    <!-- TOP SPLIT (Image & Info) -->
+    <div class="detail-top-split">
+        <div class="detail-media-container">
+            @if($warisan->gambar && Storage::disk('public')->exists($warisan->gambar))
+                <img src="{{ Storage::url($warisan->gambar) }}" alt="{{ $warisan->judul }}">
+            @else
+                <div style="text-align:center; color:#94a3b8;">
+                    <i class="fa-regular fa-image" style="font-size:40px; margin-bottom:10px;"></i><br>
+                    TAMPAK DEPAN {{ strtoupper($warisan->judul) }}
                 </div>
             @endif
-            
-            <div class="comment-list">
-                @forelse($warisan->komentars as $komentar)
-                    <div class="comment-item">
-                        <div class="comment-avatar">
-                            {{ strtoupper(substr($komentar->nama, 0, 1)) }}
-                        </div>
-                        <div class="comment-content">
-                            <div class="comment-header">
-                                <span class="comment-author">{{ $komentar->nama }}</span>
-                                <span class="comment-date">{{ $komentar->created_at->diffForHumans() }}</span>
-                            </div>
-                            <div class="comment-text">
-                                {{ $komentar->isi_komentar }}
-                            </div>
-                        </div>
-                    </div>
-                @empty
-                    <p style="color: var(--text-gray); font-style: italic;">Belum ada komentar. Jadilah yang pertama berkomentar!</p>
-                @endforelse
-            </div>
-            
-            <div class="comment-form-wrapper">
-                <h4 style="margin-bottom: 20px; font-family: 'Playfair Display', serif;">Tinggalkan Jejak / Pertanyaan</h4>
-                <form action="{{ route('katalog.komentar', $warisan->warisan_budaya_id) }}" method="POST">
-                    @csrf
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Nama Anda *</label>
-                            <input type="text" name="nama" class="form-control" required placeholder="Cth: Budi Tarigan">
-                        </div>
-                        <div class="form-group">
-                            <label>Email (Opsional)</label>
-                            <input type="email" name="email" class="form-control" placeholder="Tidak akan dipublikasikan">
-                        </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label>Isi Komentar *</label>
-                        <textarea name="isi_komentar" class="form-control" required placeholder="Tulis pendapat atau kenangan Anda tentang budaya ini..."></textarea>
-                    </div>
-                    <button type="submit" class="btn-submit">Kirim Komentar</button>
-                </form>
-            </div>
         </div>
-    </div>
-    
-    <!-- Right Column: Sidebar -->
-    <div class="sidebar">
         
-        <!-- Meta Info -->
-        <div class="sidebar-widget">
-            <h4 class="widget-title">Informasi Data</h4>
-            <ul class="meta-list">
-                <li class="meta-item">
-                    <span class="meta-label">Tahun Ditemukan</span>
-                    <span class="meta-value">{{ $warisan->tahun_ditemukan ?? 'Tidak diketahui' }}</span>
+        <div class="detail-info-card">
+            <div class="info-card-title">Informasi Utama</div>
+            <ul class="info-list">
+                <li class="info-item">
+                    <span class="info-label">Kategori</span>
+                    <span class="info-value">{{ $warisan->kategori->nama ?? 'Umum' }}</span>
                 </li>
-                <li class="meta-item">
-                    <span class="meta-label">Kondisi Saat Ini</span>
-                    <span class="meta-value">
-                        @if($warisan->kondisi == 'Baik')
-                            <span style="color: #16a34a;"><i class="fa-solid fa-circle-check"></i> Terawat Baik</span>
-                        @elseif($warisan->kondisi == 'Rusak Ringan')
-                            <span style="color: #ca8a04;"><i class="fa-solid fa-circle-exclamation"></i> Rusak Ringan</span>
-                        @else
-                            <span style="color: #dc2626;"><i class="fa-solid fa-triangle-exclamation"></i> Rusak Berat</span>
-                        @endif
-                    </span>
+                <li class="info-item">
+                    <span class="info-label">Lokasi</span>
+                    <span class="info-value">{{ $warisan->lokasi }}</span>
                 </li>
-                <li class="meta-item">
-                    <span class="meta-label">Terakhir Diperbarui</span>
-                    <span class="meta-value">{{ $warisan->updated_at->format('d M Y') }}</span>
+                <li class="info-item">
+                    <span class="info-label">Asal</span>
+                    <span class="info-value">{{ $warisan->asal ?? '-' }}</span>
+                </li>
+                <li class="info-item">
+                    <span class="info-label">Status</span>
+                    <span class="info-value"><span class="status-badge">{{ $warisan->kondisi ?? 'TIDAK DIKETAHUI' }}</span></span>
                 </li>
             </ul>
+            <a href="{{ route('home') }}#buku-tamu-section" class="btn-plan-visit">RENCANAKAN KUNJUNGAN</a>
         </div>
-        
-        <!-- Media Gallery -->
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs-nav">
+        <button class="tab-btn active" onclick="openTab(event, 'tab-deskripsi')">DESKRIPSI</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab-sejarah')">SEJARAH</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab-galeri')">GALERI</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab-komentar')">KOMENTAR</button>
+    </div>
+
+    <!-- TAB: DESKRIPSI -->
+    <div id="tab-deskripsi" class="tab-content active">
+        {!! $warisan->deskripsi !!}
+    </div>
+
+    <!-- TAB: SEJARAH -->
+    <div id="tab-sejarah" class="tab-content">
+        @if($warisan->sejarah)
+            {!! $warisan->sejarah !!}
+        @else
+            <p style="color: var(--text-gray); font-style: italic; text-align: center; padding: 40px 0;">Belum ada informasi sejarah yang ditambahkan.</p>
+        @endif
+    </div>
+
+    <!-- TAB: GALERI -->
+    <div id="tab-galeri" class="tab-content">
         @if($warisan->medias && $warisan->medias->count() > 0)
-        <div class="sidebar-widget">
-            <h4 class="widget-title">Galeri Media</h4>
             <div class="gallery-grid">
                 @foreach($warisan->medias as $media)
                     @if($media->jenis_media == 'foto')
@@ -462,39 +493,122 @@
                         </div>
                     @elseif($media->jenis_media == 'video')
                         <div class="gallery-item">
-                            <!-- Show video frame or thumbnail -->
-                            <video src="{{ Storage::url($media->file_media) }}" muted style="object-fit: cover; width: 100%; height: 100%;"></video>
+                            <video src="{{ Storage::url($media->file_media) }}" muted></video>
                             <i class="fa-solid fa-play play-icon"></i>
                         </div>
                     @endif
                 @endforeach
             </div>
-        </div>
+        @else
+            <p style="color: var(--text-gray); font-style: italic; text-align: center; padding: 40px 0;">Belum ada media galeri yang ditambahkan.</p>
+        @endif
+    </div>
+
+    <!-- TAB: KOMENTAR -->
+    <div id="tab-komentar" class="tab-content">
+        @if(session('success'))
+            <div class="alert-success">
+                <i class="fa-solid fa-check-circle"></i> {{ session('success') }}
+            </div>
         @endif
         
-        <!-- Related Items -->
-        @if($relatedWarisans->count() > 0)
-        <div class="sidebar-widget">
-            <h4 class="widget-title">Budaya Serupa</h4>
-            <div style="display: flex; flex-direction: column; gap: 15px;">
-                @foreach($relatedWarisans as $related)
-                <a href="{{ route('katalog.show', $related->warisan_budaya_id) }}" style="display: flex; gap: 15px; text-decoration: none; align-items: center;">
-                    <div style="width: 70px; height: 70px; background: #eee; border-radius: 4px; overflow: hidden; flex-shrink: 0;">
+        <div class="comment-list">
+            @forelse($warisan->komentars as $komentar)
+                <div class="comment-item">
+                    <div class="comment-avatar">
+                        {{ strtoupper(substr($komentar->nama, 0, 1)) }}
+                    </div>
+                    <div class="comment-content-box">
+                        <div class="comment-header">
+                            <span class="comment-author">{{ $komentar->nama }}</span>
+                            <span class="comment-date">{{ $komentar->created_at->diffForHumans() }}</span>
+                        </div>
+                        <div style="font-size: 14px; color: var(--text-dark);">
+                            {{ $komentar->isi_komentar }}
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <p style="color: var(--text-gray); font-style: italic;">Belum ada komentar. Jadilah yang pertama berkomentar!</p>
+            @endforelse
+        </div>
+        
+        <div class="comment-form-wrapper">
+            <h4 style="margin-bottom: 20px; font-family: 'Playfair Display', serif; font-size: 20px;">Tinggalkan Jejak / Pertanyaan</h4>
+            <form action="{{ route('katalog.komentar', $warisan->warisan_budaya_id) }}" method="POST">
+                @csrf
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nama Anda *</label>
+                        <input type="text" name="nama" class="form-control" required placeholder="Cth: Budi Tarigan">
+                    </div>
+                    <div class="form-group">
+                        <label>Email (Opsional)</label>
+                        <input type="email" name="email" class="form-control" placeholder="Tidak akan dipublikasikan">
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label>Isi Komentar *</label>
+                    <textarea name="isi_komentar" class="form-control" required style="min-height: 100px; resize:vertical;" placeholder="Tulis pendapat atau kenangan Anda tentang budaya ini..."></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Kirim Komentar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- EKSPLORASI LAINNYA -->
+    <div class="related-section">
+        <div class="related-header">
+            <h3 class="related-title">EKSPLORASI LAINNYA</h3>
+            <a href="{{ route('katalog.index') }}" class="btn-view-all">LIHAT SEMUA &rarr;</a>
+        </div>
+        
+        <div class="related-grid">
+            @forelse($relatedWarisans as $related)
+                <a href="{{ route('katalog.show', $related->warisan_budaya_id) }}" class="related-card">
+                    <div class="related-image">
                         @if($related->gambar && Storage::disk('public')->exists($related->gambar))
-                            <img src="{{ Storage::url($related->gambar) }}" style="width: 100%; height: 100%; object-fit: cover;" alt="">
+                            <img src="{{ Storage::url($related->gambar) }}" alt="{{ $related->judul }}">
+                        @else
+                            <div style="display:flex; height:100%; align-items:center; justify-content:center; color:#cbd5e1;">
+                                <i class="fa-solid fa-image" style="font-size:30px;"></i>
+                            </div>
                         @endif
                     </div>
-                    <div>
-                        <h5 style="color: var(--text-dark); font-size: 14px; margin-bottom: 5px; line-height: 1.3;">{{ $related->judul }}</h5>
-                        <span style="font-size: 11px; color: var(--primary-red); font-weight: 600;">{{ $related->kategori->nama ?? 'Umum' }}</span>
-                    </div>
+                    <h4 class="related-card-title">{{ $related->judul }}</h4>
+                    <div class="related-card-cat">{{ $related->kategori->nama ?? 'Umum' }}</div>
                 </a>
-                @endforeach
-            </div>
+            @empty
+                <p style="grid-column: span 4; color: var(--text-gray); font-style: italic;">Tidak ada budaya serupa saat ini.</p>
+            @endforelse
         </div>
-        @endif
-        
     </div>
-</div>
 
+</div>
 @endsection
+
+@push('scripts')
+<script>
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        
+        // Hide all tab content
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+            tabcontent[i].classList.remove("active");
+        }
+        
+        // Remove active class from all tab buttons
+        tablinks = document.getElementsByClassName("tab-btn");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].classList.remove("active");
+        }
+        
+        // Show the current tab, and add an "active" class to the button that opened the tab
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        evt.currentTarget.classList.add("active");
+    }
+</script>
+@endpush

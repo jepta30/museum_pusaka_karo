@@ -24,8 +24,13 @@ class WarisanBudayaController extends Controller
             'kategori_id' => 'required|exists:kategoris,kategori_id',
             'lokasi' => 'required|max:150',
             'status' => 'required|in:aktif,nonaktif',
+            'kondisi' => 'nullable|string|max:50',
+            'asal' => 'nullable|string|max:100',
             'deskripsi' => 'required',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg|max:5120'
+            'sejarah' => 'nullable|string',
+            'gambar' => 'required|image|mimes:jpeg,png,jpg|max:5120',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric'
         ]);
 
         $gambarPath = $request->file('gambar')->store('warisan_images', 'public');
@@ -35,9 +40,13 @@ class WarisanBudayaController extends Controller
             'kategori_id' => $request->kategori_id,
             'lokasi' => $request->lokasi,
             'status' => $request->status,
+            'kondisi' => $request->kondisi,
+            'asal' => $request->asal,
             'deskripsi' => $request->deskripsi,
-            'sejarah' => $request->deskripsi, // Kombinasi seperti di wireframe
+            'sejarah' => $request->sejarah,
             'gambar' => $gambarPath,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
         ]);
 
         return redirect()->route('warisan.index')->with('success', 'Data Warisan Budaya berhasil ditambahkan.');
@@ -52,8 +61,13 @@ class WarisanBudayaController extends Controller
             'kategori_id' => 'required|exists:kategoris,kategori_id',
             'lokasi' => 'required|max:150',
             'status' => 'required|in:aktif,nonaktif',
+            'kondisi' => 'nullable|string|max:50',
+            'asal' => 'nullable|string|max:100',
             'deskripsi' => 'required',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:5120'
+            'sejarah' => 'nullable|string',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric'
         ]);
 
         if ($request->hasFile('gambar')) {
@@ -68,8 +82,16 @@ class WarisanBudayaController extends Controller
         $warisan->kategori_id = $request->kategori_id;
         $warisan->lokasi = $request->lokasi;
         $warisan->status = $request->status;
+        $warisan->kondisi = $request->kondisi;
+        $warisan->asal = $request->asal;
         $warisan->deskripsi = $request->deskripsi;
-        $warisan->sejarah = $request->deskripsi;
+        $warisan->sejarah = $request->sejarah;
+        if ($request->has('latitude')) {
+            $warisan->latitude = $request->latitude;
+        }
+        if ($request->has('longitude')) {
+            $warisan->longitude = $request->longitude;
+        }
         $warisan->save();
 
         return redirect()->route('warisan.index')->with('success', 'Data Warisan Budaya berhasil diperbarui.');

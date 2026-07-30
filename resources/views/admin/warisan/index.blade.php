@@ -3,6 +3,7 @@
 @section('header_title', 'Warisan Budaya')
 
 @section('content')
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
 <style>
     .page-header { margin-bottom: 25px; }
     .search-input { width: 300px; }
@@ -13,6 +14,11 @@
     <div class="page-title">
         <h3>Kelola Warisan Budaya</h3>
         <p>Manajemen data daftar warisan budaya Karo</p>
+    </div>
+    <div class="header-actions">
+        <button type="button" class="btn-add" onclick="openModal('add')">
+            <i class="fa-solid fa-plus"></i> Tambah Data
+        </button>
     </div>
 </div>
 
@@ -44,10 +50,6 @@
         </select>
         <button class="btn-search">Cari</button>
     </div>
-    
-    <button type="button" class="btn-add" onclick="openModal('add')">
-        <i class="fa-solid fa-plus"></i> Tambah Data
-    </button>
 </div>
 
 <div class="table-container">
@@ -154,7 +156,12 @@
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label">ASAL DAERAH</label>
+                        <label class="form-label">ASAL DAERAH / SUKU</label>
+                        <input type="text" name="asal" id="inputAsal" class="form-control" placeholder="mis. Suku Karo">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">LOKASI PENEMUAN / KEBERADAAN</label>
                         <input type="text" name="lokasi" id="inputLokasi" class="form-control" placeholder="mis. Kabanjahe, Tanah Karo" required>
                     </div>
                     
@@ -165,11 +172,39 @@
                             <option value="nonaktif">Draf</option>
                         </select>
                     </div>
+
+                    <div class="form-group">
+                        <label class="form-label">KONDISI KELESTARIAN</label>
+                        <select name="kondisi" id="inputKondisi" class="form-control">
+                            <option value="">Pilih Kondisi</option>
+                            <option value="Dilestarikan">Dilestarikan</option>
+                            <option value="Terancam">Terancam</option>
+                            <option value="Punah">Punah</option>
+                            <option value="Rusak">Rusak</option>
+                            <option value="Baik">Baik</option>
+                        </select>
+                    </div>
                 </div>
                 
                 <div class="form-group" style="margin-bottom: 20px;">
-                    <label class="form-label">DESKRIPSI</label>
-                    <textarea name="deskripsi" id="inputDeskripsi" class="form-control" style="height: 120px; resize: vertical;" placeholder="Tuliskan deskripsi, sejarah, dan makna warisan budaya ini..." required></textarea>
+                    <label class="form-label">TITIK KOORDINAT PETA (Latitude & Longitude)</label>
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <button type="button" class="btn-outline" onclick="searchLocation()" style="font-size: 12px; padding: 8px 12px;"><i class="fa-solid fa-magnifying-glass-location"></i> Cari Lokasi di Peta</button>
+                        <span id="mapStatus" style="font-size: 12px; color: var(--text-gray); align-self: center;">Anda bisa geser pin merah pada peta untuk koordinat yang lebih akurat.</span>
+                    </div>
+                    <div id="mapForm" style="height: 250px; width: 100%; border-radius: 12px; border: 1px solid rgba(216, 224, 235, 0.95); z-index: 1;"></div>
+                    <input type="hidden" name="latitude" id="inputLatitude">
+                    <input type="hidden" name="longitude" id="inputLongitude">
+                </div>
+                
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label class="form-label">DESKRIPSI UMUM</label>
+                    <textarea name="deskripsi" id="inputDeskripsi" class="form-control" style="height: 120px; resize: vertical;" placeholder="Tuliskan gambaran umum warisan budaya ini..." required></textarea>
+                </div>
+                
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label class="form-label">SEJARAH & MAKNA FILOSOFIS (Opsional)</label>
+                    <textarea name="sejarah" id="inputSejarah" class="form-control" style="height: 120px; resize: vertical;" placeholder="Tuliskan sejarah, asal usul, atau makna filosofis dari warisan budaya ini..."></textarea>
                 </div>
                 
                 <div class="form-group">
@@ -195,7 +230,54 @@
 @endsection
 
 @push('scripts')
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script>
+    let map, marker;
+    function initMap() {
+        if (map) return;
+        map = L.map('mapForm').setView([3.12095, 98.42346], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
+        marker = L.marker([3.12095, 98.42346], { draggable: true }).addTo(map);
+        
+        marker.on('dragend', function(event) {
+            var position = marker.getLatLng();
+            document.getElementById('inputLatitude').value = position.lat;
+            document.getElementById('inputLongitude').value = position.lng;
+            document.getElementById('mapStatus').innerText = "Koordinat diperbarui secara manual.";
+        });
+    }
+
+    function searchLocation() {
+        const lokasi = document.getElementById('inputLokasi').value;
+        const status = document.getElementById('mapStatus');
+        if(!lokasi) {
+            status.innerText = "Ketikkan asal daerah terlebih dahulu.";
+            return;
+        }
+        status.innerText = "Mencari lokasi...";
+        
+        // Tambahkan konteks Kabupaten Karo agar pencarian Nominatim lebih akurat untuk 17 kecamatan & 259 desa
+        const searchQuery = lokasi + ", Kabupaten Karo, Sumatera Utara, Indonesia";
+        
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.length > 0) {
+                    const lat = parseFloat(data[0].lat);
+                    const lon = parseFloat(data[0].lon);
+                    map.setView([lat, lon], 14);
+                    marker.setLatLng([lat, lon]);
+                    document.getElementById('inputLatitude').value = lat;
+                    document.getElementById('inputLongitude').value = lon;
+                    status.innerHTML = `<span style="color: #16a34a;"><i class="fa-solid fa-circle-check"></i> Lokasi ditemukan di Kabupaten Karo!</span>`;
+                } else {
+                    status.innerHTML = `<span style="color: #dc2626;"><i class="fa-solid fa-circle-xmark"></i> Lokasi tidak ditemukan. Coba ketik lebih spesifik (misal: nama desa atau kecamatan).</span>`;
+                }
+            }).catch(e => {
+                status.innerText = "Terjadi kesalahan koneksi saat mencari.";
+            });
+    }
+
     function openModal(mode, data = null) {
         const modal = document.getElementById('warisanModal');
         const form = document.getElementById('warisanForm');
@@ -205,6 +287,9 @@
         // Reset form
         form.reset();
         document.getElementById('fileNameDisplay').textContent = '';
+        document.getElementById('inputLatitude').value = '';
+        document.getElementById('inputLongitude').value = '';
+        document.getElementById('mapStatus').innerText = 'Anda bisa geser pin merah pada peta untuk koordinat yang lebih akurat.';
         
         if (mode === 'add') {
             title.textContent = 'TAMBAH DATA BARU';
@@ -221,11 +306,28 @@
             document.getElementById('inputJudul').value = data.judul;
             document.getElementById('inputKategori').value = data.kategori_id;
             document.getElementById('inputLokasi').value = data.lokasi;
+            document.getElementById('inputAsal').value = data.asal || '';
             document.getElementById('inputStatus').value = data.status;
+            document.getElementById('inputKondisi').value = data.kondisi || '';
             document.getElementById('inputDeskripsi').value = data.deskripsi;
+            document.getElementById('inputSejarah').value = data.sejarah || '';
         }
         
         modal.classList.add('active');
+        
+        setTimeout(() => {
+            initMap();
+            map.invalidateSize();
+            if (mode === 'edit' && data.latitude && data.longitude) {
+                map.setView([data.latitude, data.longitude], 14);
+                marker.setLatLng([data.latitude, data.longitude]);
+                document.getElementById('inputLatitude').value = data.latitude;
+                document.getElementById('inputLongitude').value = data.longitude;
+            } else if (mode === 'add') {
+                map.setView([3.12095, 98.42346], 12);
+                marker.setLatLng([3.12095, 98.42346]);
+            }
+        }, 150);
     }
     
     function closeModal() {

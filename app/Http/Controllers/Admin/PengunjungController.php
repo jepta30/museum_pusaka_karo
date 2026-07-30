@@ -74,7 +74,7 @@ class PengunjungController extends Controller
 
         Pengunjung::create($validated);
 
-        return redirect()->route('buku-tamu')->with('success', 'Terima kasih! Data kunjungan Anda berhasil dicatat.');
+        return redirect()->route('home')->with('success', 'Terima kasih! Data kunjungan Anda berhasil dicatat.');
     }
 
     public function update(Request $request, string $no_pengunjung)

@@ -9,9 +9,11 @@
         <h3>Daftar Kategori</h3>
         <p>Kelola pengelompokan jenis warisan budaya Karo.</p>
     </div>
-    <button type="button" class="btn-add" onclick="openModal('add')">
-        <i class="fa-solid fa-plus"></i> Tambah Kategori
-    </button>
+    <div class="header-actions">
+        <button type="button" class="btn-add" onclick="openModal('add')">
+            <i class="fa-solid fa-plus"></i> Tambah Kategori
+        </button>
+    </div>
 </div>
 
 @if(session('success'))
@@ -35,17 +37,27 @@
     <table class="data-table">
         <thead>
             <tr>
-                <th width="10%">NO</th>
-                <th width="50%">NAMA KATEGORI</th>
-                <th width="25%">JUMLAH ITEM</th>
-                <th width="15%">AKSI</th>
+                <th width="5%">NO</th>
+                <th width="10%">IKON</th>
+                <th width="25%">NAMA KATEGORI</th>
+                <th width="35%">DESKRIPSI</th>
+                <th width="15%">JUMLAH ITEM</th>
+                <th width="10%">AKSI</th>
             </tr>
         </thead>
         <tbody>
             @forelse($kategoris as $index => $kategori)
             <tr>
                 <td>{{ ($kategoris->firstItem() ?? 1) + $index }}</td>
+                <td>
+                    @if($kategori->icon)
+                        <img src="{{ Storage::url($kategori->icon) }}" alt="{{ $kategori->nama }}" style="width: 40px; height: 40px; border-radius: 8px; object-fit: cover; background-color: #f1f5f9; padding: 2px;">
+                    @else
+                        <div style="width: 40px; height: 40px; border-radius: 8px; background-color: #e2e8f0; display:flex; align-items:center; justify-content:center; color:#94a3b8;"><i class="fa-solid fa-image"></i></div>
+                    @endif
+                </td>
                 <td><strong>{{ $kategori->nama }}</strong></td>
+                <td style="color: var(--text-gray); font-size: 13px;">{{ Str::limit($kategori->deskripsi, 80) }}</td>
                 <!-- Nanti akan dinamis dengan count() relasi -->
                 <td style="color: var(--text-gray);">{{ $kategori->warisanBudayas ? $kategori->warisanBudayas->count() : 0 }}</td>
                 <td>
@@ -65,7 +77,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="4" style="text-align: center; color: var(--text-gray); padding: 40px;">
+                <td colspan="6" style="text-align: center; color: var(--text-gray); padding: 40px;">
                     Belum ada data kategori budaya.
                 </td>
             </tr>

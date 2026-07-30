@@ -20,9 +20,11 @@
         <h3>Media Dokumentasi</h3>
         <p>Kelola foto dan video warisan budaya Karo</p>
     </div>
-    <button type="button" class="btn-add" onclick="openModal('add')">
-        <i class="fa-solid fa-plus"></i> Upload Media
-    </button>
+    <div class="header-actions">
+        <button type="button" class="btn-add" onclick="openModal('add')">
+            <i class="fa-solid fa-plus"></i> Upload Media
+        </button>
+    </div>
 </div>
 
 @if(session('success'))

@@ -222,18 +222,21 @@
     
     .category-grid {
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 20px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 30px;
     }
     
     .category-card {
         background-color: white;
         border: 1px solid #e2e8f0;
-        padding: 30px 15px;
+        padding: 40px 30px;
         text-align: center;
         transition: all 0.3s ease;
         text-decoration: none;
         color: var(--text-dark);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
     
     .category-card:hover {
@@ -243,16 +246,22 @@
     }
     
     .category-icon {
-        font-size: 32px;
-        margin-bottom: 15px;
-        color: var(--text-dark);
+        font-size: 42px;
+        margin-bottom: 25px;
+        color: #000;
     }
     
     .category-name {
-        font-size: 12px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .category-desc {
+        font-size: 13px;
+        color: var(--text-gray);
+        line-height: 1.6;
+        margin-bottom: 0;
     }
 
     .featured-section {
@@ -454,6 +463,30 @@
             grid-template-columns: 1fr;
         }
     }
+
+    /* Modal Buku Tamu */
+    .modal-overlay {
+        position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-content {
+        width: 500px; max-width: 100%; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    }
+    .modal-header {
+        padding: 20px 24px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;
+    }
+    .modal-header h4 { font-family: 'Playfair Display', serif; font-size: 18px; margin: 0; }
+    .btn-close {
+        background: none; border: none; font-size: 18px; color: var(--text-gray); cursor: pointer; transition: 0.2s;
+    }
+    .btn-close:hover { color: var(--primary-red); }
+    .modal-body { padding: 24px; }
+    .form-group { margin-bottom: 15px; }
+    .form-label { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; color: var(--text-dark); margin-bottom: 8px; letter-spacing: 0.5px; }
+    .form-control { width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; font-family: 'Inter', sans-serif; }
+    .form-control:focus { outline: none; border-color: var(--primary-red); }
+    .btn-submit { background: var(--primary-red); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .btn-submit:hover { background: var(--dark-red); }
 </style>
 @endpush
 
@@ -551,30 +584,45 @@
             @endphp
             <a href="{{ route('katalog.index', ['kategori_id' => $kat->kategori_id]) }}" class="category-card">
                 <div class="category-icon">
-                    <i class="fa-solid {{ $defaultIcon }}"></i>
+                    @if($kat->icon)
+                        <img src="{{ Storage::url($kat->icon) }}" alt="{{ $kat->nama }}" style="width: 50px; height: 50px; object-fit: contain; filter: grayscale(100%) contrast(200%);">
+                    @else
+                        <i class="fa-solid {{ $defaultIcon }}"></i>
+                    @endif
                 </div>
                 <div class="category-name">{{ $kat->nama }}</div>
+                <p class="category-desc">{{ $kat->deskripsi ?? 'Jelajahi koleksi warisan budaya ' . $kat->nama . ' khas Karo yang otentik dan penuh sejarah.' }}</p>
             </a>
         @empty
             <a href="#" class="category-card">
                 <div class="category-icon"><i class="fa-solid fa-house-chimney"></i></div>
-                <div class="category-name">RUMAH ADAT</div>
+                <div class="category-name">Rumah Adat</div>
+                <p class="category-desc">Arsitektur megah Siwaluh Jabu dan warisan struktur tradisional Karo.</p>
             </a>
             <a href="#" class="category-card">
                 <div class="category-icon"><i class="fa-solid fa-shirt"></i></div>
-                <div class="category-name">PAKAIAN ADAT</div>
+                <div class="category-name">Pakaian Adat</div>
+                <p class="category-desc">Uis Gara dan keindahan tenun merah hitam yang sarat makna.</p>
             </a>
             <a href="#" class="category-card">
                 <div class="category-icon"><i class="fa-solid fa-music"></i></div>
-                <div class="category-name">ALAT MUSIK</div>
+                <div class="category-name">Alat Musik</div>
+                <p class="category-desc">Gendang Singanaki dan harmoni instrumen bambu tradisional.</p>
             </a>
             <a href="#" class="category-card">
                 <div class="category-icon"><i class="fa-solid fa-utensils"></i></div>
-                <div class="category-name">KULINER</div>
+                <div class="category-name">Kuliner Tradisional</div>
+                <p class="category-desc">Cimpa dan cita rasa rempah khas dataran tinggi Tanah Karo.</p>
             </a>
             <a href="#" class="category-card">
                 <div class="category-icon"><i class="fa-solid fa-users"></i></div>
-                <div class="category-name">TARI TRADISIONAL</div>
+                <div class="category-name">Tari Tradisional</div>
+                <p class="category-desc">Gerakan ritmik Tari Terang Bulan dan Landek yang elegan.</p>
+            </a>
+            <a href="#" class="category-card">
+                <div class="category-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                <div class="category-name">Ritual & Upacara</div>
+                <p class="category-desc">Gendang Guro-guro Aron dan kearifan spiritual leluhur.</p>
             </a>
         @endforelse
     </div>
@@ -588,8 +636,7 @@
         <div class="featured-grid">
             @forelse($featured as $item)
                 @php
-                    $mediaFile = $item->medias->first()?->file_media;
-                    $mediaUrl = $mediaFile ? asset('storage/' . ltrim($mediaFile, '/')) : asset('images/logo.png');
+                    $mediaUrl = $item->gambar ? asset('storage/' . ltrim($item->gambar, '/')) : asset('images/logo.png');
                     $categoryName = $item->kategori->nama ?? 'Warisan';
                 @endphp
                 <a href="{{ route('katalog.index', ['kategori_id' => $item->kategori_id]) }}" class="featured-card">
@@ -642,6 +689,49 @@
     </div>
 </section>
 
+<!-- Modal Buku Tamu -->
+<div class="modal-overlay" id="bukuTamuModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4>Buku Tamu Pengunjung</h4>
+            <button class="btn-close" id="closeBukuTamu" type="button"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <p style="margin-bottom: 20px; font-size: 14px; color: var(--text-gray);">Selamat datang di Museum Pusaka Karo. Mohon isi data kunjungan Anda terlebih dahulu.</p>
+            
+            @if($errors->any())
+                <div style="background-color: #fee2e2; color: #991b1b; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 13px;">
+                    <strong>Terjadi kesalahan:</strong>
+                    <ul style="margin: 5px 0 0 15px;">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form action="{{ route('buku-tamu.store') }}" method="POST" id="bukuTamuForm">
+                @csrf
+                <div class="form-group">
+                    <label class="form-label">Nama Lengkap</label>
+                    <input type="text" name="nama" class="form-control" value="{{ old('nama') }}" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Alamat</label>
+                    <input type="text" name="alamat" class="form-control" value="{{ old('alamat') }}" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Pekerjaan</label>
+                    <input type="text" name="pekerjaan" class="form-control" value="{{ old('pekerjaan') }}" required>
+                </div>
+                <div style="margin-top: 20px; text-align: right;">
+                    <button type="submit" class="btn-submit">Kirim Data</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @push('scripts')
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script>
@@ -661,6 +751,33 @@
         L.marker([3.13220, 98.46650]).addTo(map)
             .bindPopup('<strong>Museum Pusaka Karo</strong><br>Jl. Perwira No. 3, Berastagi')
             .openPopup();
+            
+        // Modal Buku Tamu Logic
+        const modal = document.getElementById('bukuTamuModal');
+        const closeBtn = document.getElementById('closeBukuTamu');
+        const form = document.getElementById('bukuTamuForm');
+        
+        // Cek jika ada error dari server (validasi gagal), maka modal tetap terbuka
+        const hasErrors = {{ $errors->any() ? 'true' : 'false' }};
+        
+        if (hasErrors || !sessionStorage.getItem('bukuTamuFilled')) {
+            setTimeout(() => {
+                modal.classList.add('active');
+            }, 800);
+        }
+
+        closeBtn.addEventListener('click', function() {
+            modal.classList.remove('active');
+            sessionStorage.setItem('bukuTamuFilled', 'true');
+        });
+
+        form.addEventListener('submit', function() {
+            sessionStorage.setItem('bukuTamuFilled', 'true');
+        });
+        
+        @if(session('success'))
+            alert('{{ session("success") }}');
+        @endif
     });
 </script>
 @endpush

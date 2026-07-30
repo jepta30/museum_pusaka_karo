@@ -257,7 +257,6 @@
             <a href="{{ route('katalog.index') }}" class="nav-link {{ request()->routeIs('katalog.*') ? 'active' : '' }}">Katalog Warisan</a>
             <a href="{{ route('peta.persebaran') }}" class="nav-link {{ request()->routeIs('peta.persebaran') ? 'active' : '' }}">Peta Persebaran</a>
             <a href="{{ route('tentang') }}" class="nav-link {{ request()->routeIs('tentang') ? 'active' : '' }}">Tentang Kami</a>
-            <a href="{{ route('buku-tamu') }}" class="nav-link {{ request()->routeIs('buku-tamu') ? 'active' : '' }}">Buku Tamu</a>
             <a href="{{ route('login') }}" class="nav-link" style="padding: 10px 15px;"><i class="fa-solid fa-user"></i></a>
         </div>
     </header>
@@ -292,7 +291,6 @@
                         <li><a href="{{ route('katalog.index') }}">Katalog Budaya</a></li>
                         <li><a href="{{ route('peta.persebaran') }}">Peta Persebaran</a></li>
                         <li><a href="{{ route('tentang') }}">Tentang Kami</a></li>
-                        <li><a href="{{ route('buku-tamu') }}">Buku Tamu</a></li>
                     </ul>
                 </div>
                 

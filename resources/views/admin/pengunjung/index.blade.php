@@ -7,12 +7,12 @@
     <div class="page-title">
         <h3>Buku Tamu Pengunjung</h3>
         <p>Catat, pantau, dan buat laporan kunjungan fisik pengunjung Museum Pusaka Karo. Semua entri disimpan di database dan bisa diekspor sebagai CSV.</p>
-        <p>Gunakan tombol <strong>Catat Kunjungan</strong> untuk mencatat kunjungan manual, atau arahkan pengunjung ke <a href="{{ route('buku-tamu') }}" target="_blank">Buku Tamu Publik</a> agar mereka dapat mengisi sendiri.</p>
+        <p>Gunakan tombol <strong>Catat Kunjungan</strong> untuk mencatat kunjungan manual, atau minta pengunjung membuka <a href="{{ route('home') }}" target="_blank">Halaman Utama</a> untuk mengisi otomatis.</p>
     </div>
     <div class="header-actions">
         <a href="{{ route('pengunjung.export', request()->query()) }}" class="btn-outline"><i class="fa-solid fa-file-csv"></i> Unduh CSV</a>
         <a href="{{ route('pengunjung.export.pdf', request()->query()) }}" class="btn-outline"><i class="fa-solid fa-file-pdf"></i> Unduh PDF</a>
-        <a href="{{ route('buku-tamu') }}" target="_blank" class="btn-outline"><i class="fa-solid fa-link"></i> Form Publik</a>
+        <a href="{{ route('home') }}" target="_blank" class="btn-outline"><i class="fa-solid fa-link"></i> Form Publik</a>
         <button type="button" class="btn-add" onclick="openModal('add')"><i class="fa-solid fa-plus"></i> Catat Kunjungan</button>
     </div>
 </div>
@@ -165,7 +165,7 @@
             document.getElementById('inputTanggal').value = new Date().toISOString().split('T')[0];
         } else if (mode === 'edit') {
             title.textContent = 'UBAH DATA PENGUNJUNG';
-            form.action = '/pengunjung/' + data.no_pengunjung;
+            form.action = '{{ url("pengunjung") }}/' + data.no_pengunjung;
             method.value = 'PUT';
             document.getElementById('inputNama').value = data.nama;
             document.getElementById('inputAlamat').value = data.alamat;

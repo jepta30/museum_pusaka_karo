@@ -5,102 +5,138 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Koleksi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class KoleksiController extends Controller
 {
-    /**
-     * Buku Induk Koleksi Museum (BAB IV.4 poin 8).
-     */
     public function index(Request $request)
     {
         $query = Koleksi::query();
 
-        if ($request->filled('q')) {
-            $q = $request->q;
-            $query->where(function ($sub) use ($q) {
-                $sub->where('nama_koleksi', 'like', "%{$q}%")
-                    ->orWhere('nama_pemilik', 'like', "%{$q}%")
-                    ->orWhere('jenis_koleksi', 'like', "%{$q}%");
-            });
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('nama_koleksi', 'LIKE', "%{$search}%")
+                  ->orWhere('pemilik', 'LIKE', "%{$search}%");
         }
 
         if ($request->filled('jenis') && $request->jenis != 'all') {
-            $query->where('jenis_koleksi', $request->jenis);
+            $query->where('jenis', $request->jenis);
         }
 
-        $koleksis = $query->latest()->paginate(10)->withQueryString();
-        $jenisList = Koleksi::select('jenis_koleksi')->distinct()->pluck('jenis_koleksi');
+        $koleksis = $query->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
 
-        return view('admin.koleksi.index', compact('koleksis', 'jenisList'));
+        return view('admin.koleksi.index', compact('koleksis'));
+    }
+
+    public function create()
+    {
+        return view('admin.koleksi.create');
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama_koleksi' => 'required|string|max:50',
-            'jenis_koleksi' => 'required|string|max:50',
-            'nama_pemilik' => 'required|string|max:50',
-            'cara_perolehan' => 'required|string|max:50',
-            'tempat_perolehan' => 'required|string|max:50',
-            'tanggal_masuk' => 'required|string|max:50',
-            'keterangan' => 'nullable|string',
+            'kode_koleksi' => 'required|string|max:50|unique:koleksis',
+            'nama_koleksi' => 'required|string|max:255',
+            'jenis' => 'nullable|string|max:100',
+            'pemilik' => 'nullable|string|max:255',
+            'cara_perolehan' => 'nullable|string|max:255',
+            'tanggal_masuk' => 'nullable|date',
+            'deskripsi' => 'nullable|string',
+            'kondisi' => 'nullable|string|max:50',
         ]);
-
-        $validated['nomor_koleksi'] = $this->generateNomor();
 
         Koleksi::create($validated);
 
-        return redirect()->route('koleksi.index')->with('success', 'Data koleksi berhasil ditambahkan ke buku induk.');
+        return redirect()->route('koleksi.index')
+            ->with('success', 'Koleksi berhasil ditambahkan.');
     }
 
-    public function update(Request $request, string $nomor_koleksi)
+    public function show($id)
     {
-        $koleksi = Koleksi::findOrFail($nomor_koleksi);
+        $koleksi = Koleksi::findOrFail($id);
+        return view('admin.koleksi.show', compact('koleksi'));
+    }
+
+    public function edit($id)
+    {
+        $koleksi = Koleksi::findOrFail($id);
+        return view('admin.koleksi.edit', compact('koleksi'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $koleksi = Koleksi::findOrFail($id);
 
         $validated = $request->validate([
-            'nama_koleksi' => 'required|string|max:50',
-            'jenis_koleksi' => 'required|string|max:50',
-            'nama_pemilik' => 'required|string|max:50',
-            'cara_perolehan' => 'required|string|max:50',
-            'tempat_perolehan' => 'required|string|max:50',
-            'tanggal_masuk' => 'required|string|max:50',
-            'keterangan' => 'nullable|string',
+            'kode_koleksi' => 'required|string|max:50|unique:koleksis,kode_koleksi,' . $id . ',koleksi_id',
+            'nama_koleksi' => 'required|string|max:255',
+            'jenis' => 'nullable|string|max:100',
+            'pemilik' => 'nullable|string|max:255',
+            'cara_perolehan' => 'nullable|string|max:255',
+            'tanggal_masuk' => 'nullable|date',
+            'deskripsi' => 'nullable|string',
+            'kondisi' => 'nullable|string|max:50',
         ]);
 
         $koleksi->update($validated);
 
-        return redirect()->route('koleksi.index')->with('success', 'Data koleksi berhasil diperbarui.');
+        return redirect()->route('koleksi.index')
+            ->with('success', 'Koleksi berhasil diperbarui.');
     }
 
-    public function destroy(string $nomor_koleksi)
+    public function destroy($id)
     {
-        Koleksi::findOrFail($nomor_koleksi)->delete();
+        $koleksi = Koleksi::findOrFail($id);
+        $koleksi->delete();
 
-        return redirect()->route('koleksi.index')->with('success', 'Data koleksi berhasil dihapus.');
+        return redirect()->route('koleksi.index')
+            ->with('success', 'Koleksi berhasil dihapus.');
     }
 
+    /**
+     * Export koleksi ke CSV
+     * ===== PERBAIKAN: Method ini dipanggil oleh route koleksi.export =====
+     */
     public function exportCsv(): StreamedResponse
     {
-        $koleksis = Koleksi::orderBy('nomor_koleksi')->get();
+        $koleksis = Koleksi::orderBy('created_at', 'desc')->get();
+
         $filename = 'buku-induk-koleksi-' . now()->format('Ymd_His') . '.csv';
 
         return response()->streamDownload(function () use ($koleksis) {
             $handle = fopen('php://output', 'w');
-            fputcsv($handle, ['No. Koleksi', 'Nama Koleksi', 'Jenis', 'Nama Pemilik', 'Cara Perolehan', 'Tempat Perolehan', 'Tanggal Masuk', 'Keterangan']);
+            fwrite($handle, "\xEF\xBB\xBF");
+
+            fputcsv($handle, [
+                'No. Koleksi',
+                'Nama Koleksi',
+                'Jenis',
+                'Pemilik',
+                'Cara Perolehan',
+                'Tanggal Masuk',
+                'Deskripsi',
+                'Kondisi'
+            ]);
+
             foreach ($koleksis as $k) {
-                fputcsv($handle, [$k->nomor_koleksi, $k->nama_koleksi, $k->jenis_koleksi, $k->nama_pemilik, $k->cara_perolehan, $k->tempat_perolehan, $k->tanggal_masuk, $k->keterangan]);
+                fputcsv($handle, [
+                    $k->kode_koleksi ?? '',
+                    $k->nama_koleksi ?? '',
+                    $k->jenis ?? '',
+                    $k->pemilik ?? '',
+                    $k->cara_perolehan ?? '',
+                    $k->tanggal_masuk ? Carbon::parse($k->tanggal_masuk)->format('Y-m-d') : '',
+                    $k->deskripsi ?? '',
+                    $k->kondisi ?? ''
+                ]);
             }
+
             fclose($handle);
-        }, $filename, ['Content-Type' => 'text/csv']);
-    }
-
-    private function generateNomor(): string
-    {
-        do {
-            $nomor = 'KOL-' . now()->format('ymd') . '-' . str_pad((string) random_int(0, 9999), 4, '0', STR_PAD_LEFT);
-        } while (Koleksi::whereKey($nomor)->exists());
-
-        return $nomor;
+        }, $filename, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => "attachment; filename=\"$filename\""
+        ]);
     }
 }

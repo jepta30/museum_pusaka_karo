@@ -406,8 +406,11 @@
     }
     @media (max-width: 600px) {
         .form-row { flex-direction: column; }
-        .tabs-nav { overflow-x: auto; white-space: nowrap; }
-        .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+        .tabs-nav { overflow-x: auto; white-space: nowrap; padding-bottom: 5px; }
+        .gallery-grid { grid-template-columns: 1fr; }
+        .related-grid { grid-template-columns: 1fr; }
+        .detail-title { font-size: 28px; }
+        .detail-media-container { aspect-ratio: 4/3; }
     }
 </style>
 @endpush

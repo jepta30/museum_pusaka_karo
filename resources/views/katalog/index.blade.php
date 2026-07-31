@@ -269,6 +269,32 @@
         color: #cbd5e1;
         margin-bottom: 15px;
     }
+
+    /* TAMPILAN MOBILE / ANDROID */
+    @media (max-width: 768px) {
+        .page-banner {
+            padding: 40px 5%;
+        }
+        
+        .page-title {
+            font-size: 28px;
+        }
+        
+        .filter-card {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 15px;
+        }
+        
+        .catalog-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .card-image {
+            height: 200px;
+        }
+    }
 </style>
 @endpush
 

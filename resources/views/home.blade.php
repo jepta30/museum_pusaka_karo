@@ -7,27 +7,38 @@
 <style>
     /* HERO SECTION */
     .hero-section {
-        background: linear-gradient(135deg, var(--dark-red) 0%, var(--primary-red) 100%);
         padding: 80px 5% 140px;
         position: relative;
         overflow: hidden;
     }
     
-    /* Subtle geometric pattern for hero background */
-    .hero-section::before {
+    .hero-bg-slider {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        background: url('{{ asset("images/museum-tampak-luar.png") }}') center center / 100% 100% no-repeat;
+    }
+    
+    .hero-bg-slider::after {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 40px;
-        background-image: linear-gradient(45deg, rgba(255,255,255,0.05) 25%, transparent 25%), 
-                          linear-gradient(-45deg, rgba(255,255,255,0.05) 25%, transparent 25%), 
-                          linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.05) 75%), 
-                          linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.05) 75%);
-        background-size: 20px 20px;
-        background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        inset: 0;
+        background: url('{{ asset("images/tampakdepan.png") }}') center center / 100% 100% no-repeat;
+        animation: fadeSlide 10s ease-in-out infinite alternate;
     }
+    
+    @keyframes fadeSlide {
+        0%, 40% { opacity: 0; }
+        60%, 100% { opacity: 1; }
+    }
+    
+    .hero-section-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 60%);
+        z-index: 1;
+    }
+
     
     .hero-container {
         display: flex;
@@ -37,7 +48,7 @@
         max-width: 1200px;
         margin: 0 auto;
         position: relative;
-        z-index: 2;
+        z-index: 3;
     }
     
     .hero-content {
@@ -70,14 +81,16 @@
         line-height: 1.1;
         margin-bottom: 25px;
         color: var(--cream);
+        text-shadow: 0 2px 10px rgba(0,0,0,0.5);
     }
     
     .hero-desc {
         font-size: 15px;
         line-height: 1.6;
-        color: rgba(255, 255, 255, 0.85);
+        color: rgba(255, 255, 255, 0.9);
         margin-bottom: 40px;
         max-width: 480px;
+        text-shadow: 0 1px 5px rgba(0,0,0,0.5);
     }
     
     /* Search Bar in Hero (from Image 1 concept) */
@@ -464,6 +477,82 @@
         }
     }
 
+    /* TAMPILAN MOBILE / ANDROID */
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: 40px 5% 80px;
+        }
+        
+        .hero-title {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+        
+        .hero-desc {
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+        
+        .hero-image-frame {
+            height: auto;
+            aspect-ratio: 16/9;
+            margin-top: 10px;
+        }
+        
+        .hero-search {
+            flex-direction: column;
+        }
+        
+        .hero-search button {
+            padding: 12px;
+        }
+
+        .stats-wrapper {
+            margin: -30px auto 40px;
+        }
+        
+        .stats-card {
+            flex-direction: column;
+            padding: 20px 0;
+            gap: 15px;
+        }
+        
+        .stat-item {
+            border-right: none;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding-bottom: 15px;
+        }
+        
+        .stat-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        
+        .section-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .category-card {
+            padding: 20px 15px;
+        }
+
+        .featured-image {
+            height: 180px;
+        }
+        
+        .map-image {
+            height: 200px;
+            width: 100%;
+        }
+        
+        .modal-content {
+            width: 95%;
+            margin: 0 auto;
+        }
+    }
+
     /* Modal Buku Tamu */
     .modal-overlay {
         position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px;
@@ -494,6 +583,8 @@
 
 <!-- Hero Section -->
 <section class="hero-section">
+    <div class="hero-bg-slider"></div>
+    <div class="hero-section-overlay"></div>
     <div class="hero-container">
         <div class="hero-content">
             <div class="hero-badge">MUSEUM PUSAKA KARO • KABANJAHE</div>
@@ -508,7 +599,7 @@
         
         <div class="hero-image">
             <div class="hero-image-frame">
-                <img src="{{ asset('images/gedung-museum.svg') }}" alt="Gedung Museum Pusaka Karo" class="hero-image">
+                <img src="{{ asset('images/museum-karo.jpg') }}" alt="Gedung Museum Pusaka Karo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
             </div>
         </div>
     </div>

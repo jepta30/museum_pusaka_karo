@@ -589,6 +589,80 @@
         }
 
         @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .sidebar-header {
+                padding: 15px;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                text-align: left;
+            }
+            .sidebar-logo-container {
+                width: 40px;
+                height: 40px;
+                margin-bottom: 0;
+                margin-right: 15px;
+            }
+            .sidebar-logo-text {
+                font-size: 14px;
+                margin-bottom: 0;
+            }
+            .sidebar-subtitle {
+                display: none;
+            }
+            .nav-menu {
+                display: flex;
+                overflow-x: auto;
+                padding: 10px 15px;
+                gap: 10px;
+                white-space: nowrap;
+            }
+            .nav-item {
+                display: inline-block;
+                margin-bottom: 0;
+            }
+            .nav-link {
+                padding: 8px 15px;
+                border-radius: 20px;
+                border: 1px solid var(--border-color);
+            }
+            .nav-link:hover, .nav-link.active {
+                border-right: none;
+                border: 1px solid var(--primary-red);
+            }
+            .sidebar-footer {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            .top-header {
+                padding: 0 15px;
+            }
+            .content-area {
+                padding: 15px;
+            }
+            .modal-content {
+                width: 95%;
+                margin: 0 auto;
+            }
+            .modal-footer {
+                flex-direction: column;
+            }
+            .btn-cancel, .btn-save, .btn-submit {
+                width: 100%;
+            }
+
             .summary-cards {
                 grid-template-columns: 1fr;
             }

@@ -237,6 +237,84 @@
             margin: 0 auto;
             padding: 0 20px;
         }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--primary-red);
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        /* TAMPILAN MOBILE / ANDROID */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: row;
+                flex-wrap: wrap;
+                padding: 15px 20px;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .logo-container {
+                width: auto;
+                justify-content: flex-start;
+                text-align: left;
+                gap: 10px;
+            }
+            
+            .logo-text h1 {
+                font-size: 14px;
+            }
+
+            .logo-text p {
+                font-size: 10px;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .nav-pill {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                border-radius: 12px;
+                padding: 15px;
+                gap: 8px;
+                background-color: white;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+                margin-top: 15px;
+                border: 1px solid var(--border-color);
+            }
+
+            .nav-pill.show {
+                display: flex;
+            }
+            
+            .nav-link {
+                text-align: center;
+                padding: 10px 14px;
+                font-size: 14px;
+                background-color: var(--surface-light);
+                border-radius: 8px;
+                border: 1px solid transparent;
+                box-shadow: none;
+            }
+            
+            .nav-link.active {
+                background-color: var(--primary-red);
+                color: white;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
     </style>
     @stack('styles')
 </head>
@@ -252,12 +330,16 @@
             </div>
         </a>
         
-        <div class="nav-pill">
+        <button class="mobile-menu-toggle" id="mobileMenuBtn">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        
+        <div class="nav-pill" id="navMenu">
             <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">Beranda</a>
             <a href="{{ route('katalog.index') }}" class="nav-link {{ request()->routeIs('katalog.*') ? 'active' : '' }}">Katalog Warisan</a>
             <a href="{{ route('peta.persebaran') }}" class="nav-link {{ request()->routeIs('peta.persebaran') ? 'active' : '' }}">Peta Persebaran</a>
             <a href="{{ route('tentang') }}" class="nav-link {{ request()->routeIs('tentang') ? 'active' : '' }}">Tentang Kami</a>
-            <a href="{{ route('login') }}" class="nav-link" style="padding: 10px 15px;"><i class="fa-solid fa-user"></i></a>
+            <a href="{{ route('login') }}" class="nav-link" style="padding: 10px 15px;"><i class="fa-solid fa-user"></i> Login Admin</a>
         </div>
     </header>
 
@@ -329,5 +411,27 @@
     </footer>
 
     @stack('scripts')
+    
+    <script>
+        // Toggle mobile menu
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileBtn = document.getElementById('mobileMenuBtn');
+            const navMenu = document.getElementById('navMenu');
+            
+            if(mobileBtn && navMenu) {
+                mobileBtn.addEventListener('click', function() {
+                    navMenu.classList.toggle('show');
+                    const icon = mobileBtn.querySelector('i');
+                    if(navMenu.classList.contains('show')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-xmark');
+                    } else {
+                        icon.classList.remove('fa-xmark');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

@@ -45,9 +45,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/pengunjung-export/csv', [\App\Http\Controllers\Admin\PengunjungController::class, 'exportCsv'])->name('pengunjung.export');
     Route::get('/pengunjung-export/pdf', [\App\Http\Controllers\Admin\PengunjungController::class, 'exportPdf'])->name('pengunjung.export.pdf');
 
-    // Buku Induk Koleksi Museum (BAB IV.4 poin 8)
-    Route::resource('koleksi', \App\Http\Controllers\Admin\KoleksiController::class)
-        ->only(['index', 'store', 'update', 'destroy']);
+    // ===== PERBAIKAN: Buku Induk Koleksi Museum (BAB IV.4 poin 8) =====
+    Route::resource('koleksi', \App\Http\Controllers\Admin\KoleksiController::class);
     Route::get('/koleksi-export/csv', [\App\Http\Controllers\Admin\KoleksiController::class, 'exportCsv'])->name('koleksi.export');
     Route::get('/koleksi-export/pdf', [\App\Http\Controllers\Admin\KoleksiController::class, 'exportPdf'])->name('koleksi.export.pdf');
 

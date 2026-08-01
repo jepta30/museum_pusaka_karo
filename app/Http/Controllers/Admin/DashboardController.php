@@ -23,12 +23,36 @@ class DashboardController extends Controller
                                   ->take(5)
                                   ->get();
 
+        // Statistik Pengunjung 14 Hari Terakhir
+        $chartLabels = [];
+        $chartData = [];
+        for ($i = 13; $i >= 0; $i--) {
+            $date = \Carbon\Carbon::now()->subDays($i)->format('Y-m-d');
+            $chartLabels[] = \Carbon\Carbon::parse($date)->format('d/m');
+            $chartData[] = 0;
+        }
+
+        $visitorStats = \App\Models\Pengunjung::where('tanggal', '>=', \Carbon\Carbon::now()->subDays(13)->format('Y-m-d'))
+            ->selectRaw('tanggal, count(*) as total')
+            ->groupBy('tanggal')
+            ->get();
+
+        foreach ($visitorStats as $stat) {
+            $formattedDate = \Carbon\Carbon::parse($stat->tanggal)->format('d/m');
+            $index = array_search($formattedDate, $chartLabels);
+            if ($index !== false) {
+                $chartData[$index] = $stat->total;
+            }
+        }
+
         return view('admin.dashboard', compact(
             'totalKategori', 
             'totalWarisanBudaya', 
             'totalMedia', 
             'totalKomentarPending',
-            'recentComments'
+            'recentComments',
+            'chartLabels',
+            'chartData'
         ));
     }
 }

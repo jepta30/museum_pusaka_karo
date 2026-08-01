@@ -5,6 +5,15 @@
 @push('styles')
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
 <style>
+    :root {
+        --primary-red: #7a1b1b;
+        --dark-red: #4a0f0f;
+        --gold: #c9a84c;
+        --cream: #f8f4ed;
+        --text-dark: #1a1a2e;
+        --text-gray: #43536a;
+    }
+
     .tentang-hero {
         background: linear-gradient(135deg, var(--dark-red) 0%, var(--primary-red) 100%);
         padding: 70px 5% 90px;
@@ -61,38 +70,125 @@
     }
 
     .profil-section h3 {
-        font-size: 18px;
+        text-align: center;
+        font-size: 22px;
         color: var(--primary-red);
         margin-top: 28px;
-        margin-bottom: 16px;
+        margin-bottom: 30px;
+        font-family: 'Playfair Display', serif;
+        position: relative;
     }
 
-    .profil-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 18px;
-        margin-top: 24px;
+    .profil-section h3::after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 3px;
+        background: var(--gold);
+        margin: 10px auto 0;
+        border-radius: 2px;
     }
 
-    .profil-box {
+    .visi-misi-container {
+        max-width: 850px;
+        margin: 0 auto 20px;
+    }
+
+    .visi-box,
+    .misi-box,
+    .nilai-box {
         background: #f8f4ed;
         border: 1px solid rgba(122, 27, 27, 0.08);
         border-radius: 16px;
-        padding: 22px;
+        padding: 30px 35px;
+        text-align: center;
+        transition: transform 0.3s, box-shadow 0.3s;
     }
 
-    .profil-box h4 {
-        font-size: 15px;
+    .visi-box:hover,
+    .misi-box:hover,
+    .nilai-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+    }
+
+    .visi-icon,
+    .misi-icon,
+    .nilai-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: var(--primary-red);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        margin: 0 auto 16px;
+    }
+
+    .visi-box h4,
+    .misi-box h4,
+    .nilai-box h4 {
+        font-size: 18px;
         color: var(--primary-red);
-        margin-bottom: 10px;
+        margin-bottom: 14px;
+        font-weight: 700;
+        font-family: 'Playfair Display', serif;
+    }
+
+    .visi-box p,
+    .nilai-box p {
+        font-size: 15px;
+        color: var(--text-gray);
+        line-height: 1.8;
+        margin-bottom: 0;
+        text-align: center;
+    }
+
+    .misi-list-center {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: left;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .misi-list-center li {
+        font-size: 14.5px;
+        color: var(--text-gray);
+        line-height: 1.8;
+        padding: 8px 0 8px 38px;
+        position: relative;
+        text-align: left;
+        border-bottom: 1px dashed rgba(122, 27, 27, 0.06);
+    }
+
+    .misi-list-center li:last-child {
+        border-bottom: none;
+    }
+
+    .misi-list-center li::before {
+        content: counter(item) ".";
+        counter-increment: item;
+        position: absolute;
+        left: 0;
+        top: 8px;
+        width: 28px;
+        height: 28px;
+        background: var(--primary-red);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
         font-weight: 700;
     }
 
-    .profil-box p {
-        font-size: 14px;
-        color: var(--text-gray);
-        line-height: 1.75;
-        margin-bottom: 0;
+    .misi-list-center {
+        counter-reset: item;
     }
 
     .stats-row {
@@ -144,13 +240,28 @@
         color: var(--text-gray);
         line-height: 1.8;
         font-size: 14.5px;
-        margin-bottom: 30px;
+        margin-bottom: 16px;
+        text-align: justify;
+    }
+
+    .story-section .highlight-text {
+        background: linear-gradient(135deg, rgba(122, 27, 27, 0.05), rgba(236, 139, 95, 0.05));
+        border-left: 4px solid var(--primary-red);
+        padding: 16px 20px;
+        border-radius: 0 8px 8px 0;
+        margin: 20px 0;
+        font-style: italic;
+    }
+
+    .story-section .highlight-text strong {
+        color: var(--primary-red);
     }
 
     .story-grid {
         display: grid;
         gap: 20px;
         grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin-top: 30px;
     }
 
     .story-card {
@@ -177,6 +288,7 @@
         color: white;
         font-weight: 700;
         margin-bottom: 16px;
+        font-size: 14px;
     }
 
     .story-card h4 {
@@ -190,6 +302,7 @@
         font-size: 14px;
         line-height: 1.75;
         margin-bottom: 0;
+        text-align: left;
     }
 
     .story-highlight {
@@ -199,15 +312,54 @@
         padding: 32px;
         display: grid;
         gap: 16px;
+        margin-top: 30px;
     }
 
     .story-highlight h3 {
         font-size: 20px;
         margin-bottom: 12px;
+        color: var(--primary-red);
     }
 
     .story-highlight p {
         margin-bottom: 0;
+        font-size: 15px;
+        line-height: 1.8;
+    }
+
+    .koleksi-list {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px 24px;
+        list-style: none;
+        padding: 0;
+        margin: 16px 0 0;
+    }
+    .koleksi-list li {
+        font-size: 13.5px;
+        color: var(--text-gray);
+        line-height: 1.8;
+        padding-left: 18px;
+        position: relative;
+    }
+    .koleksi-list li::before {
+        content: "›";
+        position: absolute;
+        left: 0;
+        color: var(--primary-red);
+        font-weight: 700;
+        font-size: 18px;
+    }
+
+    @media (max-width: 768px) {
+        .koleksi-list {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    @media (max-width: 480px) {
+        .koleksi-list {
+            grid-template-columns: 1fr;
+        }
     }
 
     .feature-section,
@@ -276,6 +428,7 @@
         text-transform: uppercase;
         letter-spacing: 1px;
         color: var(--primary-red);
+        font-weight: 700;
     }
 
     .faq-grid {
@@ -332,23 +485,148 @@
         margin-bottom: 0;
     }
 
+    /* ===== VISIT SECTION - RENCANAKAN KUNJUNGAN ===== */
+    .visit-section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin-bottom: 45px;
+        align-items: stretch;
+    }
+
+    .visit-card {
+        background: #fff;
+        border-radius: 20px;
+        border: 1px solid rgba(15, 23, 42, 0.06);
+        padding: 40px 35px;
+        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.06);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .visit-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 24px 48px rgba(15, 23, 42, 0.1);
+    }
+
+    .visit-card .card-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        background: rgba(122, 27, 27, 0.08);
+        color: var(--primary-red);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        margin-bottom: 18px;
+    }
+
+    .visit-card h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: 22px;
+        color: var(--text-dark);
+        margin-bottom: 12px;
+    }
+
+    .visit-card p {
+        color: var(--text-gray);
+        line-height: 1.8;
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    .visit-card .visit-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 12px;
+    }
+
+    .visit-card .visit-list li {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 10px 14px;
+        background: #f8f4ed;
+        border-radius: 10px;
+        border: 1px solid rgba(122, 27, 27, 0.05);
+        transition: background 0.2s;
+    }
+
+    .visit-card .visit-list li:hover {
+        background: #f0ebe3;
+    }
+
+    .visit-card .visit-list li i {
+        color: var(--primary-red);
+        font-size: 16px;
+        min-width: 20px;
+        text-align: center;
+    }
+
+    .visit-card .visit-list li span {
+        color: var(--text-dark);
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .visit-card .visit-list li .label {
+        color: var(--text-gray);
+        font-weight: 500;
+        min-width: 80px;
+    }
+
+    .visit-card .visit-list li .value {
+        color: var(--text-dark);
+        font-weight: 500;
+    }
+
+    .visit-card .visit-list li .value.closed {
+        color: #c62828;
+    }
+
+    .visit-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 14px 28px;
+        border-radius: 999px;
+        background: var(--primary-red);
+        color: white;
+        font-weight: 600;
+        border: none;
+        text-decoration: none;
+        transition: all 0.3s;
+        margin-top: 20px;
+        font-size: 14px;
+    }
+
+    .visit-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(122, 27, 27, 0.25);
+        color: white;
+    }
+
+    /* ===== LOCATION SECTION ===== */
     .location-card {
         display: grid;
         grid-template-columns: 1.1fr 0.9fr;
-        gap: 24px;
+        gap: 30px;
         align-items: stretch;
     }
 
     .location-info {
         display: grid;
-        gap: 18px;
+        gap: 16px;
     }
 
-    .location-info p,
-    .location-info li {
+    .location-info p {
         color: var(--text-gray);
-        line-height: 1.75;
+        line-height: 1.8;
         font-size: 14px;
+        margin-bottom: 0;
     }
 
     .location-info ul {
@@ -356,30 +634,193 @@
         margin: 0;
         list-style: none;
         display: grid;
-        gap: 12px;
+        gap: 10px;
     }
 
-    .location-info li i {
+    .location-info ul li {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 10px 14px;
+        background: #f8f4ed;
+        border-radius: 10px;
+        border: 1px solid rgba(122, 27, 27, 0.05);
+        transition: background 0.2s;
+        font-size: 14px;
+        color: var(--text-gray);
+        line-height: 1.6;
+    }
+
+    .location-info ul li:hover {
+        background: #f0ebe3;
+    }
+
+    .location-info ul li i {
         color: var(--primary-red);
-        margin-right: 10px;
+        min-width: 18px;
+        margin-top: 2px;
+        font-size: 15px;
     }
 
     .location-map {
-        min-height: 300px;
-        border-radius: 22px;
+        min-height: 320px;
+        border-radius: 16px;
         overflow: hidden;
-        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.08);
-        border: 1px solid rgba(15, 23, 42, 0.08);
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+        border: 1px solid rgba(15, 23, 42, 0.06);
         position: relative;
     }
 
     .location-map #locationMap {
         width: 100%;
         height: 100%;
-        min-height: 300px;
+        min-height: 320px;
     }
 
+    /* ===== PILAR SECTION ===== */
+    .pilar-section {
+        margin-bottom: 45px;
+    }
+
+    .pilar-section .section-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .pilar-section .section-header h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 28px;
+        color: var(--text-dark);
+        margin-bottom: 10px;
+    }
+
+    .pilar-section .section-header p {
+        color: var(--text-gray);
+        max-width: 560px;
+        margin: 0 auto;
+        font-size: 14px;
+        line-height: 1.8;
+    }
+
+    .pilar-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+    }
+
+    .pilar-card {
+        background: #fff;
+        border: 1px solid rgba(15, 23, 42, 0.06);
+        border-radius: 16px;
+        padding: 35px 28px;
+        text-align: center;
+        transition: all 0.3s;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    }
+
+    .pilar-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        border-color: var(--primary-red);
+    }
+
+    .pilar-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: var(--primary-red);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        margin: 0 auto 18px;
+        transition: transform 0.3s;
+    }
+
+    .pilar-card:hover .pilar-icon {
+        transform: scale(1.05);
+    }
+
+    .pilar-card h3 {
+        font-size: 17px;
+        color: var(--text-dark);
+        margin-bottom: 10px;
+        font-weight: 700;
+    }
+
+    .pilar-card p {
+        font-size: 13.5px;
+        color: var(--text-gray);
+        line-height: 1.8;
+        margin-bottom: 0;
+    }
+
+    /* ===== KONTAK CARD ===== */
+    .kontak-card {
+        background: var(--dark-red);
+        border-radius: 16px;
+        padding: 40px 45px;
+        color: white;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px;
+        margin-top: 10px;
+    }
+
+    .kontak-item {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .kontak-item i {
+        color: var(--gold);
+        font-size: 20px;
+        margin-bottom: 2px;
+    }
+
+    .kontak-item .k-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: rgba(255,255,255,0.5);
+        font-weight: 600;
+    }
+
+    .kontak-item .k-value {
+        font-size: 14px;
+        line-height: 1.6;
+        color: rgba(255,255,255,0.9);
+    }
+
+    .kontak-item .k-value .today-hours {
+        color: var(--gold);
+        font-weight: 600;
+    }
+
+    .kontak-item .k-value .hours-detail {
+        font-size: 12px;
+        opacity: 0.7;
+        display: block;
+        margin-top: 4px;
+        line-height: 1.8;
+    }
+
+    /* ===== RESPONSIVE ===== */
     @media (max-width: 980px) {
+        .visit-section {
+            grid-template-columns: 1fr;
+        }
+        .location-card {
+            grid-template-columns: 1fr;
+        }
+        .pilar-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .kontak-card {
+            grid-template-columns: repeat(2, 1fr);
+        }
         .feature-grid,
         .faq-grid,
         .timeline-grid {
@@ -388,273 +829,100 @@
         .program-grid {
             grid-template-columns: 1fr;
         }
-        .location-card {
+        .story-grid {
             grid-template-columns: 1fr;
         }
     }
 
-    .gallery-section {
-        margin-bottom: 45px;
-    }
-
-    .gallery-section h2 {
-        font-family: 'Playfair Display', serif;
-        font-size: 26px;
-        color: var(--text-dark);
-        margin-bottom: 18px;
-        text-align: center;
-    }
-
-    .gallery-grid {
-        display: grid;
-        gap: 20px;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .gallery-card {
-        border-radius: 20px;
-        overflow: hidden;
-        background: #fff;
-        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
-        border: 1px solid rgba(15, 23, 42, 0.06);
-    }
-
-    .gallery-card .gallery-image {
-        width: 100%;
-        height: 220px;
-        object-fit: cover;
-        display: block;
-        background: linear-gradient(135deg, rgba(122, 27, 27, 0.55), rgba(236, 139, 95, 0.55));
-    }
-
-    .gallery-card-content {
-        padding: 24px;
-    }
-
-    .gallery-card-title {
-        font-size: 18px;
-        color: var(--text-dark);
-        margin-bottom: 10px;
-        font-weight: 700;
-    }
-
-    .gallery-card-desc {
-        color: var(--text-gray);
-        line-height: 1.75;
-        font-size: 14px;
-    }
-
-    .gallery-cta {
-        display: flex;
-        justify-content: center;
-        margin-top: 24px;
-    }
-
-    .gallery-cta a {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        padding: 14px 22px;
-        border-radius: 999px;
-        background: #7a1b1b;
-        color: white;
-        text-decoration: none;
-        font-weight: 700;
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .gallery-cta a:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 18px 35px rgba(122, 27, 27, 0.22);
-    }
-
-    .visit-section {
-        display: grid;
-        grid-template-columns: 1.1fr 0.9fr;
-        gap: 24px;
-        margin-bottom: 45px;
-        align-items: stretch;
-    }
-
-    .photo-card {
-        background: #fff;
-        border-radius: 24px;
-        overflow: hidden;
-        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.08);
-        min-height: 380px;
-        position: relative;
-    }
-
-    .photo-card img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-    }
-
-    .visit-info {
-        background: #fff;
-        border-radius: 24px;
-        border: 1px solid rgba(15, 23, 42, 0.06);
-        padding: 38px 36px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.06);
-    }
-
-    .visit-info h3 {
-        font-size: 26px;
-        margin-bottom: 18px;
-    }
-
-    .visit-info p {
-        color: var(--text-gray);
-        line-height: 1.8;
-        margin-bottom: 28px;
-    }
-
-    .visit-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: grid;
-        gap: 18px;
-    }
-
-    .visit-list li {
-        display: flex;
-        gap: 14px;
-        align-items: flex-start;
-    }
-
-    .visit-list li i {
-        color: var(--primary-red);
-        margin-top: 4px;
-    }
-
-    .visit-button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        padding: 16px 24px;
-        border-radius: 999px;
-        background: var(--primary-red);
-        color: white;
-        font-weight: 700;
-        border: none;
-        text-decoration: none;
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .visit-button:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 18px 35px rgba(122, 27, 27, 0.2);
-    }
-
-    @media (max-width: 980px) {
-        .visit-section {
-            grid-template-columns: 1fr;
+    @media (max-width: 768px) {
+        .profil-card {
+            padding: 24px;
+        }
+        .story-section,
+        .feature-section,
+        .timeline-section,
+        .faq-section,
+        .program-section,
+        .location-section {
+            padding: 24px;
+        }
+        .visit-card {
+            padding: 28px 20px;
+        }
+        .kontak-card {
+            padding: 24px;
+            gap: 20px;
+        }
+        .visi-box,
+        .misi-box,
+        .nilai-box {
+            padding: 24px 20px;
+        }
+        .visi-misi-container {
+            padding: 0;
         }
     }
 
-    .pilar-section h2 {
-        font-family: 'Playfair Display', serif;
-        font-size: 26px;
-        color: var(--text-dark);
-        text-align: center;
-        margin-bottom: 10px;
-    }
-    .pilar-section > p {
-        text-align: center;
-        color: var(--text-gray);
-        max-width: 560px;
-        margin: 0 auto 35px;
-        font-size: 14px;
-    }
-
-    .pilar-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 25px;
-        margin-bottom: 50px;
-    }
-    .pilar-card {
-        background: #fff;
-        border: 1px solid #eee;
-        border-radius: 8px;
-        padding: 35px 25px;
-        text-align: center;
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .pilar-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 25px rgba(0,0,0,0.07);
-    }
-    .pilar-icon {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        background: var(--primary-red);
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 22px;
-        margin: 0 auto 18px;
-    }
-    .pilar-card h3 {
-        font-size: 16px;
-        color: var(--text-dark);
-        margin-bottom: 10px;
-        font-weight: 700;
-    }
-    .pilar-card p {
-        font-size: 13.5px;
-        color: var(--text-gray);
-        line-height: 1.7;
-    }
-
-    .kontak-card {
-        background: var(--dark-red);
-        border-radius: 8px;
-        padding: 40px;
-        color: white;
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 25px;
-    }
-    .kontak-item {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-    .kontak-item i {
-        color: var(--gold);
-        font-size: 18px;
-        margin-bottom: 4px;
-    }
-    .kontak-item .k-label {
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: rgba(255,255,255,0.6);
-    }
-    .kontak-item .k-value {
-        font-size: 14px;
-        line-height: 1.5;
-    }
-
-    @media (max-width: 900px) {
-        .pilar-grid { grid-template-columns: 1fr; }
-        .kontak-card { grid-template-columns: 1fr 1fr; }
+    @media (max-width: 600px) {
+        .pilar-grid {
+            grid-template-columns: 1fr;
+        }
+        .kontak-card {
+            grid-template-columns: 1fr;
+        }
+        .visit-card .visit-list li {
+            flex-wrap: wrap;
+        }
+        .visit-card .visit-list li .label {
+            min-width: 60px;
+            font-size: 13px;
+        }
+        .visit-card .visit-list li .value {
+            font-size: 13px;
+        }
+        .location-info ul li {
+            font-size: 13px;
+        }
+        .profil-card {
+            padding: 16px;
+        }
+        .story-section,
+        .feature-section,
+        .timeline-section,
+        .faq-section,
+        .program-section,
+        .location-section {
+            padding: 16px;
+        }
     }
 </style>
 @endpush
 
 @section('content')
+
+@php
+// Data jam operasional
+$operationalHours = [
+    'senin' => ['day' => 'Senin', 'open' => null, 'close' => null, 'is_open' => false],
+    'selasa' => ['day' => 'Selasa', 'open' => '10.00', 'close' => '17.00', 'is_open' => true],
+    'rabu' => ['day' => 'Rabu', 'open' => '10.00', 'close' => '17.00', 'is_open' => true],
+    'kamis' => ['day' => 'Kamis', 'open' => '10.00', 'close' => '17.00', 'is_open' => true],
+    'jumat' => ['day' => 'Jumat', 'open' => '10.00', 'close' => '17.00', 'is_open' => true],
+    'sabtu' => ['day' => 'Sabtu', 'open' => '10.00', 'close' => '17.00', 'is_open' => true],
+    'minggu' => ['day' => 'Minggu', 'open' => '14.30', 'close' => '17.30', 'is_open' => true]
+];
+
+$dayMap = [
+    'Monday' => 'senin',
+    'Tuesday' => 'selasa',
+    'Wednesday' => 'rabu',
+    'Thursday' => 'kamis',
+    'Friday' => 'jumat',
+    'Saturday' => 'sabtu',
+    'Sunday' => 'minggu'
+];
+$todayKey = $dayMap[date('l')] ?? 'senin';
+@endphp
 
 <div class="tentang-hero">
     <div class="badge-label">TENTANG KAMI</div>
@@ -664,6 +932,7 @@
 
 <div class="tentang-container">
 
+    <!-- ===== PROFIL MUSEUM ===== -->
     <div class="profil-card">
         <h2>Profil Museum</h2>
         <p>
@@ -681,16 +950,32 @@
 
         <div class="profil-section">
             <h3>Visi & Misi</h3>
-            <div class="profil-grid">
-                <div class="profil-box">
+            
+            <div class="visi-misi-container">
+                <div class="visi-box">
+                    <div class="visi-icon"><i class="fa-solid fa-eye"></i></div>
                     <h4>Visi</h4>
-                    <p>Mewujudkan Museum Pusaka Karo sebagai pusat dokumentasi dan pelestarian budaya Karo yang dipercaya serta mudah diakses.</p>
+                    <p>Mewujudkan pembangunan manusia yang berbudaya serta menciptakan rasa kepedulian akan Sejarah dan kebudayaan tanah air NKRI melalui pengelolaan cagar budaya Karo dan museum yang efektif, tangkas dan profesional.</p>
                 </div>
-                <div class="profil-box">
+            </div>
+
+            <div class="visi-misi-container">
+                <div class="misi-box">
+                    <div class="misi-icon"><i class="fa-solid fa-bullseye"></i></div>
                     <h4>Misi</h4>
-                    <p>Mengumpulkan, merawat, dan menyebarluaskan informasi warisan budaya Karo melalui pengelolaan koleksi yang profesional dan digital.</p>
+                    <ol class="misi-list-center">
+                        <li>Wadah perhimpunan cagar budaya Karo dalam edukasi dan rekreasi Sejarah.</li>
+                        <li>Merawat dan menjaga warisan budaya Karo dengan tata kelola yang berkelanjutan.</li>
+                        <li>Pengelolaan cagar budaya Karo dan museum yang meningkatkan kesejahteraan umum.</li>
+                        <li>Pemberdayaan cagar budaya Karo dan museum yang efektif dalam pelayanan kepada masyarakat umum.</li>
+                        <li>Mewujudkan pembangunan manusia yang berbudaya yang menciptakan rasa kepedulian akan Sejarah dan kebudayaan tanah air NKRI.</li>
+                    </ol>
                 </div>
-                <div class="profil-box">
+            </div>
+
+            <div class="visi-misi-container" style="margin-top: 20px;">
+                <div class="nilai-box">
+                    <div class="nilai-icon"><i class="fa-solid fa-gem"></i></div>
                     <h4>Nilai</h4>
                     <p>Asli, terjaga, akuntabel, dan edukatif — sebagai pijakan dalam setiap aktivitas pelestarian budaya.</p>
                 </div>
@@ -699,49 +984,92 @@
 
         <div class="stats-row">
             <div class="stat-box">
-                <div class="num">{{ $totalWarisan }}</div>
+                <div class="num">{{ $totalWarisan ?? 0 }}</div>
                 <div class="label">Warisan Budaya</div>
             </div>
             <div class="stat-box">
-                <div class="num">{{ $totalKategori }}</div>
+                <div class="num">{{ $totalKategori ?? 0 }}</div>
                 <div class="label">Kategori Budaya</div>
-            </div>
-            <div class="stat-box">
-                <div class="num">14</div>
-                <div class="label">Kabupaten / Kota</div>
             </div>
         </div>
     </div>
 
+    <!-- ===== SEJARAH ===== -->
     <div class="story-section">
         <h2>Sejarah Singkat Museum</h2>
-        <p>Museum Pusaka Karo dibangun sebagai jawaban atas kebutuhan pelestarian budaya Karo di era modern. Berawal dari inisiatif para budayawan lokal dan pemerintah daerah, museum ini menjadi pusat dokumentasi dan penyajian koleksi budaya dalam bentuk yang mudah diakses oleh generasi sekarang.</p>
-        <p>Melalui perpaduan digitalisasi dan konservasi fisik, museum ini berupaya menghadirkan pengalaman edukatif tidak hanya untuk masyarakat Karo, tetapi juga bagi wisatawan dan peneliti dari seluruh Indonesia.</p>
+        
+        <p>
+            Museum Pusaka Karo merupakan museum umum dengan koleksi benda-benda warisan budaya asli dari masyarakat Karo yang didapatkan secara hibah ataupun yang dititipkan oleh masyarakat Karo itu sendiri. Museum ini diprakarsai oleh seorang misionaris Katolik asal negeri Belanda bernama <strong>Leonardus Edigius Joosten</strong> atau lebih dikenal dengan sebutan <strong>Pastor Leo</strong>. Museum ini diresmikan oleh Dirjen Pariwisata dan Ekonomi Dr. Ahman Sya dan Mgr. Anicetus B. Sinaga OFMCap.
+        </p>
+        
+        <p>
+            Pada pertengahan tahun 2009 muncul suatu gagasan dari Pastor Leo bersama para sahabat dan simpatisan beliau yang berada di Tanah Karo untuk berbagi suatu <em>"kegelisahan"</em> dan <em>"kekhawatiran"</em>. Beliau merasa cemas apabila suatu hari orang Karo sendiri tidak lagi memiliki rasa peduli dan kecintaan terhadap budayanya sendiri. Akhirnya beliau berinisiatif dengan menghimbau teman-teman sejarawan dan tokoh-tokoh adat agar pendirian Museum budaya dan sejarah khusus Karo segera terealisasikan.
+        </p>
+
+        <div class="highlight-text">
+            <p><strong>Pastor Leo</strong> bersama tim perintis begitu bersemangat dan optimis untuk pembangunan Museum ini. Secara perlahan koleksi perdana mulai dikumpulkan dengan sosialisasi ke perkampungan di wilayah Kabupaten Karo sekitarnya. Selain itu tim perintis juga mengupayakan kerja sama dengan museum yang ada di negeri Belanda yaitu <strong>TropenMuseum di Amsterdam</strong> dalam hal perizinan mencetak dan mempublikasikan dokumentasi foto peradaban masyarakat Karo.</p>
+        </div>
+
+        <p>
+            Pada awal pendirian museum, Pastor Leo memohon izin kepada Uskup Agung Medan Mgr. Pius Datubara OFMCap agar dapat memakai dan memanfaatkan gedung gereja Katolik St. Maria (Gedung Museum saat ini) di pusat kota Berastagi menjadi sebuah gedung Museum. Dengan modal awal dari komisi keuangan KAM dan para donatur museum yang cukup, maka pendirian museum pun akhirnya terealisasikan dengan nama <strong>MUSEUM PUSAKA KARO</strong> pada tanggal <strong>7 Juli 2011</strong>.
+        </p>
+
+        <p>
+            Saat ini Museum Pusaka Karo dikelola oleh <strong>YAYASAN PUSAKA KARO</strong> sejak tahun 2017 yang diputuskan oleh Kemenkumham dengan nomor: <strong>AHU-0017524.AH.01.04 Tahun 2017</strong>.
+        </p>
+
+        <p>
+            Hingga saat ini Museum Pusaka Karo menyimpan koleksi 1.000-an benda-benda bernilai sejarah yang terdiri dari kategori Etnografi, Geografi dan Sejarah. Mulai dari benda koleksi kategori:
+        </p>
+
+        <ul class="koleksi-list">
+            <li>Peralatan Pertanian</li>
+            <li>Peralatan Pertukangan</li>
+            <li>Peralatan Rumah Tangga</li>
+            <li>Peralatan Memakan Sirih</li>
+            <li>Peralatan Upacara dan Ritual</li>
+            <li>Peralatan Berburu dan Menangkap Ikan</li>
+            <li>Permainan Tradisional</li>
+            <li>Jenis-jenis Pisau dan Senjata</li>
+            <li>Jenis-jenis Kain Tenun (Uis)</li>
+            <li>Jenis-jenis Perhiasan</li>
+            <li>Jenis-jenis Patung (Gana-gana)</li>
+            <li>Jenis-jenis Alat Musik Tradisional Karo</li>
+        </ul>
+
+        <p style="margin-top: 20px;">
+            Setidaknya sekitar <strong>65%</strong> dari koleksi museum ini adalah benda-benda yang dipinjamkan dari masyarakat Karo dan kolektor seperti <strong>Mehemoni Br Tarigan Silangit</strong> dari desa Sukajulu, Kec. Barus Jahe, Kabupaten Karo dan beberapa masyarakat Karo lainnya yang kami sebut sebagai <strong>PEMERHATI MUSEUM</strong>.
+        </p>
+
+        <div class="story-highlight">
+            <h3>Prinsip Pastor Leo</h3>
+            <p>"Museum ini milik kita bersama, kita yang memberi, kita yang menikmati." — Prinsip yang harus terus dikobarkan dari Pastor Leo semasa hidupnya.</p>
+        </div>
+
+        <p style="margin-top: 16px;">
+            Museum Pusaka Karo ini sebagaimana dalam fungsi dan pengertian umum dari Museum, merupakan suatu badan yang bersifat bendawi, dan mengomunikasikannya kepada masyarakat umum. Museum ini berdiri semata-mata merupakan karya dan bakti orang Karo yang peduli akan budaya dan sejarah Karo, dengan keagungannya yang sarat nilai akan kebaikan dapat memberi sumbangsih pada pembangunan manusia Karo khususnya, bangsa Indonesia dan sekaligus peradaban dunia pada umumnya.
+        </p>
 
         <div class="story-grid">
             <div class="story-card">
-                <div class="story-number">1</div>
-                <h4>Awal Berdiri</h4>
-                <p>Didirikan untuk melestarikan ragam artefak Karo yang terancam hilang akibat modernisasi dan perubahan sosial.</p>
+                <div class="story-number">2009</div>
+                <h4>Gagasan Awal</h4>
+                <p>Pastor Leo bersama sahabat dan tokoh adat menggagas pendirian museum khusus budaya dan sejarah Karo.</p>
             </div>
             <div class="story-card">
-                <div class="story-number">2</div>
-                <h4>Digitalisasi</h4>
-                <p>Menerapkan sistem informasi digital untuk menyimpan, mengelola, dan menampilkan data koleksi kepada publik secara interaktif.</p>
+                <div class="story-number">2011</div>
+                <h4>Peresmian</h4>
+                <p>Museum resmi berdiri dan diresmikan di gedung eks Gereja St. Maria, Berastagi, pada 7 Juli 2011.</p>
             </div>
             <div class="story-card">
-                <div class="story-number">3</div>
-                <h4>Komunitas</h4>
-                <p>Menjadi pusat aktivitas budaya, pelatihan, dan pameran yang melibatkan generasi muda dalam upaya pelestarian budaya Karo.</p>
+                <div class="story-number">2017</div>
+                <h4>Pengelolaan Yayasan</h4>
+                <p>Pengelolaan museum diserahkan kepada Yayasan Pusaka Karo berdasarkan keputusan Kemenkumham.</p>
             </div>
-        </div>
-
-        <div class="story-highlight">
-            <h3>Wawasan Museum</h3>
-            <p>Museum Pusaka Karo percaya bahwa pemahaman budaya adalah pondasi untuk menjaga jati diri dan meningkatkan kebanggaan lokal. Museum ini berubah dari sekadar penyimpanan artefak menjadi wahana edukasi dan inspirasi.</p>
         </div>
     </div>
 
+    <!-- ===== FITUR ===== -->
     <div class="feature-section">
         <h2>Apa yang Bisa Anda Temukan</h2>
         <div class="feature-grid">
@@ -760,6 +1088,7 @@
         </div>
     </div>
 
+    <!-- ===== TIMELINE ===== -->
     <div class="timeline-section">
         <h2>Timeline Perjalanan Museum</h2>
         <div class="timeline-grid">
@@ -786,6 +1115,7 @@
         </div>
     </div>
 
+    <!-- ===== FAQ ===== -->
     <div class="faq-section">
         <h2>Pertanyaan Umum</h2>
         <div class="faq-grid">
@@ -808,51 +1138,54 @@
         </div>
     </div>
 
-    <div class="gallery-section">
-        <h2>Galeri Koleksi Unggulan</h2>
-        <div class="gallery-grid">
-            <div class="gallery-card">
-                <div class="gallery-image" style="background-image: url('{{ asset('images/logo.png') }}');"></div>
-                <div class="gallery-card-content">
-                    <div class="gallery-card-title">Rumah Adat</div>
-                    <div class="gallery-card-desc">Koleksi arsitektur tradisional Karo yang menjadi warisan budaya dan identitas komunitas.</div>
-                </div>
-            </div>
-            <div class="gallery-card">
-                <div class="gallery-image" style="background-image: url('{{ asset('images/logo.png') }}');"></div>
-                <div class="gallery-card-content">
-                    <div class="gallery-card-title">Alat Musik Tradisional</div>
-                    <div class="gallery-card-desc">Pelestarian bunyi dan teknik pembuatan alat musik khas Karo yang kaya makna.</div>
-                </div>
-            </div>
-            <div class="gallery-card">
-                <div class="gallery-image" style="background-image: url('{{ asset('images/logo.png') }}');"></div>
-                <div class="gallery-card-content">
-                    <div class="gallery-card-title">Pakaian Adat</div>
-                    <div class="gallery-card-desc">Koleksi pakaian upacara dan tradisi yang menceritakan nilai-nilai budaya Karo.</div>
-                </div>
-            </div>
-        </div>
-        <div class="gallery-cta">
-            <a href="{{ route('katalog.index') }}"><i class="fa-solid fa-arrow-right"></i>Lihat Seluruh Koleksi</a>
-        </div>
-    </div>
-
+    <!-- ===== RENCANAKAN KUNJUNGAN ===== -->
     <div class="visit-section">
-        <div class="photo-card">
-            <img src="{{ asset('images/logo.png') }}" alt="Museum Pusaka Karo">
+        <div class="visit-card">
+            <div class="card-icon"><i class="fa-solid fa-clock"></i></div>
+            <h3>Jam Operasional</h3>
+            <p>Bersiaplah untuk menjelajahi kebudayaan Karo secara lebih mendalam. Dapatkan informasi praktis dan rincian kunjungan yang memudahkan perjalanan Anda ke Museum Pusaka Karo.</p>
+            <ul class="visit-list">
+                @foreach($operationalHours as $schedule)
+                    <li>
+                        <i class="fa-solid {{ $schedule['is_open'] ? 'fa-circle-check' : 'fa-circle-xmark' }}" style="color: {{ $schedule['is_open'] ? '#2e7d32' : '#c62828' }};"></i>
+                        <span>
+                            <span class="label">{{ $schedule['day'] }}</span>
+                            <span class="value {{ !$schedule['is_open'] ? 'closed' : '' }}">
+                                {{ $schedule['is_open'] ? $schedule['open'] . ' - ' . $schedule['close'] : 'Tutup' }}
+                            </span>
+                        </span>
+                    </li>
+                @endforeach
+            </ul>
         </div>
-        <div class="visit-info">
-            <div>
-                <h3>Rencanakan kunjungan Anda</h3>
-                <p>Bersiaplah untuk menjelajahi kebudayaan Karo secara lebih mendalam. Dapatkan informasi praktis dan rincian kunjungan yang memudahkan perjalanan Anda ke Museum Pusaka Karo.</p>
-                <ul class="visit-list">
-                    <li><i class="fa-solid fa-clock"></i><span>Jam buka: Selasa - Minggu, 09.00 - 16.00 WIB</span></li>
-                    <li><i class="fa-solid fa-location-dot"></i><span>Lokasi: Jl. Perwira No. 3, Gundaling I, Berastagi</span></li>
-                    <li><i class="fa-solid fa-phone"></i><span>Telepon: (0628) 9123456</span></li>
-                    <li><i class="fa-solid fa-envelope"></i><span>Email: info@museumpusaka.karo.go.id</span></li>
-                </ul>
-            </div>
+
+        <div class="visit-card">
+            <div class="card-icon"><i class="fa-solid fa-location-dot"></i></div>
+            <h3>Informasi Lokasi</h3>
+            <p>Museum Pusaka Karo terletak di pusat kota Berastagi, mudah dijangkau dan dekat dengan berbagai destinasi wisata.</p>
+            <ul class="visit-list">
+                <li>
+                    <i class="fa-solid fa-map-pin"></i>
+                    <span>
+                        <span class="label">Alamat</span>
+                        <span class="value">Jl. Perwira No. 3, Gundaling I, Berastagi</span>
+                    </span>
+                </li>
+                <li>
+                    <i class="fa-solid fa-phone"></i>
+                    <span>
+                        <span class="label">Telepon</span>
+                        <span class="value">(0628) 9123456</span>
+                    </span>
+                </li>
+                <li>
+                    <i class="fa-solid fa-envelope"></i>
+                    <span>
+                        <span class="label">Email</span>
+                        <span class="value">info@museumpusaka.karo.go.id</span>
+                    </span>
+                </li>
+            </ul>
             <a href="{{ route('peta.persebaran') }}" class="visit-button">
                 <i class="fa-solid fa-map-location-dot"></i>
                 Lihat Peta Museum
@@ -860,6 +1193,7 @@
         </div>
     </div>
 
+    <!-- ===== LOKASI MUSEUM ===== -->
     <div class="location-section">
         <h2>Lokasi Museum</h2>
         <div class="location-card">
@@ -867,7 +1201,7 @@
                 <p>Terletak di pusat kecamatan Berastagi, Museum Pusaka Karo mudah dijangkau dari pusat kota dan menawarkan akses langsung ke pengalaman budaya Karo yang otentik.</p>
                 <ul>
                     <li><i class="fa-solid fa-map-pin"></i>Alamat lengkap: Jl. Perwira No. 3, Gundaling I, Berastagi</li>
-                    <li><i class="fa-solid fa-location-dot"></i>Koordinat: 3.13220° N, 98.46650° E</li>
+                    <li><i class="fa-solid fa-location-dot"></i>Koordinat: 3.132200° N, 98.466500° E</li>
                     <li><i class="fa-solid fa-car"></i>Akses: Dekat dengan jalan utama dan jalur wisata menuju Danau Toba</li>
                     <li><i class="fa-solid fa-route"></i>Parkir: Tersedia area parkir tamu di sekitar museum</li>
                 </ul>
@@ -878,9 +1212,12 @@
         </div>
     </div>
 
+    <!-- ===== TIGA PILAR UTAMA ===== -->
     <div class="pilar-section">
-        <h2>Tiga Pilar Utama</h2>
-        <p>Landasan kerja Museum Pusaka Karo dalam menjaga dan menghidupkan warisan budaya Karo.</p>
+        <div class="section-header">
+            <h2>Tiga Pilar Utama</h2>
+            <p>Landasan kerja Museum Pusaka Karo dalam menjaga dan menghidupkan warisan budaya Karo.</p>
+        </div>
 
         <div class="pilar-grid">
             <div class="pilar-card">
@@ -901,6 +1238,7 @@
         </div>
     </div>
 
+    <!-- ===== KONTAK / FOOTER ===== -->
     <div class="kontak-card">
         <div class="kontak-item">
             <i class="fa-solid fa-location-dot"></i>
@@ -920,7 +1258,25 @@
         <div class="kontak-item">
             <i class="fa-solid fa-clock"></i>
             <span class="k-label">Jam Kunjungan</span>
-            <span class="k-value">Selasa &ndash; Minggu<br>09.00 &ndash; 16.00 WIB</span>
+            <span class="k-value">
+                @php $todaySchedule = $operationalHours[$todayKey] ?? null; @endphp
+                @if($todaySchedule && $todaySchedule['is_open'])
+                    <span class="today-hours">Hari ini: {{ $todaySchedule['open'] }} - {{ $todaySchedule['close'] }} WIB</span>
+                @else
+                    <span class="today-hours">Hari ini: Tutup</span>
+                @endif
+                <span class="hours-detail">
+                    @foreach($operationalHours as $schedule)
+                        {{ $schedule['day'] }}: 
+                        @if($schedule['is_open'])
+                            {{ $schedule['open'] }} - {{ $schedule['close'] }}
+                        @else
+                            Tutup
+                        @endif
+                        @if(!$loop->last)<br>@endif
+                    @endforeach
+                </span>
+            </span>
         </div>
     </div>
 

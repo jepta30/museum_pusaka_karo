@@ -39,18 +39,16 @@
     </div>
 @endif
 
-<div class="filter-bar">
+<form method="GET" class="filter-bar">
     <div class="filter-group">
-        <input type="text" class="search-input" placeholder="Cari judul budaya...">
-        <select class="select-input">
+        <input type="text" name="q" value="{{ request('q') }}" class="search-input" placeholder="Cari judul atau lokasi...">
+        <!-- Kategori filter is static for now, can implement later if needed, but we keep the visual -->
+        <select class="select-input" disabled style="opacity: 0.7;" title="Fitur filter kategori akan segera hadir">
             <option>Semua Kategori</option>
-            @foreach($kategoris as $kat)
-                <option value="{{ $kat->kategori_id }}">{{ $kat->nama }}</option>
-            @endforeach
         </select>
-        <button class="btn-search">Cari</button>
+        <button type="submit" class="btn-search"><i class="fa-solid fa-search"></i> Cari</button>
     </div>
-</div>
+</form>
 
 <div class="table-container">
     <table class="data-table">

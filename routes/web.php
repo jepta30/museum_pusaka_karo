@@ -49,11 +49,12 @@ Route::middleware('auth')->group(function () {
     Route::resource('koleksi', \App\Http\Controllers\Admin\KoleksiController::class)
         ->only(['index', 'store', 'update', 'destroy']);
     Route::get('/koleksi-export/csv', [\App\Http\Controllers\Admin\KoleksiController::class, 'exportCsv'])->name('koleksi.export');
+    Route::get('/koleksi-export/pdf', [\App\Http\Controllers\Admin\KoleksiController::class, 'exportPdf'])->name('koleksi.export.pdf');
 
     // Laporan (BAB IV.4)
     Route::prefix('laporan')->name('laporan.')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\LaporanController::class, 'index'])->name('index');
-
+        Route::get('/export-csv', [\App\Http\Controllers\Admin\LaporanController::class, 'exportCsv'])->name('export.csv');
         Route::get('/warisan', [\App\Http\Controllers\Admin\LaporanController::class, 'warisan'])->name('warisan');
         Route::get('/warisan/csv', [\App\Http\Controllers\Admin\LaporanController::class, 'warisanCsv'])->name('warisan.csv');
 
@@ -65,5 +66,12 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/kunjungan', [\App\Http\Controllers\Admin\LaporanController::class, 'kunjungan'])->name('kunjungan');
         Route::get('/kunjungan/csv', [\App\Http\Controllers\Admin\LaporanController::class, 'kunjunganCsv'])->name('kunjungan.csv');
+    });
+
+    // Pengaturan Akun
+    Route::prefix('pengaturan')->name('pengaturan.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\PengaturanController::class, 'index'])->name('index');
+        Route::put('/profile', [\App\Http\Controllers\Admin\PengaturanController::class, 'updateProfile'])->name('profile');
+        Route::put('/password', [\App\Http\Controllers\Admin\PengaturanController::class, 'updatePassword'])->name('password');
     });
 });

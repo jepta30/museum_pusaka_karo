@@ -10,9 +10,15 @@ use Illuminate\Support\Str;
 
 class KategoriController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $kategoris = Kategori::latest()->paginate(10);
+        $query = Kategori::query();
+        
+        if ($request->filled('q')) {
+            $query->where('nama', 'like', '%' . $request->q . '%');
+        }
+        
+        $kategoris = $query->latest()->paginate(10)->withQueryString();
         return view('admin.kategori.index', compact('kategoris'));
     }
 

@@ -2,11 +2,11 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Laporan Buku Tamu Pengunjung</title>
+    <title>Laporan Buku Induk Koleksi</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            font-size: 12px;
+            font-size: 11px;
             color: #1f2937;
             margin: 28px;
         }
@@ -31,17 +31,18 @@
         }
         th, td {
             border: 1px solid #d1d5db;
-            padding: 9px 10px;
+            padding: 8px 10px;
             text-align: left;
+            vertical-align: top;
         }
         th {
             background: #f8fafc;
-            font-size: 11px;
+            font-size: 10px;
             text-transform: uppercase;
             color: #374151;
         }
         td {
-            font-size: 10.5px;
+            font-size: 9.5px;
             color: #1f2937;
         }
         .footer {
@@ -54,31 +55,35 @@
 <body>
     <img src="{{ public_path('images/kop-surat.png') }}" class="kop-surat" alt="Kop Surat Yayasan Pusaka Karo">
     <div class="subheader">
-        <div><strong>Laporan:</strong> Buku Tamu Pengunjung</div>
+        <div><strong>Laporan:</strong> Buku Induk Koleksi Museum</div>
         <div><strong>Tanggal Cetak:</strong> {{ now()->translatedFormat('d F Y') }}</div>
     </div>
     <table>
         <thead>
             <tr>
-                <th>No. Tamu</th>
-                <th>Nama</th>
-                <th>Alamat</th>
-                <th>Pekerjaan</th>
-                <th>Tanggal</th>
+                <th width="10%">No. Koleksi</th>
+                <th width="18%">Nama Koleksi</th>
+                <th width="12%">Jenis</th>
+                <th width="15%">Pemilik</th>
+                <th width="15%">Cara Perolehan</th>
+                <th width="15%">Tempat Perolehan</th>
+                <th width="15%">Tanggal Masuk</th>
             </tr>
         </thead>
         <tbody>
-            @forelse($pengunjungs as $p)
+            @forelse($koleksis as $k)
             <tr>
-                <td>{{ $p->no_pengunjung }}</td>
-                <td>{{ $p->nama }}</td>
-                <td>{{ $p->alamat }}</td>
-                <td>{{ $p->pekerjaan }}</td>
-                <td>{{ \Carbon\Carbon::parse($p->tanggal)->translatedFormat('d M Y') }}</td>
+                <td>{{ $k->nomor_koleksi }}</td>
+                <td><strong>{{ $k->nama_koleksi }}</strong></td>
+                <td>{{ $k->jenis_koleksi }}</td>
+                <td>{{ $k->nama_pemilik }}</td>
+                <td>{{ $k->cara_perolehan }}</td>
+                <td>{{ $k->tempat_perolehan }}</td>
+                <td>{{ $k->tanggal_masuk }}</td>
             </tr>
             @empty
             <tr>
-                <td colspan="5" style="text-align:center; color:#6b7280;">Tidak ada data pengunjung.</td>
+                <td colspan="7" style="text-align:center; color:#6b7280;">Tidak ada data koleksi.</td>
             </tr>
             @endforelse
         </tbody>

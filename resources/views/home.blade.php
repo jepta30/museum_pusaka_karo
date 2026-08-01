@@ -620,10 +620,6 @@
             <div class="stat-number">{{ $totalTitik }}</div>
             <div class="stat-label">Titik Persebaran</div>
         </div>
-        <div class="stat-item">
-            <div class="stat-number">{{ $totalKabupaten }}</div>
-            <div class="stat-label">Kabupaten/Kota</div>
-        </div>
     </div>
 </div>
 

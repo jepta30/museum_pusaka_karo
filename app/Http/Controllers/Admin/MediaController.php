@@ -10,9 +10,19 @@ use Illuminate\Support\Facades\Storage;
 
 class MediaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $medias = Media::with('warisanBudaya')->latest()->paginate(10);
+        $query = Media::with('warisanBudaya');
+        
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where('keterangan', 'like', "%{$q}%")
+                  ->orWhereHas('warisanBudaya', function($sub) use ($q) {
+                      $sub->where('judul', 'like', "%{$q}%");
+                  });
+        }
+        
+        $medias = $query->latest()->paginate(10)->withQueryString();
         $warisans = WarisanBudaya::all();
         return view('admin.media.index', compact('medias', 'warisans'));
     }

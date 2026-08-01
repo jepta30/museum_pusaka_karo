@@ -10,9 +10,19 @@ use Illuminate\Support\Facades\Storage;
 
 class WarisanBudayaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $warisans = WarisanBudaya::with('kategori')->latest()->paginate(10);
+        $query = WarisanBudaya::with('kategori');
+        
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function($sub) use ($q) {
+                $sub->where('judul', 'like', "%{$q}%")
+                    ->orWhere('lokasi', 'like', "%{$q}%");
+            });
+        }
+        
+        $warisans = $query->latest()->paginate(10)->withQueryString();
         $kategoris = Kategori::all();
         return view('admin.warisan.index', compact('warisans', 'kategoris'));
     }

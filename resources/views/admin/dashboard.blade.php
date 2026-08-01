@@ -45,7 +45,7 @@
 <!-- Chart Section -->
 <div class="card">
     <div class="chart-header">
-        Statistik Pengunjung (30 Hari Terakhir)
+        Statistik Pengunjung (14 Hari Terakhir)
     </div>
     <div class="chart-container">
         <canvas id="visitorChart"></canvas>
@@ -56,7 +56,7 @@
 <div class="card">
     <div class="table-header">
         <div class="table-title">Moderasi Komentar</div>
-        <a href="#" class="table-link">Lihat Semua Komentar</a>
+        <a href="{{ route('komentar.index') }}" class="table-link">Lihat Semua Komentar</a>
     </div>
     
     <table class="data-table">
@@ -74,11 +74,30 @@
                 <tr>
                     <td>{{ $komentar->nama }}</td>
                     <td>{{ Str::limit($komentar->isi_komentar, 60) }}</td>
-                    <td>{{ $komentar->created_at->format('d/m/Y') }}</td>
                     <td>
-                        <div class="action-icons">
-                            <a href="#" title="Edit"><i class="fa-solid fa-pen"></i></a>
-                            <button type="button" title="Hapus"><i class="fa-regular fa-trash-can"></i></button>
+                        <div style="font-weight: 500;">{{ $komentar->created_at->format('d/m/Y') }}</div>
+                        <div style="font-size: 11px; color: #9ca3af; margin-top: 4px;">{{ $komentar->created_at->format('H:i') }} WIB</div>
+                    </td>
+                    <td>
+                        <div class="action-icons" style="display: flex; gap: 8px;">
+                            @if($komentar->status == 'pending')
+                                <form action="{{ route('komentar.update', $komentar->komentar_id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('PUT')
+                                    <input type="hidden" name="status" value="approved">
+                                    <button type="submit" class="btn-action-square" title="Setujui" style="color: #059669; border-color: #34d399;"><i class="fa-solid fa-check"></i></button>
+                                </form>
+                            @else
+                                <span class="badge {{ $komentar->status == 'approved' ? 'badge-approved' : 'badge-rejected' }}">
+                                    {{ strtoupper($komentar->status) }}
+                                </span>
+                            @endif
+                            
+                            <form action="{{ route('komentar.destroy', $komentar->komentar_id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Hapus komentar ini secara permanen?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn-action-square" title="Hapus" style="color: #dc2626; border-color: #f87171;"><i class="fa-regular fa-trash-can"></i></button>
+                            </form>
                         </div>
                     </td>
                 </tr>
@@ -118,9 +137,9 @@
     document.addEventListener('DOMContentLoaded', function() {
         const ctx = document.getElementById('visitorChart').getContext('2d');
         
-        // Data Dummy untuk grafik (Mirip dengan wireframe)
-        const labels = ['01/05', '05/05', '08/05', '12/05', '15/05', '19/05', '22/05', '26/05', '29/05', '30/05'];
-        const chartData = [50, 60, 40, 120, 80, 95, 85, 140, 110, 115];
+        // Data Real-time dari Database
+        const labels = {!! json_encode($chartLabels) !!};
+        const chartData = {!! json_encode($chartData) !!};
 
         new Chart(ctx, {
             type: 'line',
@@ -170,9 +189,8 @@
                         }
                     },
                     y: {
-                        display: false, // Menyembunyikan sumbu Y (seperti wireframe)
-                        min: 0,
-                        max: 200
+                        display: false, // Menyembunyikan sumbu Y
+                        beginAtZero: true
                     }
                 },
                 interaction: {

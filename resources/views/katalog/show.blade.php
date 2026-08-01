@@ -221,13 +221,52 @@
     }
 
     .play-icon {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 30px;
+        font-size: 24px;
         color: white;
-        text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        background: var(--primary-red);
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-left: 4px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        transition: transform 0.2s;
+    }
+
+    .gallery-video {
+        cursor: pointer;
+        background-color: #000;
+    }
+    
+    .gallery-video:hover .play-icon {
+        transform: scale(1.1);
+    }
+    
+    .video-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.3s;
+    }
+    
+    .gallery-video:hover .video-overlay {
+        background: rgba(0,0,0,0.4);
+    }
+    
+    .video-element {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: object-fit 0.3s ease;
+    }
+    
+    .video-element.playing {
+        object-fit: contain;
     }
 
     /* COMMENTS SECTION in Tab */
@@ -495,9 +534,11 @@
                             <img src="{{ Storage::url($media->file_media) }}" alt="{{ $media->keterangan }}">
                         </div>
                     @elseif($media->jenis_media == 'video')
-                        <div class="gallery-item">
-                            <video src="{{ Storage::url($media->file_media) }}" muted></video>
-                            <i class="fa-solid fa-play play-icon"></i>
+                        <div class="gallery-item gallery-video" onclick="playVideoPremium(this)">
+                            <video src="{{ Storage::url($media->file_media) }}" class="video-element" preload="metadata"></video>
+                            <div class="video-overlay">
+                                <div class="play-icon"><i class="fa-solid fa-play"></i></div>
+                            </div>
                         </div>
                     @endif
                 @endforeach
@@ -524,7 +565,7 @@
                     <div class="comment-content-box">
                         <div class="comment-header">
                             <span class="comment-author">{{ $komentar->nama }}</span>
-                            <span class="comment-date">{{ $komentar->created_at->diffForHumans() }}</span>
+                            <span class="comment-date">{{ $komentar->created_at->format('d M Y, H:i') }} WIB</span>
                         </div>
                         <div style="font-size: 14px; color: var(--text-dark);">
                             {{ $komentar->isi_komentar }}
@@ -612,6 +653,30 @@
         document.getElementById(tabName).style.display = "block";
         document.getElementById(tabName).classList.add("active");
         evt.currentTarget.classList.add("active");
+    }
+
+    function playVideoPremium(container) {
+        const video = container.querySelector('video');
+        const overlay = container.querySelector('.video-overlay');
+        
+        // Munculkan control bawaan dan ubah aspect ratio menjadi contain
+        video.setAttribute('controls', 'true');
+        video.classList.add('playing');
+        
+        // Sembunyikan tombol play buatan kita
+        overlay.style.display = 'none';
+        
+        // Mulai memutar
+        video.play();
+        
+        // Opsional: Fullscreen otomatis jika di HP untuk pengalaman sinematik
+        if(window.innerWidth <= 768) {
+            if (video.requestFullscreen) {
+                video.requestFullscreen();
+            } else if (video.webkitRequestFullscreen) {
+                video.webkitRequestFullscreen();
+            }
+        }
     }
 </script>
 @endpush

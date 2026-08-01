@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Koleksi;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class KoleksiController extends Controller
 {
@@ -93,6 +94,31 @@ class KoleksiController extends Controller
             }
             fclose($handle);
         }, $filename, ['Content-Type' => 'text/csv']);
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $query = Koleksi::query();
+
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function ($sub) use ($q) {
+                $sub->where('nama_koleksi', 'like', "%{$q}%")
+                    ->orWhere('nama_pemilik', 'like', "%{$q}%")
+                    ->orWhere('jenis_koleksi', 'like', "%{$q}%");
+            });
+        }
+
+        if ($request->filled('jenis') && $request->jenis != 'all') {
+            $query->where('jenis_koleksi', $request->jenis);
+        }
+
+        $koleksis = $query->orderBy('nomor_koleksi')->get();
+
+        $pdf = Pdf::loadView('admin.koleksi.pdf', compact('koleksis'))
+            ->setPaper('a4', 'landscape'); // Use landscape for wide tables
+
+        return $pdf->stream('buku-induk-koleksi-' . now()->format('Ymd_His') . '.pdf');
     }
 
     private function generateNomor(): string

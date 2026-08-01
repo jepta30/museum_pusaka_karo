@@ -16,14 +16,15 @@
 @endif
 
 <div class="table-container">
-    <div class="table-header">
+    <div class="table-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
         <h3>Moderasi Komentar</h3>
-        <select class="select-input">
-            <option>Semua Status</option>
-            <option>Pending</option>
-            <option>Disetujui</option>
-            <option>Ditolak</option>
-        </select>
+        <form method="GET" style="display: flex; gap: 10px; align-items: center;">
+            <input type="text" name="q" value="{{ request('q') }}" class="search-input" placeholder="Cari nama atau komentar..." style="width: 250px; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 6px;">
+            <select class="select-input" disabled style="opacity: 0.7; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 6px; height: auto;" title="Fitur filter status akan segera hadir">
+                <option>Semua Status</option>
+            </select>
+            <button type="submit" class="btn-search" style="padding: 8px 15px; border-radius: 6px; background-color: var(--primary-red); color: white; border: none; cursor: pointer;"><i class="fa-solid fa-search"></i> Cari</button>
+        </form>
     </div>
 
     <table class="data-table">

@@ -33,6 +33,11 @@
     </div>
 @endif
 
+<form method="GET" class="filter-bar" style="margin-bottom: 20px;">
+    <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama kategori..." class="search-input" style="width: 300px;">
+    <button type="submit" class="btn-search"><i class="fa-solid fa-search"></i> Cari</button>
+</form>
+
 <div class="table-container">
     <table class="data-table">
         <thead>

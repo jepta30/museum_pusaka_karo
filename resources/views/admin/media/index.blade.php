@@ -44,32 +44,30 @@
     </div>
 @endif
 
-<div class="filter-card">
+<form method="GET" class="filter-card">
     <div class="filter-item search">
         <label class="filter-label">CARI MEDIA</label>
         <div class="input-group">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" class="search-input" placeholder="Cari judul atau file...">
+            <input type="text" name="q" value="{{ request('q') }}" class="search-input" placeholder="Cari keterangan atau judul budaya...">
         </div>
     </div>
     <div class="filter-item select">
         <label class="filter-label">KATEGORI BUDAYA</label>
-        <select class="select-input">
+        <select class="select-input" disabled style="opacity:0.7;">
             <option>Semua Budaya</option>
         </select>
     </div>
     <div class="filter-item select">
         <label class="filter-label">JENIS MEDIA</label>
-        <select class="select-input">
+        <select class="select-input" disabled style="opacity:0.7;">
             <option>Semua Jenis</option>
-            <option>Foto</option>
-            <option>Video</option>
         </select>
     </div>
     <div class="filter-item">
-        <button class="btn-search">Cari</button>
+        <button type="submit" class="btn-search">Cari</button>
     </div>
-</div>
+</form>
 
 <div class="table-container">
     <table class="data-table">

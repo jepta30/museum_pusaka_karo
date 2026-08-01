@@ -9,7 +9,10 @@
         <p>Inventaris koleksi fisik yang dimiliki Museum Pusaka Karo.</p>
     </div>
     <div class="header-actions">
-        <a href="{{ route('koleksi.export') }}" class="btn-outline"><i class="fa-solid fa-file-csv"></i> Unduh CSV</a>
+        <div class="dropdown-export" style="display: inline-block; margin-right: 10px;">
+            <a href="{{ route('koleksi.export.pdf') }}" class="btn-outline" style="color: #b91c1c; border-color: #b91c1c;"><i class="fa-solid fa-file-pdf"></i> Unduh PDF</a>
+            <a href="{{ route('koleksi.export') }}" class="btn-outline"><i class="fa-solid fa-file-csv"></i> Unduh CSV</a>
+        </div>
         <button type="button" class="btn-add" onclick="openModal('add')"><i class="fa-solid fa-plus"></i> Tambah Koleksi</button>
     </div>
 </div>

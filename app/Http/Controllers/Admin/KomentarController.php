@@ -8,9 +8,17 @@ use App\Models\Komentar;
 
 class KomentarController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $komentars = Komentar::latest()->paginate(10);
+        $query = Komentar::query();
+        
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where('nama', 'like', "%{$q}%")
+                  ->orWhere('isi_komentar', 'like', "%{$q}%");
+        }
+        
+        $komentars = $query->latest()->paginate(10)->withQueryString();
         return view('admin.komentar.index', compact('komentars'));
     }
 
@@ -27,7 +35,7 @@ class KomentarController extends Controller
 
         $statusMsg = $request->status == 'approved' ? 'disetujui' : 'ditolak';
 
-        return redirect()->route('komentar.index')->with('success', "Komentar berhasil $statusMsg.");
+        return back()->with('success', "Komentar berhasil $statusMsg.");
     }
 
     public function destroy($id)
@@ -35,6 +43,6 @@ class KomentarController extends Controller
         $komentar = Komentar::where('komentar_id', $id)->firstOrFail();
         $komentar->delete();
 
-        return redirect()->route('komentar.index')->with('success', 'Komentar berhasil dihapus permanen.');
+        return back()->with('success', 'Komentar berhasil dihapus permanen.');
     }
 }

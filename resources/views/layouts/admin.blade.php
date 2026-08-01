@@ -188,6 +188,127 @@
             color: var(--primary-red);
         }
 
+        /* Logout Modal */
+        .logout-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 20px;
+        }
+        
+        .logout-modal-overlay.active {
+            display: flex;
+        }
+        
+        .logout-modal-box {
+            background: white;
+            width: 450px;
+            padding: 40px 40px 20px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .logout-watermark {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 120px;
+            color: #000;
+            opacity: 0.04;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .logout-icon-wrapper {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 20px;
+            border: 1px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #000;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logout-modal-box h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logout-modal-box p {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logout-modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .btn-logout-cancel {
+            flex: 1;
+            padding: 12px;
+            background: white;
+            border: 1px solid #cbd5e1;
+            color: #000;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-logout-cancel:hover {
+            background: #f8fafc;
+        }
+        
+        .btn-logout-confirm {
+            flex: 1;
+            padding: 12px;
+            background: #000;
+            border: 1px solid #000;
+            color: white;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+        
+        .btn-logout-confirm:hover {
+            background: #222;
+        }
+        
+        .logout-modal-footer {
+            border-top: 1px solid #f1f5f9;
+            padding-top: 15px;
+            font-size: 9px;
+            color: #94a3b8;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+        }
+
         /* Main Content Styles */
         .main-content {
             flex: 1;
@@ -1043,12 +1164,9 @@
         </ul>
 
         <div class="sidebar-footer">
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="btn-logout">
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
-                </button>
-            </form>
+            <button type="button" class="btn-logout" onclick="openLogoutModal()">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+            </button>
         </div>
     </aside>
 
@@ -1061,12 +1179,15 @@
             </div>
             
             <div class="header-actions">
-                <div class="admin-profile">
-                    <span class="admin-name">{{ Auth::user()->nama_lengkap ?? 'Admin' }}</span>
-                    <div class="avatar">
-                        <i class="fa-solid fa-user"></i>
+                <a href="{{ route('pengaturan.index') }}" style="text-decoration: none; display: flex; align-items: center; gap: 12px; padding: 5px 10px; border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='var(--surface-light)'" onmouseout="this.style.background='transparent'">
+                    <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                        <span class="admin-name" style="color: var(--text-dark);">{{ Auth::user()->nama_lengkap ?? 'Administrator' }}</span>
+                        <span style="font-size: 10px; color: var(--text-gray); text-transform: uppercase;">Pengaturan Akun</span>
                     </div>
-                </div>
+                    <div class="avatar">
+                        <i class="fa-solid fa-user-gear"></i>
+                    </div>
+                </a>
             </div>
         </header>
 
@@ -1075,6 +1196,41 @@
             @yield('content')
         </div>
     </main>
+
+    <!-- Logout Confirmation Modal -->
+    <div class="logout-modal-overlay" id="logoutModal">
+        <div class="logout-modal-box">
+            <div class="logout-icon-wrapper">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </div>
+            <h3>Konfirmasi Keluar</h3>
+            <p>Yakin ingin keluar dari sistem? Semua sesi aktif<br>Anda akan diakhiri.</p>
+            
+            <div class="logout-modal-actions">
+                <button type="button" class="btn-logout-cancel" onclick="closeLogoutModal()">BATAL</button>
+                <form action="{{ route('logout') }}" method="POST" style="flex: 1; display: flex; margin: 0;">
+                    @csrf
+                    <button type="submit" class="btn-logout-confirm">LOGOUT</button>
+                </form>
+            </div>
+            
+            <div class="logout-modal-footer">
+                MUSEUM PUSAKA KARO
+            </div>
+            
+            <!-- Watermark icon -->
+            <i class="fa-solid fa-monument logout-watermark"></i>
+        </div>
+    </div>
+
+    <script>
+        function openLogoutModal() {
+            document.getElementById('logoutModal').classList.add('active');
+        }
+        function closeLogoutModal() {
+            document.getElementById('logoutModal').classList.remove('active');
+        }
+    </script>
 
     <!-- Custom Scripts -->
     @stack('scripts')

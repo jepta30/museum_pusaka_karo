@@ -352,9 +352,14 @@
         <h3>Laporan Aktivitas Komentar</h3>
         <p>Rekap moderasi komentar pengunjung pada periode terpilih.</p>
     </div>
-    <a href="{{ route('laporan.komentar.csv', request()->query()) }}" class="btn-outline">
-        <i class="fa-solid fa-file-csv"></i> Unduh CSV
-    </a>
+    <div style="display: flex; gap: 10px;">
+        <a href="{{ route('laporan.komentar.csv', request()->query()) }}" class="btn-outline">
+            <i class="fa-solid fa-file-csv"></i> Unduh CSV
+        </a>
+        <a href="{{ route('laporan.komentar.pdf', request()->query()) }}" class="btn-outline">
+            <i class="fa-solid fa-file-pdf"></i> Unduh PDF
+        </a>
+    </div>
 </div>
 
 <form method="GET" class="filter-bar">

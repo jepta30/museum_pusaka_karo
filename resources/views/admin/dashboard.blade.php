@@ -13,7 +13,95 @@
     .table-title { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 700; color: var(--text-dark); }
     .table-link { font-size: 13px; font-weight: 500; color: var(--text-dark); text-decoration: none; }
     .table-link:hover { color: var(--primary-red); }
+
+    /* --- Corak Batak Karo (Uis Gara Motif) --- */
+    .karo-banner {
+        position: relative;
+        background-color: var(--primary-red);
+        border-radius: 20px;
+        padding: 35px 40px;
+        margin-bottom: 30px;
+        color: white;
+        overflow: hidden;
+        box-shadow: 0 12px 30px rgba(122, 27, 27, 0.25);
+    }
+    .karo-banner-content {
+        position: relative;
+        z-index: 2;
+    }
+    .karo-banner h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 28px;
+        margin-bottom: 8px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
+    .karo-banner p {
+        font-size: 15px;
+        opacity: 0.9;
+    }
+    .karo-pattern {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        opacity: 0.18;
+        z-index: 1;
+        /* Pola anyaman geometris Uis Gara (Merah, Hitam, Emas) */
+        background: 
+            repeating-linear-gradient(
+                45deg,
+                #000 0,
+                #000 12px,
+                transparent 12px,
+                transparent 24px,
+                #f59e0b 24px,
+                #f59e0b 26px,
+                transparent 26px,
+                transparent 38px
+            ),
+            repeating-linear-gradient(
+                -45deg,
+                #000 0,
+                #000 12px,
+                transparent 12px,
+                transparent 24px,
+                #f59e0b 24px,
+                #f59e0b 26px,
+                transparent 26px,
+                transparent 38px
+            );
+        background-color: var(--primary-red);
+    }
+
+    /* Aksen pita Batak Karo di atas KPI Card */
+    .kpi-card {
+        position: relative;
+        overflow: hidden;
+    }
+    .kpi-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; height: 5px;
+        background: repeating-linear-gradient(
+            90deg,
+            var(--primary-red),
+            var(--primary-red) 15px,
+            #000 15px,
+            #000 30px,
+            #f59e0b 30px,
+            #f59e0b 35px
+        );
+        opacity: 0.8;
+    }
 </style>
+
+<!-- Banner Batak Karo -->
+<div class="karo-banner">
+    <div class="karo-pattern"></div>
+    <div class="karo-banner-content">
+        <h2>Mejuah-juah! Selamat Datang di Dashboard.</h2>
+        <p>Pusat kendali Sistem Informasi Museum Pusaka Karo.</p>
+    </div>
+</div>
 
 <!-- KPI Cards -->
 <div class="kpi-grid">

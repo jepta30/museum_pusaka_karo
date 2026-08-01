@@ -16,15 +16,28 @@ class MediaController extends Controller
         
         if ($request->filled('q')) {
             $q = $request->q;
-            $query->where('keterangan', 'like', "%{$q}%")
-                  ->orWhereHas('warisanBudaya', function($sub) use ($q) {
-                      $sub->where('judul', 'like', "%{$q}%");
-                  });
+            $query->where(function($qBuilder) use ($q) {
+                $qBuilder->where('keterangan', 'like', "%{$q}%")
+                         ->orWhereHas('warisanBudaya', function($sub) use ($q) {
+                             $sub->where('judul', 'like', "%{$q}%");
+                         });
+            });
+        }
+
+        if ($request->filled('kategori_id') && $request->kategori_id != 'all') {
+            $query->whereHas('warisanBudaya', function($sub) use ($request) {
+                $sub->where('kategori_id', $request->kategori_id);
+            });
+        }
+
+        if ($request->filled('jenis_media') && $request->jenis_media != 'all') {
+            $query->where('jenis_media', $request->jenis_media);
         }
         
         $medias = $query->latest()->paginate(10)->withQueryString();
         $warisans = WarisanBudaya::all();
-        return view('admin.media.index', compact('medias', 'warisans'));
+        $kategoris = \App\Models\Kategori::all();
+        return view('admin.media.index', compact('medias', 'warisans', 'kategoris'));
     }
 
     public function store(Request $request)

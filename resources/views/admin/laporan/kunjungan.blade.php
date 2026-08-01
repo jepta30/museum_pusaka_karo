@@ -19,7 +19,10 @@
         <h3>Statistik Kunjungan Website</h3>
         <p>Data kunjungan situs tercatat otomatis setiap ada pengunjung membuka halaman publik.</p>
     </div>
-    <a href="{{ route('laporan.kunjungan.csv', request()->query()) }}" class="btn-outline"><i class="fa-solid fa-file-csv"></i> Unduh CSV</a>
+    <div style="display: flex; gap: 10px;">
+        <a href="{{ route('laporan.kunjungan.csv', request()->query()) }}" class="btn-outline"><i class="fa-solid fa-file-csv"></i> Unduh CSV</a>
+        <a href="{{ route('laporan.kunjungan.pdf', request()->query()) }}" class="btn-outline"><i class="fa-solid fa-file-pdf"></i> Unduh PDF</a>
+    </div>
 </div>
 
 <form method="GET" class="filter-bar">

@@ -54,17 +54,23 @@ Route::middleware('auth')->group(function () {
     Route::prefix('laporan')->name('laporan.')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\LaporanController::class, 'index'])->name('index');
         Route::get('/export-csv', [\App\Http\Controllers\Admin\LaporanController::class, 'exportCsv'])->name('export.csv');
+        Route::get('/export-pdf', [\App\Http\Controllers\Admin\LaporanController::class, 'exportPdf'])->name('export.pdf');
+
         Route::get('/warisan', [\App\Http\Controllers\Admin\LaporanController::class, 'warisan'])->name('warisan');
         Route::get('/warisan/csv', [\App\Http\Controllers\Admin\LaporanController::class, 'warisanCsv'])->name('warisan.csv');
+        Route::get('/warisan/pdf', [\App\Http\Controllers\Admin\LaporanController::class, 'warisanPdf'])->name('warisan.pdf');
 
         Route::get('/rekapitulasi', [\App\Http\Controllers\Admin\LaporanController::class, 'rekapitulasi'])->name('rekapitulasi');
         Route::get('/rekapitulasi/csv', [\App\Http\Controllers\Admin\LaporanController::class, 'rekapitulasiCsv'])->name('rekapitulasi.csv');
+        Route::get('/rekapitulasi/pdf', [\App\Http\Controllers\Admin\LaporanController::class, 'rekapitulasiPdf'])->name('rekapitulasi.pdf');
 
         Route::get('/komentar', [\App\Http\Controllers\Admin\LaporanController::class, 'komentar'])->name('komentar');
         Route::get('/komentar/csv', [\App\Http\Controllers\Admin\LaporanController::class, 'komentarCsv'])->name('komentar.csv');
+        Route::get('/komentar/pdf', [\App\Http\Controllers\Admin\LaporanController::class, 'komentarPdf'])->name('komentar.pdf');
 
         Route::get('/kunjungan', [\App\Http\Controllers\Admin\LaporanController::class, 'kunjungan'])->name('kunjungan');
         Route::get('/kunjungan/csv', [\App\Http\Controllers\Admin\LaporanController::class, 'kunjunganCsv'])->name('kunjungan.csv');
+        Route::get('/kunjungan/pdf', [\App\Http\Controllers\Admin\LaporanController::class, 'kunjunganPdf'])->name('kunjungan.pdf');
     });
 
     // Pengaturan Akun

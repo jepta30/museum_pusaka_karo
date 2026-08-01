@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class LaporanController extends Controller
 {
@@ -120,6 +121,24 @@ class LaporanController extends Controller
     }
 
     /**
+     * Laporan Warisan Budaya PDF
+     */
+    public function warisanPdf(Request $request)
+    {
+        [$dari, $sampai] = $this->rentangTanggal($request);
+
+        $warisans = WarisanBudaya::with('kategori')
+            ->whereBetween('warisan_budayas.created_at', [$dari, $sampai])
+            ->orderBy('warisan_budayas.created_at', 'desc')
+            ->get();
+
+        $pdf = Pdf::loadView('admin.laporan.pdf.warisan', compact('warisans', 'dari', 'sampai'))
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->stream('laporan-warisan-budaya-' . now()->format('Ymd_His') . '.pdf');
+    }
+
+    /**
      * Laporan Rekapitulasi dan Statistik (BAB IV.4 poin 9).
      */
     public function rekapitulasi()
@@ -183,6 +202,23 @@ class LaporanController extends Controller
             'Content-Type' => 'text/csv; charset=UTF-8',
             'Content-Disposition' => "attachment; filename=\"$filename\""
         ]);
+    }
+
+    /**
+     * Laporan Rekapitulasi PDF
+     */
+    public function rekapitulasiPdf(Request $request)
+    {
+        $perKategori = DB::table('kategoris')
+            ->leftJoin('warisan_budayas', 'kategoris.kategori_id', '=', 'warisan_budayas.kategori_id')
+            ->select('kategoris.nama', DB::raw('COUNT(warisan_budayas.warisan_budaya_id) as total'))
+            ->groupBy('kategoris.kategori_id', 'kategoris.nama')
+            ->get();
+
+        $pdf = Pdf::loadView('admin.laporan.pdf.rekapitulasi', compact('perKategori'))
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->stream('laporan-rekapitulasi-' . now()->format('Ymd_His') . '.pdf');
     }
 
     /**
@@ -253,6 +289,24 @@ class LaporanController extends Controller
             'Content-Type' => 'text/csv; charset=UTF-8',
             'Content-Disposition' => "attachment; filename=\"$filename\""
         ]);
+    }
+
+    /**
+     * Laporan Aktivitas Komentar PDF
+     */
+    public function komentarPdf(Request $request)
+    {
+        [$dari, $sampai] = $this->rentangTanggal($request);
+
+        $komentars = Komentar::with('warisanBudaya')
+            ->whereBetween('komentars.created_at', [$dari, $sampai])
+            ->orderBy('komentars.created_at', 'desc')
+            ->get();
+
+        $pdf = Pdf::loadView('admin.laporan.pdf.komentar', compact('komentars', 'dari', 'sampai'))
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->stream('laporan-aktivitas-komentar-' . now()->format('Ymd_His') . '.pdf');
     }
 
     /**
@@ -337,5 +391,22 @@ class LaporanController extends Controller
             'Content-Type' => 'text/csv; charset=UTF-8',
             'Content-Disposition' => "attachment; filename=\"$filename\""
         ]);
+    }
+
+    /**
+     * Statistik Kunjungan Website PDF
+     */
+    public function kunjunganPdf(Request $request)
+    {
+        [$dari, $sampai] = $this->rentangTanggal($request);
+
+        $data = Kunjungan::whereBetween('tanggal', [$dari->toDateString(), $sampai->toDateString()])
+            ->orderBy('tanggal', 'desc')
+            ->get();
+
+        $pdf = Pdf::loadView('admin.laporan.pdf.kunjungan', compact('data', 'dari', 'sampai'))
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->stream('statistik-kunjungan-website-' . now()->format('Ymd_His') . '.pdf');
     }
 }

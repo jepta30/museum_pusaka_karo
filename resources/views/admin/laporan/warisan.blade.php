@@ -325,9 +325,14 @@
         <h3>Laporan Warisan Budaya</h3>
         <p>Rekap data warisan budaya yang ditambahkan pada periode terpilih.</p>
     </div>
-    <a href="{{ route('laporan.warisan.csv', request()->query()) }}" class="btn-outline">
-        <i class="fa-solid fa-file-csv"></i> Unduh CSV
-    </a>
+    <div style="display: flex; gap: 10px;">
+        <a href="{{ route('laporan.warisan.csv', request()->query()) }}" class="btn-outline">
+            <i class="fa-solid fa-file-csv"></i> Unduh CSV
+        </a>
+        <a href="{{ route('laporan.warisan.pdf', request()->query()) }}" class="btn-outline">
+            <i class="fa-solid fa-file-pdf"></i> Unduh PDF
+        </a>
+    </div>
 </div>
 
 <form method="GET" class="filter-bar">

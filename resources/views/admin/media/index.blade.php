@@ -4,15 +4,22 @@
 
 @section('content')
 <style>
-    .filter-card { background-color: white; border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; margin-bottom: 25px; display: flex; gap: 15px; align-items: flex-end; }
-    .filter-item { display: flex; flex-direction: column; gap: 8px; }
+    .filter-card { background-color: white; border: 1px solid rgba(216, 224, 235, 0.9); border-radius: 12px; padding: 25px; margin-bottom: 25px; display: flex; gap: 20px; align-items: flex-end; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03); }
+    .filter-item { display: flex; flex-direction: column; gap: 10px; flex: 1; }
     .filter-item.search { flex: 2; }
-    .filter-item.select { flex: 1; }
-    .filter-label { font-size: 11px; font-weight: 600; color: var(--text-gray); text-transform: uppercase; letter-spacing: 0.5px; }
-    .input-group { position: relative; display: flex; align-items: center; }
-    .input-group i { position: absolute; left: 15px; color: var(--text-gray); }
+    .filter-label { font-size: 12px; font-weight: 700; color: var(--text-dark); text-transform: uppercase; letter-spacing: 0.5px; }
+    .input-group { position: relative; display: flex; align-items: center; width: 100%; }
+    .input-group i { position: absolute; left: 16px; color: var(--text-gray); font-size: 15px; }
+    .search-input { width: 100%; padding-left: 44px !important; }
+    .select-input { width: 100%; cursor: pointer; }
+    .btn-search { width: 100%; padding: 13px; font-size: 14px; }
     .media-preview { width: 80px; height: 60px; background-color: #e5e7eb; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #9ca3af; font-size: 20px; overflow: hidden; }
     .media-preview img { width: 100%; height: 100%; object-fit: cover; }
+    
+    @media (max-width: 768px) {
+        .filter-card { flex-direction: column; align-items: stretch; padding: 20px; gap: 15px; }
+        .filter-item.search, .filter-item { flex: none; width: 100%; }
+    }
 </style>
 
 <div class="page-header">
@@ -44,28 +51,35 @@
     </div>
 @endif
 
-<form method="GET" class="filter-card">
+<form method="GET" action="{{ route('media.index') }}" class="filter-card">
     <div class="filter-item search">
-        <label class="filter-label">CARI MEDIA</label>
+        <label class="filter-label">Pencarian Kata Kunci</label>
         <div class="input-group">
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="text" name="q" value="{{ request('q') }}" class="search-input" placeholder="Cari keterangan atau judul budaya...">
         </div>
     </div>
     <div class="filter-item select">
-        <label class="filter-label">KATEGORI BUDAYA</label>
-        <select class="select-input" disabled style="opacity:0.7;">
-            <option>Semua Budaya</option>
+        <label class="filter-label">Kategori Budaya</label>
+        <select name="kategori_id" class="select-input">
+            <option value="all">-- Semua Kategori --</option>
+            @foreach($kategoris as $kat)
+                <option value="{{ $kat->kategori_id }}" {{ request('kategori_id') == $kat->kategori_id ? 'selected' : '' }}>
+                    {{ $kat->nama }}
+                </option>
+            @endforeach
         </select>
     </div>
     <div class="filter-item select">
-        <label class="filter-label">JENIS MEDIA</label>
-        <select class="select-input" disabled style="opacity:0.7;">
-            <option>Semua Jenis</option>
+        <label class="filter-label">Jenis Media</label>
+        <select name="jenis_media" class="select-input">
+            <option value="all">-- Semua Jenis --</option>
+            <option value="foto" {{ request('jenis_media') == 'foto' ? 'selected' : '' }}>Foto</option>
+            <option value="video" {{ request('jenis_media') == 'video' ? 'selected' : '' }}>Video</option>
         </select>
     </div>
-    <div class="filter-item">
-        <button type="submit" class="btn-search">Cari</button>
+    <div class="filter-item" style="flex: 0.5;">
+        <button type="submit" class="btn-search"><i class="fa-solid fa-filter" style="margin-right: 8px;"></i> Terapkan</button>
     </div>
 </form>
 

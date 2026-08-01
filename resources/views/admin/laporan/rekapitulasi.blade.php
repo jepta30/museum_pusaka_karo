@@ -34,7 +34,10 @@
         <h3>Rekapitulasi & Statistik</h3>
         <p>Ringkasan agregat seluruh data sistem.</p>
     </div>
-    <a href="{{ route('laporan.rekapitulasi.csv') }}" class="btn-outline"><i class="fa-solid fa-file-csv"></i> Unduh CSV</a>
+    <div style="display: flex; gap: 10px;">
+        <a href="{{ route('laporan.rekapitulasi.csv') }}" class="btn-outline"><i class="fa-solid fa-file-csv"></i> Unduh CSV</a>
+        <a href="{{ route('laporan.rekapitulasi.pdf') }}" class="btn-outline"><i class="fa-solid fa-file-pdf"></i> Unduh PDF</a>
+    </div>
 </div>
 
 <div class="summary-grid">

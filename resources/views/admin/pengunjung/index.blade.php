@@ -498,24 +498,6 @@
     Pilih <strong>Unduh CSV</strong> untuk menghasilkan laporan yang dapat dicetak atau dibagikan.
 </div>
 
-{{-- PENJELASAN PENOMORAN --}}
-<div class="info-box" style="margin-bottom: 24px; background: #f0f7ff; border-left-color: #0284c7;">
-    <h4 style="margin: 0 0 10px 0; font-size: 15px; color: #0369a1;"><i class="fa-solid fa-list-ol"></i> Format Penomoran Pengunjung</h4>
-    <p style="margin: 0 0 8px 0;"><strong>Format: [Nomor Buku/Batch].[Nomor Urut Pengunjung]</strong></p>
-    <p style="margin: 0 0 12px 0;">Contoh: <code style="background:#e0f2fe; padding:2px 6px; border-radius:4px;">53.778</code>, <code style="background:#e0f2fe; padding:2px 6px; border-radius:4px;">53.779</code>, ... sampai <code style="background:#e0f2fe; padding:2px 6px; border-radius:4px;">53.808</code></p>
-    
-    <ol style="margin: 0; padding-left: 20px;">
-        <li style="margin-bottom: 8px;">
-            <strong>Angka depan ( 53 ) — tetap/statis</strong><br>
-            Angka ini <strong>tidak berubah</strong> di seluruh halaman ini. Ini kemungkinan besar adalah <strong>nomor buku tamu</strong> (buku catatan pengunjung ke-53) — jadi setiap kali satu buku tamu fisik habis dan ganti buku baru, angka ini akan naik jadi 54, 55, dst.
-        </li>
-        <li>
-            <strong>Angka belakang ( 778 &rarr; 808 ) — nomor urut pengunjung, terus menerus</strong><br>
-            Ini murni <strong>counter berjalan (running number)</strong>, naik +1 setiap ada satu pengunjung baru yang tanda tangan — tanpa peduli tanggal, kebangsaan, atau rombongan. Angkanya tetap lanjut urut, tidak reset ke 1 tiap hari.
-        </li>
-    </ol>
-</div>
-
 {{-- FILTER --}}
 <form method="GET" class="filter-section">
     <div class="search-box">
@@ -553,7 +535,7 @@
         <tbody>
             @forelse($pengunjungs as $p)
             <tr>
-                <td><span class="no-tamu">{{ $p->kode_tamu ?? 'PGJ-' . str_pad($p->pengunjung_id, 4, '0', STR_PAD_LEFT) }}</span></td>
+                <td><span class="no-tamu">{{ $p->no_pengunjung }}</span></td>
                 <td><span class="nama-tamu">{{ $p->nama }}</span></td>
                 <td><span class="alamat">{{ $p->alamat ?? '-' }}</span></td>
                 <td><span class="pekerjaan">{{ $p->pekerjaan ?? '-' }}</span></td>

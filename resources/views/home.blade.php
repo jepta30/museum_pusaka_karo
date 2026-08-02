@@ -821,6 +821,7 @@
 
 @push('scripts')
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const homeMap = document.getElementById('homeMap');
@@ -863,7 +864,19 @@
         });
         
         @if(session('success'))
-            alert('{{ session("success") }}');
+            Swal.fire({
+                title: 'Terima Kasih!',
+                text: '{{ session("success") }}',
+                icon: 'success',
+                confirmButtonText: 'Lanjutkan',
+                confirmButtonColor: '#b91c1c',
+                background: '#ffffff',
+                customClass: {
+                    title: 'font-playfair',
+                    popup: 'rounded-xl'
+                },
+                backdrop: `rgba(15, 23, 42, 0.6)`
+            });
         @endif
     });
 </script>

@@ -36,7 +36,7 @@ class PengunjungController extends Controller
             $query->whereDate('tanggal', '<=', $request->sampai);
         }
 
-        $pengunjungs = $query->latest('tanggal')->paginate(10)->withQueryString();
+        $pengunjungs = $query->orderBy('created_at', 'asc')->paginate(10)->withQueryString();
 
         return view('admin.pengunjung.index', compact('pengunjungs', 'totalPengunjung', 'todayPengunjung'));
     }
@@ -165,9 +165,20 @@ class PengunjungController extends Controller
 
     private function generateNomor(): string
     {
-        do {
-            $nomor = 'PGJ-' . now()->format('ymd') . '-' . str_pad((string) random_int(0, 9999), 4, '0', STR_PAD_LEFT);
-        } while (Pengunjung::whereKey($nomor)->exists());
+        $last = Pengunjung::orderByRaw('CAST(no_pengunjung AS INTEGER) DESC')->first();
+
+        if ($last) {
+            $urut = ((int) $last->no_pengunjung) + 1;
+        } else {
+            $urut = 1;
+        }
+
+        $nomor = (string) $urut;
+
+        while (Pengunjung::whereKey($nomor)->exists()) {
+            $urut++;
+            $nomor = (string) $urut;
+        }
 
         return $nomor;
     }

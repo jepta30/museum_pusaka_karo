@@ -18,16 +18,24 @@ class KoleksiController extends Controller
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where('nama_koleksi', 'LIKE', "%{$search}%")
-                  ->orWhere('pemilik', 'LIKE', "%{$search}%");
+                  ->orWhere('nama_pemilik', 'LIKE', "%{$search}%");
         }
 
         if ($request->filled('jenis') && $request->jenis != 'all') {
-            $query->where('jenis', $request->jenis);
+            $query->where('jenis_koleksi', $request->jenis);
         }
 
-        $koleksis = $query->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
+        $koleksis = $query->orderBy('created_at', 'asc')->paginate(10)->withQueryString();
 
-        return view('admin.koleksi.index', compact('koleksis'));
+        // Get unique 'jenis_koleksi' for the dynamic filter dropdown
+        $jenisKoleksiOptions = Koleksi::select('jenis_koleksi')
+            ->whereNotNull('jenis_koleksi')
+            ->where('jenis_koleksi', '!=', '')
+            ->where('jenis_koleksi', '!=', '-')
+            ->distinct()
+            ->pluck('jenis_koleksi');
+
+        return view('admin.koleksi.index', compact('koleksis', 'jenisKoleksiOptions'));
     }
 
     public function create()
@@ -38,15 +46,21 @@ class KoleksiController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'kode_koleksi' => 'required|string|max:50|unique:koleksis',
-            'nama_koleksi' => 'required|string|max:255',
-            'jenis' => 'nullable|string|max:100',
-            'pemilik' => 'nullable|string|max:255',
-            'cara_perolehan' => 'nullable|string|max:255',
-            'tanggal_masuk' => 'nullable|date',
-            'deskripsi' => 'nullable|string',
-            'kondisi' => 'nullable|string|max:50',
+            'nomor_koleksi' => 'required|string|max:20|unique:koleksis,nomor_koleksi',
+            'nama_koleksi' => 'required|string|max:50',
+            'jenis_koleksi' => 'nullable|string|max:50',
+            'nama_pemilik' => 'nullable|string|max:50',
+            'cara_perolehan' => 'nullable|string|max:50',
+            'tempat_perolehan' => 'nullable|string|max:50',
+            'tanggal_masuk' => 'nullable|string|max:50',
+            'keterangan' => 'nullable|string',
         ]);
+
+        foreach ($validated as $key => $value) {
+            if (is_null($value)) {
+                $validated[$key] = '-';
+            }
+        }
 
         Koleksi::create($validated);
 
@@ -71,15 +85,21 @@ class KoleksiController extends Controller
         $koleksi = Koleksi::findOrFail($id);
 
         $validated = $request->validate([
-            'kode_koleksi' => 'required|string|max:50|unique:koleksis,kode_koleksi,' . $id . ',koleksi_id',
-            'nama_koleksi' => 'required|string|max:255',
-            'jenis' => 'nullable|string|max:100',
-            'pemilik' => 'nullable|string|max:255',
-            'cara_perolehan' => 'nullable|string|max:255',
-            'tanggal_masuk' => 'nullable|date',
-            'deskripsi' => 'nullable|string',
-            'kondisi' => 'nullable|string|max:50',
+            'nomor_koleksi' => 'required|string|max:20|unique:koleksis,nomor_koleksi,' . $id . ',nomor_koleksi',
+            'nama_koleksi' => 'required|string|max:50',
+            'jenis_koleksi' => 'nullable|string|max:50',
+            'nama_pemilik' => 'nullable|string|max:50',
+            'cara_perolehan' => 'nullable|string|max:50',
+            'tempat_perolehan' => 'nullable|string|max:50',
+            'tanggal_masuk' => 'nullable|string|max:50',
+            'keterangan' => 'nullable|string',
         ]);
+
+        foreach ($validated as $key => $value) {
+            if (is_null($value)) {
+                $validated[$key] = '-';
+            }
+        }
 
         $koleksi->update($validated);
 
@@ -111,26 +131,26 @@ class KoleksiController extends Controller
             fwrite($handle, "\xEF\xBB\xBF");
 
             fputcsv($handle, [
-                'No. Koleksi',
+                'Nomor Koleksi',
                 'Nama Koleksi',
-                'Jenis',
-                'Pemilik',
+                'Jenis Koleksi',
+                'Nama Pemilik/Penitip',
                 'Cara Perolehan',
+                'Tempat Perolehan',
                 'Tanggal Masuk',
-                'Deskripsi',
-                'Kondisi'
+                'Keterangan'
             ]);
 
             foreach ($koleksis as $k) {
                 fputcsv($handle, [
-                    $k->kode_koleksi ?? '',
+                    $k->nomor_koleksi ?? '',
                     $k->nama_koleksi ?? '',
-                    $k->jenis ?? '',
-                    $k->pemilik ?? '',
+                    $k->jenis_koleksi ?? '',
+                    $k->nama_pemilik ?? '',
                     $k->cara_perolehan ?? '',
-                    $k->tanggal_masuk ? Carbon::parse($k->tanggal_masuk)->format('Y-m-d') : '',
-                    $k->deskripsi ?? '',
-                    $k->kondisi ?? ''
+                    $k->tempat_perolehan ?? '',
+                    $k->tanggal_masuk ?? '',
+                    $k->keterangan ?? ''
                 ]);
             }
 

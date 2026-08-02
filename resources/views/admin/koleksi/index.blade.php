@@ -356,7 +356,53 @@
             font-size: 11px;
         }
     }
+    
+    /* ===== MODAL ===== */
+    .modal-overlay {
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.5); display: none;
+        align-items: center; justify-content: center; z-index: 1000;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-content {
+        background: white; border-radius: 12px; width: 90%; max-width: 650px;
+        max-height: 90vh; display: flex; flex-direction: column; overflow: hidden;
+    }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 25px; border-bottom: 1px solid var(--border-color); }
+    .modal-header h4 { margin: 0; font-size: 18px; color: var(--text-dark); }
+    .btn-close { background: none; border: none; font-size: 18px; cursor: pointer; color: var(--text-gray); }
+    
+    .modal-body { padding: 25px; overflow-y: auto; }
+    
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--text-gray); margin-bottom: 6px; }
+    .form-group input, .form-group select, .form-group textarea {
+        width: 100%; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit; font-size: 14px;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+        border-color: var(--primary-red); outline: none; box-shadow: 0 0 0 3px rgba(122, 27, 27, 0.1);
+    }
+    .modal-footer { padding: 15px 25px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 10px; background: #faf8f6; }
+    .modal-footer button { padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; border: none; font-size: 14px; }
+    .btn-cancel { background: #e2e8f0; color: var(--text-dark); }
+    .btn-save { background: var(--primary-red); color: white; }
 </style>
+
+{{-- ALERT MESSAGE --}}
+@if(session('success'))
+<div style="background-color: #d1fae5; color: #065f46; padding: 14px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; border: 1px solid #34d399;">
+    <i class="fa-solid fa-circle-check" style="margin-right: 8px;"></i> {{ session('success') }}
+</div>
+@endif
+
+@if($errors->any())
+<div style="background-color: #fee2e2; color: #991b1b; padding: 14px; border-radius: 8px; margin-bottom: 20px; font-size: 13px;">
+    <strong>Terjadi Kesalahan:</strong>
+    <ul style="margin: 5px 0 0 20px;">
+        @foreach($errors->all() as $error) <li>{{ $error }}</li> @endforeach
+    </ul>
+</div>
+@endif
 
 {{-- PAGE HEADER --}}
 <div class="page-header">
@@ -381,9 +427,11 @@
     </div>
     <select id="jenisFilter" onchange="filterTable()">
         <option value="all">Semua Jenis</option>
-        <option value="Etnografi">Etnografi</option>
-        <option value="Geografi">Geografi</option>
-        <option value="Sejarah">Sejarah</option>
+        @if(isset($jenisKoleksiOptions))
+            @foreach($jenisKoleksiOptions as $jenis)
+                <option value="{{ $jenis }}">{{ $jenis }}</option>
+            @endforeach
+        @endif
     </select>
     <button class="btn-filter" onclick="filterTable()">
         <i class="fa-solid fa-filter"></i> Filter
@@ -395,40 +443,39 @@
     <table class="data-table" id="koleksiTable">
         <thead>
             <tr>
-                <th>No. Koleksi</th>
+                <th>Nomor Koleksi</th>
                 <th>Nama Koleksi</th>
-                <th>Jenis</th>
-                <th>Pemilik</th>
+                <th>Jenis Koleksi</th>
+                <th>Nama Pemilik/Penitip</th>
                 <th>Cara Perolehan</th>
-                <th>Tgl Masuk</th>
+                <th>Tempat Perolehan</th>
+                <th>Tanggal Masuk</th>
                 <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
             @forelse($koleksis as $koleksi)
             <tr>
-                <td><span class="kode-koleksi">{{ $koleksi->kode_koleksi ?? 'KK-001' }}</span></td>
+                <td><span class="kode-koleksi">{{ $koleksi->nomor_koleksi ?? '11.02.01' }}</span></td>
                 <td><span class="nama-koleksi">{{ $koleksi->nama_koleksi }}</span></td>
-                <td><span class="jenis">{{ $koleksi->jenis ?? '-' }}</span></td>
-                <td><span class="pemilik">{{ $koleksi->pemilik ?? '-' }}</span></td>
+                <td><span class="jenis">{{ $koleksi->jenis_koleksi ?? '-' }}</span></td>
+                <td><span class="pemilik">{{ $koleksi->nama_pemilik ?? '-' }}</span></td>
                 <td>{{ $koleksi->cara_perolehan ?? '-' }}</td>
+                <td>{{ $koleksi->tempat_perolehan ?? '-' }}</td>
                 <td style="color: var(--text-gray); font-size: 13px;">
-                    {{ $koleksi->tanggal_masuk ? \Carbon\Carbon::parse($koleksi->tanggal_masuk)->translatedFormat('d M Y') : '-' }}
+                    {{ $koleksi->tanggal_masuk ?? '-' }}
                 </td>
                 <td>
                     <div class="action-buttons">
-                        <a href="{{ route('koleksi.edit', $koleksi->koleksi_id) }}" class="btn-action edit" title="Edit">
+                        <button type="button" data-koleksi="{{ json_encode($koleksi) }}" onclick="openEditModal(this)" class="btn-action edit" title="Edit">
                             <i class="fa-solid fa-pen"></i>
-                        </a>
-                        <a href="{{ route('koleksi.show', $koleksi->koleksi_id) }}" class="btn-action" title="Lihat">
-                            <i class="fa-solid fa-eye"></i>
-                        </a>
-                        <button class="btn-action delete" title="Hapus" onclick="confirmDelete({{ $koleksi->koleksi_id }})">
+                        </button>
+                        <button type="button" class="btn-action delete" title="Hapus" onclick="confirmDelete('{{ $koleksi->nomor_koleksi }}')">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </div>
-                    <form id="delete-form-{{ $koleksi->koleksi_id }}" 
-                          action="{{ route('koleksi.destroy', $koleksi->koleksi_id) }}" 
+                    <form id="delete-form-{{ $koleksi->nomor_koleksi }}" 
+                          action="{{ route('koleksi.destroy', $koleksi->nomor_koleksi) }}" 
                           method="POST" 
                           style="display: none;">
                         @csrf
@@ -510,7 +557,118 @@
     @endif
 </div>
 
+<!-- Modal Dialog -->
+<div class="modal-overlay" id="koleksiModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 id="modalTitle">Tambah Koleksi</h4>
+            <button type="button" class="btn-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form id="koleksiForm" action="{{ route('koleksi.store') }}" method="POST" style="display: flex; flex-direction: column; flex: 1; overflow: hidden;">
+            @csrf
+            <input type="hidden" name="_method" id="formMethod" value="POST">
+            
+            <div class="modal-body">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>Nomor Koleksi</label>
+                        <input type="text" name="nomor_koleksi" id="nomor_koleksi" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nama Koleksi</label>
+                        <input type="text" name="nama_koleksi" id="nama_koleksi" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Jenis Koleksi</label>
+                        <input type="text" name="jenis_koleksi" id="jenis_koleksi" placeholder="Contoh: Alat Pertanian">
+                    </div>
+                    <div class="form-group">
+                        <label>Nama Pemilik/Penitip</label>
+                        <input type="text" name="nama_pemilik" id="nama_pemilik">
+                    </div>
+                    <div class="form-group">
+                        <label>Cara Perolehan</label>
+                        <input type="text" name="cara_perolehan" id="cara_perolehan">
+                    </div>
+                    <div class="form-group">
+                        <label>Tempat Perolehan</label>
+                        <input type="text" name="tempat_perolehan" id="tempat_perolehan">
+                    </div>
+                    <div class="form-group">
+                        <label>Tanggal Masuk</label>
+                        <input type="text" name="tanggal_masuk" id="tanggal_masuk" placeholder="Contoh: 2011 atau 16/7/2013">
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>Keterangan</label>
+                    <textarea name="keterangan" id="keterangan" rows="3"></textarea>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn-cancel" onclick="closeModal()">Batal</button>
+                <button type="submit" class="btn-save">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal-overlay" id="deleteModal">
+    <div class="modal-content" style="max-width: 400px; text-align: center; margin: 15vh auto; padding: 30px;">
+        <i class="fa-solid fa-triangle-exclamation" style="font-size: 48px; color: var(--danger-red); margin-bottom: 15px;"></i>
+        <h4 style="margin-bottom: 10px; font-size: 18px; color: var(--text-dark);">Hapus Koleksi?</h4>
+        <p style="color: var(--text-gray); margin-bottom: 25px; font-size: 14px;">Data koleksi ini akan dihapus secara permanen dan tidak dapat dikembalikan.</p>
+        <div style="display: flex; justify-content: center; gap: 10px;">
+            <button class="btn-cancel" onclick="closeDeleteModal()">Batal</button>
+            <button class="btn-save" style="background: var(--danger-red);" onclick="submitDelete()">Ya, Hapus</button>
+        </div>
+    </div>
+</div>
+
 <script>
+let deleteId = null;
+
+function openEditModal(btn) {
+    let data = JSON.parse(btn.getAttribute('data-koleksi'));
+    openModal('edit', data);
+}
+
+function openModal(mode, data = null) {
+    const modal = document.getElementById('koleksiModal');
+    const form = document.getElementById('koleksiForm');
+    const title = document.getElementById('modalTitle');
+    const method = document.getElementById('formMethod');
+    
+    form.reset();
+    
+    if (mode === 'add') {
+        title.textContent = 'Tambah Koleksi Baru';
+        form.action = '{{ route("koleksi.store") }}';
+        method.value = 'POST';
+        document.getElementById('nomor_koleksi').value = '11.02.0' + Math.floor(Math.random() * 9 + 1);
+    } else if (mode === 'edit') {
+        title.textContent = 'Ubah Data Koleksi';
+        form.action = '/koleksi/' + data.nomor_koleksi;
+        method.value = 'PUT';
+        
+        document.getElementById('nomor_koleksi').value = data.nomor_koleksi || '';
+        document.getElementById('nama_koleksi').value = data.nama_koleksi || '';
+        document.getElementById('jenis_koleksi').value = data.jenis_koleksi || '';
+        document.getElementById('nama_pemilik').value = data.nama_pemilik || '';
+        document.getElementById('cara_perolehan').value = data.cara_perolehan || '';
+        document.getElementById('tempat_perolehan').value = data.tempat_perolehan || '';
+        document.getElementById('tanggal_masuk').value = data.tanggal_masuk || '';
+        document.getElementById('keterangan').value = data.keterangan || '';
+    }
+    
+    modal.classList.add('active');
+}
+
+function closeModal() {
+    document.getElementById('koleksiModal').classList.remove('active');
+}
+
 function filterTable() {
     var input = document.getElementById('searchInput');
     var filter = input.value.toLowerCase();
@@ -530,7 +688,7 @@ function filterTable() {
             
             var matchSearch = namaValue.toLowerCase().indexOf(filter) > -1 || 
                             pemilikValue.toLowerCase().indexOf(filter) > -1;
-            var matchJenis = jenisFilter === 'all' || jenisValue.toLowerCase() === jenisFilter;
+            var matchJenis = jenisFilter === 'all' || jenisValue.toLowerCase() === jenisFilter.toLowerCase();
             
             if (matchSearch && matchJenis) {
                 tr[i].style.display = '';
@@ -542,8 +700,18 @@ function filterTable() {
 }
 
 function confirmDelete(id) {
-    if (confirm('Apakah Anda yakin ingin menghapus koleksi ini?')) {
-        document.getElementById('delete-form-' + id).submit();
+    deleteId = id;
+    document.getElementById('deleteModal').classList.add('active');
+}
+
+function closeDeleteModal() {
+    deleteId = null;
+    document.getElementById('deleteModal').classList.remove('active');
+}
+
+function submitDelete() {
+    if (deleteId) {
+        document.getElementById('delete-form-' + deleteId).submit();
     }
 }
 </script>

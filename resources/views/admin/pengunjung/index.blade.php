@@ -548,12 +548,12 @@
                         {{-- <a href="{{ route('pengunjung.edit', $p->pengunjung_id) }}" class="btn-action edit" title="Edit">
                             <i class="fa-solid fa-pen"></i>
                         </a> --}}
-                        <button class="btn-action delete" title="Hapus" onclick="confirmDelete({{ $p->pengunjung_id }})">
+                        <button class="btn-action delete" title="Hapus" onclick="confirmDelete('{{ $p->no_pengunjung }}')">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </div>
-                    <form id="delete-form-{{ $p->pengunjung_id }}" 
-                          action="{{ url('/pengunjung/' . $p->pengunjung_id) }}" 
+                    <form id="delete-form-{{ $p->no_pengunjung }}" 
+                          action="{{ route('pengunjung.destroy', $p->no_pengunjung) }}" 
                           method="POST" 
                           style="display: none;">
                         @csrf

@@ -80,7 +80,7 @@
         <p style="color: var(--text-gray); font-size: 13px;">Belum ada data.</p>
         @endforelse
 
-        <h4 style="margin-top: 25px;">Warisan Budaya Terpopuler</h4>
+        <h4 style="margin-top: 25px;">Koleksi Budaya Terpopuler</h4>
         @forelse($warisanTerpopuler as $wt)
         <div class="bar-row">
             <div class="bar-label">{{ $wt->warisanBudaya->judul ?? 'Tidak diketahui' }}</div>

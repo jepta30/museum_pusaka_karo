@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Katalog Warisan Budaya')
+@section('title', 'Katalog Koleksi Budaya')
 
 @push('styles')
 <style>
@@ -301,7 +301,7 @@
 @section('content')
 <!-- Banner -->
 <div class="page-banner">
-    <h1 class="page-title">Katalog Warisan Budaya</h1>
+    <h1 class="page-title">Katalog Koleksi Budaya</h1>
     <p class="page-subtitle">Jelajahi dan pelajari arsip digital kebudayaan Karo secara lengkap, mulai dari situs bersejarah, tradisi lisan, hingga mahakarya seni.</p>
 </div>
 
@@ -362,7 +362,7 @@
             <div class="empty-state">
                 <i class="fa-regular fa-folder-open"></i>
                 <h3>Pencarian Tidak Ditemukan</h3>
-                <p style="color: var(--text-gray); margin-top: 10px;">Maaf, tidak ada warisan budaya yang cocok dengan filter pencarian Anda.</p>
+                <p style="color: var(--text-gray); margin-top: 10px;">Maaf, tidak ada koleksi budaya yang cocok dengan filter pencarian Anda.</p>
                 <a href="{{ route('katalog.index') }}" style="display: inline-block; margin-top: 20px; color: var(--primary-red); text-decoration: none; font-weight: 600;">Lihat Semua Koleksi</a>
             </div>
         @endforelse

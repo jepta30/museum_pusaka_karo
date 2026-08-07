@@ -1133,7 +1133,7 @@
             </li>
             <li class="nav-item">
                 <a href="{{ route('warisan.index') }}" class="nav-link {{ request()->routeIs('warisan.*') ? 'active' : '' }}">
-                    <i class="fa-solid fa-book-open"></i> Warisan Budaya
+                    <i class="fa-solid fa-book-open"></i> Koleksi Budaya
                 </a>
             </li>
             <li class="nav-item">

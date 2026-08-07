@@ -404,7 +404,7 @@
     <table class="data-table">
         <thead>
             <tr>
-                <th>Warisan Budaya</th>
+                <th>Koleksi Budaya</th>
                 <th>Nama</th>
                 <th>Isi Komentar</th>
                 <th>Status</th>
@@ -415,7 +415,7 @@
             @forelse($komentars as $k)
             <tr>
                 <td>
-                    <span class="warisan-title">{{ $k->warisanBudaya->judul ?? 'Warisan Dihapus' }}</span>
+                    <span class="warisan-title">{{ $k->warisanBudaya->judul ?? 'Koleksi Dihapus' }}</span>
                 </td>
                 <td>
                     <span class="nama-pengunjung">{{ $k->nama ?? 'Anonim' }}</span>

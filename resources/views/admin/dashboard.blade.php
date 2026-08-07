@@ -112,7 +112,7 @@
     </div>
     
     <div class="kpi-card">
-        <div class="kpi-title">WARISAN BUDAYA</div>
+        <div class="kpi-title">KOLEKSI BUDAYA</div>
         <div class="kpi-value">{{ $totalWarisanBudaya ?? '0' }}</div>
         <div class="kpi-desc">Data Terarsip</div>
     </div>

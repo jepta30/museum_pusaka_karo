@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('header_title', 'Warisan Budaya')
+@section('header_title', 'Koleksi Budaya')
 
 @section('content')
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
@@ -12,8 +12,8 @@
 
 <div class="page-header">
     <div class="page-title">
-        <h3>Kelola Warisan Budaya</h3>
-        <p>Manajemen data daftar warisan budaya Karo</p>
+        <h3>Kelola Koleksi Budaya</h3>
+        <p>Manajemen data daftar koleksi budaya Karo</p>
     </div>
     <div class="header-actions">
         <button type="button" class="btn-add" onclick="openModal('add')">
@@ -90,7 +90,7 @@
             @empty
             <tr>
                 <td colspan="6" style="text-align: center; color: var(--text-gray); padding: 40px;">
-                    Belum ada data warisan budaya.
+                    Belum ada data koleksi budaya.
                 </td>
             </tr>
             @endforelse
@@ -129,7 +129,7 @@
 <div class="modal-overlay" id="warisanModal">
     <div class="modal-content">
         <div class="modal-header">
-            <h4 id="modalTitle">TAMBAH DATA BARU</h4>
+            <h4 id="modalTitle">TAMBAH DATA KOLEKSI</h4>
             <button class="btn-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
         </div>
         
@@ -140,7 +140,7 @@
             <div class="modal-body">
                 <div class="form-grid">
                     <div class="form-group">
-                        <label class="form-label">NAMA WARISAN BUDAYA</label>
+                        <label class="form-label">NAMA KOLEKSI BUDAYA</label>
                         <input type="text" name="judul" id="inputJudul" class="form-control" placeholder="mis. Uis Nipes" required>
                     </div>
                     
@@ -197,12 +197,12 @@
                 
                 <div class="form-group" style="margin-bottom: 20px;">
                     <label class="form-label">DESKRIPSI UMUM</label>
-                    <textarea name="deskripsi" id="inputDeskripsi" class="form-control" style="height: 120px; resize: vertical;" placeholder="Tuliskan gambaran umum warisan budaya ini..." required></textarea>
+                    <textarea name="deskripsi" id="inputDeskripsi" class="form-control" style="height: 120px; resize: vertical;" placeholder="Tuliskan gambaran umum koleksi budaya ini..." required></textarea>
                 </div>
                 
                 <div class="form-group" style="margin-bottom: 20px;">
                     <label class="form-label">SEJARAH & MAKNA FILOSOFIS (Opsional)</label>
-                    <textarea name="sejarah" id="inputSejarah" class="form-control" style="height: 120px; resize: vertical;" placeholder="Tuliskan sejarah, asal usul, atau makna filosofis dari warisan budaya ini..."></textarea>
+                    <textarea name="sejarah" id="inputSejarah" class="form-control" style="height: 120px; resize: vertical;" placeholder="Tuliskan sejarah, asal usul, atau makna filosofis dari koleksi budaya ini..."></textarea>
                 </div>
                 
                 <div class="form-group">
@@ -243,37 +243,71 @@
             document.getElementById('inputLongitude').value = position.lng;
             document.getElementById('mapStatus').innerText = "Koordinat diperbarui secara manual.";
         });
+
+        // Isi nilai awal agar form selalu mengirim koordinat saat disimpan.
+        var initialPosition = marker.getLatLng();
+        document.getElementById('inputLatitude').value = initialPosition.lat;
+        document.getElementById('inputLongitude').value = initialPosition.lng;
+
+        const form = document.getElementById('warisanForm');
+        if (form) {
+            form.addEventListener('submit', function () {
+                if (!document.getElementById('inputLatitude').value && !document.getElementById('inputLongitude').value) {
+                    const position = marker.getLatLng();
+                    document.getElementById('inputLatitude').value = position.lat;
+                    document.getElementById('inputLongitude').value = position.lng;
+                }
+            });
+        }
     }
 
     function searchLocation() {
-        const lokasi = document.getElementById('inputLokasi').value;
+        if (!map) {
+            initMap();
+        }
+        const lokasi = document.getElementById('inputLokasi').value.trim();
         const status = document.getElementById('mapStatus');
-        if(!lokasi) {
+        if (!lokasi) {
             status.innerText = "Ketikkan asal daerah terlebih dahulu.";
             return;
         }
         status.innerText = "Mencari lokasi...";
-        
-        // Tambahkan konteks Kabupaten Karo agar pencarian Nominatim lebih akurat untuk 17 kecamatan & 259 desa
-        const searchQuery = lokasi + ", Kabupaten Karo, Sumatera Utara, Indonesia";
-        
-        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data && data.length > 0) {
-                    const lat = parseFloat(data[0].lat);
-                    const lon = parseFloat(data[0].lon);
-                    map.setView([lat, lon], 14);
-                    marker.setLatLng([lat, lon]);
-                    document.getElementById('inputLatitude').value = lat;
-                    document.getElementById('inputLongitude').value = lon;
-                    status.innerHTML = `<span style="color: #16a34a;"><i class="fa-solid fa-circle-check"></i> Lokasi ditemukan di Kabupaten Karo!</span>`;
-                } else {
-                    status.innerHTML = `<span style="color: #dc2626;"><i class="fa-solid fa-circle-xmark"></i> Lokasi tidak ditemukan. Coba ketik lebih spesifik (misal: nama desa atau kecamatan).</span>`;
-                }
-            }).catch(e => {
-                status.innerText = "Terjadi kesalahan koneksi saat mencari.";
-            });
+
+        const queries = [
+            `${lokasi}, Kabupaten Karo, Sumatera Utara, Indonesia`,
+            `${lokasi}, Sumatera Utara, Indonesia`,
+            `${lokasi}, Indonesia`,
+            lokasi
+        ];
+
+        const trySearch = (index = 0) => {
+            if (index >= queries.length) {
+                status.innerHTML = `<span style="color: #dc2626;"><i class="fa-solid fa-circle-xmark"></i> Lokasi tidak ditemukan. Coba ketik lebih spesifik (misal: nama desa atau kecamatan).</span>`;
+                return;
+            }
+
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=5&addressdetails=1&accept-language=id&q=${encodeURIComponent(queries[index])}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.length > 0) {
+                        const best = data.find(item => item.display_name && item.display_name.toLowerCase().includes('karo')) || data[0];
+                        const lat = parseFloat(best.lat);
+                        const lon = parseFloat(best.lon);
+                        map.setView([lat, lon], 14);
+                        marker.setLatLng([lat, lon]);
+                        document.getElementById('inputLatitude').value = lat;
+                        document.getElementById('inputLongitude').value = lon;
+                        status.innerHTML = `<span style="color: #16a34a;"><i class="fa-solid fa-circle-check"></i> Lokasi ditemukan: ${best.display_name}</span>`;
+                    } else {
+                        trySearch(index + 1);
+                    }
+                })
+                .catch(() => {
+                    status.innerText = "Terjadi kesalahan koneksi saat mencari.";
+                });
+        };
+
+        trySearch();
     }
 
     function openModal(mode, data = null) {
@@ -290,12 +324,12 @@
         document.getElementById('mapStatus').innerText = 'Anda bisa geser pin merah pada peta untuk koordinat yang lebih akurat.';
         
         if (mode === 'add') {
-            title.textContent = 'TAMBAH DATA BARU';
+            title.textContent = 'TAMBAH DATA KOLEKSI';
             form.action = '{{ route("warisan.store") }}';
             method.value = 'POST';
             document.getElementById('inputGambar').required = true;
         } else if (mode === 'edit') {
-            title.textContent = 'UBAH DATA WARISAN';
+            title.textContent = 'UBAH DATA KOLEKSI';
             form.action = '/warisan/' + data.warisan_budaya_id;
             method.value = 'PUT';
             document.getElementById('inputGambar').required = false;

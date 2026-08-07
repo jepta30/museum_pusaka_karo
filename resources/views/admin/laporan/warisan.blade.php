@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('header_title', 'Laporan Warisan Budaya')
+@section('header_title', 'Laporan Koleksi Budaya')
 
 @section('content')
 <style>
@@ -322,8 +322,8 @@
 
 <div class="page-header">
     <div class="page-title">
-        <h3>Laporan Warisan Budaya</h3>
-        <p>Rekap data warisan budaya yang ditambahkan pada periode terpilih.</p>
+        <h3>Laporan Koleksi Budaya</h3>
+        <p>Rekap data koleksi budaya yang ditambahkan pada periode terpilih.</p>
     </div>
     <div style="display: flex; gap: 10px;">
         <a href="{{ route('laporan.warisan.csv', request()->query()) }}" class="btn-outline">
@@ -359,7 +359,7 @@
 <div class="summary-row">
     <div class="summary-box">
         <div class="num">{{ $warisans->total() }}</div>
-        <div class="label">Total Warisan (Periode Ini)</div>
+        <div class="label">Total Koleksi (Periode Ini)</div>
     </div>
     @foreach($totalPerKategori as $tk)
     <div class="summary-box">
@@ -403,7 +403,7 @@
                     <div class="empty-state">
                         <i class="fa-regular fa-box-open"></i>
                         <h4>Tidak Ada Data</h4>
-                        <p>Belum ada warisan budaya yang ditambahkan pada periode ini.</p>
+                        <p>Belum ada koleksi budaya yang ditambahkan pada periode ini.</p>
                     </div>
                 </td>
             </tr>

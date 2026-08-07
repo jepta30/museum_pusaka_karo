@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Laporan Warisan Budaya</title>
+    <title>Laporan Koleksi Budaya</title>
     <style>
         body { font-family: Arial, sans-serif; font-size: 12px; color: #1f2937; margin: 28px; }
         .kop-surat { width: 100%; height: auto; display: block; margin-bottom: 20px; }
@@ -18,7 +18,7 @@
 <body>
     <img src="{{ public_path('images/kop-surat.png') }}" class="kop-surat" alt="Kop Surat">
     <div class="subheader">
-        <div><strong>Laporan:</strong> Warisan Budaya ({{ $dari->translatedFormat('d M Y') }} - {{ $sampai->translatedFormat('d M Y') }})</div>
+        <div><strong>Laporan:</strong> Koleksi Budaya ({{ $dari->translatedFormat('d M Y') }} - {{ $sampai->translatedFormat('d M Y') }})</div>
         <div><strong>Tanggal Cetak:</strong> {{ now()->translatedFormat('d F Y') }}</div>
     </div>
     <table>

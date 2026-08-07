@@ -7,7 +7,7 @@
 <div class="page-header">
     <div class="page-title">
         <h3>Daftar Kategori</h3>
-        <p>Kelola pengelompokan jenis warisan budaya Karo.</p>
+        <p>Kelola pengelompokan jenis koleksi budaya Karo.</p>
     </div>
     <div class="header-actions">
         <button type="button" class="btn-add" onclick="openModal('add')">

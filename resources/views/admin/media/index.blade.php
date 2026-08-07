@@ -25,7 +25,7 @@
 <div class="page-header">
     <div class="page-title">
         <h3>Media Dokumentasi</h3>
-        <p>Kelola foto dan video warisan budaya Karo</p>
+        <p>Kelola foto dan video koleksi budaya Karo</p>
     </div>
     <div class="header-actions">
         <button type="button" class="btn-add" onclick="openModal('add')">
@@ -89,7 +89,7 @@
             <tr>
                 <th width="5%">NO</th>
                 <th width="15%">PREVIEW</th>
-                <th width="30%">JUDUL BUDAYA</th>
+                <th width="30%">JUDUL KOLEKSI</th>
                 <th width="15%">JENIS</th>
                 <th width="20%">NAMA FILE</th>
                 <th width="15%">AKSI</th>
@@ -181,9 +181,9 @@
             <div class="modal-body">
                 <div class="form-grid">
                     <div class="form-group">
-                        <label class="form-label">WARISAN BUDAYA</label>
+                        <label class="form-label">KOLEKSI BUDAYA</label>
                         <select name="warisan_budaya_id" id="inputWarisan" class="form-control" required>
-                            <option value="">-- Pilih Warisan Budaya --</option>
+                            <option value="">-- Pilih Koleksi Budaya --</option>
                             @foreach($warisans as $warisan)
                                 <option value="{{ $warisan->warisan_budaya_id }}">{{ $warisan->judul }}</option>
                             @endforeach

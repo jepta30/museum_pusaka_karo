@@ -14,9 +14,14 @@ class HomeController extends Controller
         $totalWarisan = WarisanBudaya::count();
         $totalKategori = Kategori::count();
         
-        // As per the wireframe stats "21 Titik Persebaran", "14 Kabupaten/Kota"
-        // We will just mock these two for now or calculate from unique locations
-        $totalTitik = WarisanBudaya::distinct('lokasi')->count('lokasi') ?: 21; 
+        // Hitung jumlah titik persebaran berdasarkan data warisan yang benar-benar memiliki koordinat valid
+        $totalTitik = WarisanBudaya::query()
+            ->where('status', 'aktif')
+            ->whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->where('latitude', '!=', 0)
+            ->where('longitude', '!=', 0)
+            ->count();
         $totalKabupaten = 14; 
         
         // Get categories for the grid

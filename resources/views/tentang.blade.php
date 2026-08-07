@@ -67,6 +67,8 @@
         line-height: 1.8;
         font-size: 14.5px;
         margin-bottom: 14px;
+        text-align: justify;
+        text-justify: inter-word;
     }
 
     .profil-section h3 {
@@ -999,7 +1001,7 @@ $todayKey = $dayMap[date('l')] ?? 'senin';
         <h2>Sejarah Singkat Museum</h2>
         
         <p>
-            Museum Pusaka Karo merupakan museum umum dengan koleksi benda-benda warisan budaya asli dari masyarakat Karo yang didapatkan secara hibah ataupun yang dititipkan oleh masyarakat Karo itu sendiri. Museum ini diprakarsai oleh seorang misionaris Katolik asal negeri Belanda bernama <strong>Leonardus Edigius Joosten</strong> atau lebih dikenal dengan sebutan <strong>Pastor Leo</strong>. Museum ini diresmikan oleh Dirjen Pariwisata dan Ekonomi Dr. Ahman Sya dan Mgr. Anicetus B. Sinaga OFMCap.
+            Museum Pusaka Karo merupakan museum umum dengan koleksi benda-benda warisan budaya asli dari masyarakat Karo yang didapatkan secara hibah ataupun yang dititipkan oleh masyarakat Karo itu sendiri. Museum ini diprakarsai oleh seorang misionaris Katolik asal negeri Belanda bernama <strong>Leonardus Edigius Joosten</strong> atau mais h dikenal dengan sebutan <strong>Pastor Leo</strong>. Museum ini diresmikan oleh Dirjen Pariwisata dan Ekonomi Dr. Ahman Sya dan Mgr. Anicetus B. Sinaga OFMCap.
         </p>
         
         <p>
@@ -1202,7 +1204,7 @@ $todayKey = $dayMap[date('l')] ?? 'senin';
                 <ul>
                     <li><i class="fa-solid fa-map-pin"></i>Alamat lengkap: Jl. Perwira No. 3, Gundaling I, Berastagi</li>
                     <li><i class="fa-solid fa-location-dot"></i>Koordinat: 3.132200° N, 98.466500° E</li>
-                    <li><i class="fa-solid fa-car"></i>Akses: Dekat dengan jalan utama dan jalur wisata menuju Danau Toba</li>
+                    <li><i class="fa-solid fa-car"></i>Akses: Dekat dengan jalan utama dan jalur wisata menuju wisata PASAR BUNGA & BUAH serta Bukit Gundaling</li>
                     <li><i class="fa-solid fa-route"></i>Parkir: Tersedia area parkir tamu di sekitar museum</li>
                 </ul>
             </div>

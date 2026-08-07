@@ -336,7 +336,7 @@
         
         <div class="nav-pill" id="navMenu">
             <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">Beranda</a>
-            <a href="{{ route('katalog.index') }}" class="nav-link {{ request()->routeIs('katalog.*') ? 'active' : '' }}">Katalog Warisan</a>
+            <a href="{{ route('katalog.index') }}" class="nav-link {{ request()->routeIs('katalog.*') ? 'active' : '' }}">Katalog Koleksi</a>
             <a href="{{ route('peta.persebaran') }}" class="nav-link {{ request()->routeIs('peta.persebaran') ? 'active' : '' }}">Peta Persebaran</a>
             <a href="{{ route('tentang') }}" class="nav-link {{ request()->routeIs('tentang') ? 'active' : '' }}">Tentang Kami</a>
             <a href="{{ route('login') }}" class="nav-link" style="padding: 10px 15px;"><i class="fa-solid fa-user"></i> Login Admin</a>

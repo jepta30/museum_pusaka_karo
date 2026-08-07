@@ -33,8 +33,8 @@
     <a href="{{ route('laporan.warisan') }}" class="laporan-card">
         <div class="laporan-icon"><i class="fa-solid fa-book-open"></i></div>
         <div class="laporan-text">
-            <h4>Laporan Warisan Budaya</h4>
-            <p>Rekap data warisan budaya yang ditambahkan, dapat difilter per periode (harian/mingguan/bulanan).</p>
+            <h4>Laporan Koleksi Budaya</h4>
+            <p>Rekap data koleksi budaya yang ditambahkan, dapat difilter per periode (harian/mingguan/bulanan).</p>
         </div>
     </a>
 

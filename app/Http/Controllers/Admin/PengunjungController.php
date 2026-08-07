@@ -18,7 +18,7 @@ class PengunjungController extends Controller
         $query = Pengunjung::query();
 
         $totalPengunjung = Pengunjung::count();
-        $todayPengunjung = Pengunjung::whereDate('tanggal', now()->toDateString())->count();
+        $pengunjungHariIni = Pengunjung::whereDate('tanggal', now()->toDateString())->count();
 
         if ($request->filled('q')) {
             $q = $request->q;
@@ -38,7 +38,7 @@ class PengunjungController extends Controller
 
         $pengunjungs = $query->orderBy('created_at', 'asc')->paginate(10)->withQueryString();
 
-        return view('admin.pengunjung.index', compact('pengunjungs', 'totalPengunjung', 'todayPengunjung'));
+        return view('admin.pengunjung.index', compact('pengunjungs', 'totalPengunjung', 'pengunjungHariIni'));
     }
 
     public function store(Request $request)

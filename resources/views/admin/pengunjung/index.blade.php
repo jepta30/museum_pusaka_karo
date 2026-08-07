@@ -456,8 +456,11 @@
         </p>
     </div>
     <div class="header-actions">
-        <a href="{{ route('pengunjung.export') }}" class="btn-outline">
+        <a href="{{ route('pengunjung.export', request()->query()) }}" class="btn-outline">
             <i class="fa-solid fa-file-csv"></i> Unduh CSV
+        </a>
+        <a href="{{ route('pengunjung.export.pdf', request()->query()) }}" class="btn-outline" style="border-color: #b91c1c; color: #b91c1c;" target="_blank">
+            <i class="fa-solid fa-file-pdf"></i> Unduh PDF
         </a>
         <a href="{{ route('home') }}" class="btn-outline" target="_blank">
             <i class="fa-solid fa-globe"></i> Form Publik

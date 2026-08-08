@@ -991,7 +991,7 @@ $todayKey = $dayMap[date('l')] ?? 'senin';
             </div>
             <div class="stat-box">
                 <div class="num">{{ $totalKategori ?? 0 }}</div>
-                <div class="label">Kategori Budaya</div>
+                <div class="label">Jenis Koleksi</div>
             </div>
         </div>
     </div>
@@ -1021,7 +1021,7 @@ $todayKey = $dayMap[date('l')] ?? 'senin';
         </p>
 
         <p>
-            Hingga saat ini Museum Pusaka Karo menyimpan koleksi 1.000-an benda-benda bernilai sejarah yang terdiri dari kategori Etnografi, Geografi dan Sejarah. Mulai dari benda koleksi kategori:
+            Hingga saat ini Museum Pusaka Karo menyimpan koleksi 1.000-an benda-benda bernilai sejarah yang terdiri dari jenis koleksi Etnografi, Geografi dan Sejarah. Mulai dari benda koleksi jenis:
         </p>
 
         <ul class="koleksi-list">
@@ -1097,17 +1097,17 @@ $todayKey = $dayMap[date('l')] ?? 'senin';
             <div class="timeline-card">
                 <div class="timeline-label">2008</div>
                 <h4>Awal Inspirasi</h4>
-                <p>Konsep museum digagas oleh pemangku budaya dan sejarawan Karo sebagai media pelestarian dan edukasi.</p>
+                <p>Konsep museum yang digagas oleh misionaris Katolik dari Belanda untuk pelestarian Budaya Karo .</p>
             </div>
             <div class="timeline-card">
-                <div class="timeline-label">2014</div>
+                <div class="timeline-label">2010</div>
                 <h4>Pengumpulan Koleksi</h4>
                 <p>Mulai mengumpulkan artefak dan dokumentasi dari berbagai daerah untuk membangun koleksi representatif budaya Karo.</p>
             </div>
             <div class="timeline-card">
-                <div class="timeline-label">2019</div>
+                <div class="timeline-label">2013</div>
                 <h4>Pembukaan Publik</h4>
-                <p>Museum resmi dibuka untuk umum, menawarkan ruang pameran dan informasi yang dapat dijangkau oleh masyarakat lokal dan wisatawan.</p>
+                <p>Museum resmi dibuka untuk umum, menawarkan ruang pameran dan informasi yang dapat dijangkau oleh masyarakat lokal dan wisatawan mancanegara.</p>
             </div>
             <div class="timeline-card">
                 <div class="timeline-label">2026</div>

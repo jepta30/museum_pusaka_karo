@@ -44,7 +44,7 @@
         <input type="text" name="q" value="{{ request('q') }}" class="search-input" placeholder="Cari judul atau lokasi...">
         <!-- Kategori filter is static for now, can implement later if needed, but we keep the visual -->
         <select class="select-input" disabled style="opacity: 0.7;" title="Fitur filter kategori akan segera hadir">
-            <option>Semua Kategori</option>
+            <option>Semua Jenis Koleksi</option>
         </select>
         <button type="submit" class="btn-search"><i class="fa-solid fa-search"></i> Cari</button>
     </div>
@@ -56,7 +56,7 @@
             <tr>
                 <th width="5%">NO</th>
                 <th width="25%">NAMA</th>
-                <th width="20%">KATEGORI</th>
+                <th width="20%">JENIS KOLEKSI</th>
                 <th width="20%">LOKASI</th>
                 <th width="15%">STATUS</th>
                 <th width="15%">AKSI</th>
@@ -145,8 +145,8 @@
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label">KATEGORI</label>
-                        <select name="kategori_id" id="inputKategori" class="form-control" required>
+                        <label class="form-label">JENIS KOLEKSI</label>
+                            <select name="kategori_id" id="inputKategori" class="form-control" required>
                             @foreach($kategoris as $kat)
                                 <option value="{{ $kat->kategori_id }}">{{ $kat->nama }}</option>
                             @endforeach

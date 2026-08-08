@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Peta Persebaran')
+@section('title', 'Peta Titik Asal')
 
 @push('styles')
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
@@ -233,9 +233,9 @@
 <section class="page-hero">
     <div class="container mx-auto px-6 lg:px-20">
         <div class="hero-card">
-            <div class="info-headline">Peta Persebaran</div>
+            <div class="info-headline">Peta Titik Asal</div>
             <h1>Temukan lokasi museum dan warisan budaya Karo secara visual.</h1>
-            <p>Jelajahi peta interaktif kami untuk melihat titik persebaran museum, lokasi budaya, dan informasi penting dalam satu tampilan modern.</p>
+            <p>Jelajahi peta interaktif kami untuk melihat titik asal museum, lokasi budaya, dan informasi penting dalam satu tampilan modern.</p>
         </div>
     </div>
 </section>
@@ -283,7 +283,7 @@
                     </div>
                 </div>
                 <div class="glass-panel detail-card">
-                    <h3 class="text-2xl font-semibold text-slate-900">Titik Warisan Budaya</h3>
+                    <h3 class="text-2xl font-semibold text-slate-900">Titik Asal</h3>
                     <div class="map-list-container">
                         <ul>
                             @forelse($markerPoints as $point)
@@ -375,6 +375,34 @@
                 });
             });
         });
+
+        // Check for coords query parameter to focus a specific point
+        try {
+            const params = new URLSearchParams(window.location.search);
+            const coordsParam = params.get('coords');
+            if (coordsParam) {
+                // If coords match an existing point, open its popup
+                const matchedIndex = points.findIndex(p => p.coords.join(',') === coordsParam);
+                if (matchedIndex >= 0 && pointMarkers[matchedIndex]) {
+                    pointMarkers[matchedIndex].openPopup();
+                    map.setView(pointMarkers[matchedIndex].getLatLng(), 14, { animate: true });
+                } else {
+                    // Otherwise parse coords and center map with a temporary popup
+                    const parts = coordsParam.split(',').map(Number);
+                    if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
+                        const latlng = parts;
+                        map.setView(latlng, 14, { animate: true });
+                        L.popup({ closeButton: true })
+                            .setLatLng(latlng)
+                            .setContent('<div style="font-weight:700;">Lokasi asal</div>')
+                            .openOn(map);
+                    }
+                }
+            }
+        } catch (e) {
+            // ignore malformed params
+            console.warn('Could not parse coords param', e);
+        }
     });
 </script>
 @endpush

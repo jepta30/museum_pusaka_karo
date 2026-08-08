@@ -4,7 +4,7 @@
 
 <div class="card" style="max-width: 800px; margin: 0 auto;">
     <div class="chart-header">
-        Tambah Kategori Budaya Baru
+        Tambah Jenis Koleksi Baru
     </div>
 
     @if($errors->any())
@@ -21,7 +21,7 @@
     <form action="{{ route('kategori.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
-            <label class="form-label">Nama Kategori</label>
+            <label class="form-label">Nama Jenis Koleksi</label>
             <input type="text" name="nama" class="form-control" placeholder="Contoh: Senjata Tradisional" value="{{ old('nama') }}" required>
         </div>
 
@@ -33,7 +33,7 @@
 
         <div class="form-group" style="margin-bottom: 25px;">
             <label class="form-label">Deskripsi Singkat</label>
-            <textarea name="deskripsi" class="form-control" style="height: 120px; resize: vertical;" placeholder="Tuliskan deskripsi kategori di sini..." required>{{ old('deskripsi') }}</textarea>
+            <textarea name="deskripsi" class="form-control" style="height: 120px; resize: vertical;" placeholder="Tuliskan deskripsi jenis koleksi di sini..." required>{{ old('deskripsi') }}</textarea>
         </div>
 
         <div style="display: flex; gap: 15px;">

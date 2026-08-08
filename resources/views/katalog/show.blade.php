@@ -461,7 +461,7 @@
     <div class="detail-header">
         <h1 class="detail-title">{{ $warisan->judul }}</h1>
         <div class="detail-location">
-            <i class="fa-solid fa-location-dot"></i> {{ $warisan->lokasi }}
+            <i class="fa-solid fa-location-dot"></i> <a href="{{ route('peta.persebaran') }}" style="color:inherit; text-decoration:none;">Museum Pusaka Karo</a>
         </div>
     </div>
 
@@ -482,16 +482,22 @@
             <div class="info-card-title">Informasi Utama</div>
             <ul class="info-list">
                 <li class="info-item">
-                    <span class="info-label">Kategori</span>
+                    <span class="info-label">Jenis Koleksi</span>
                     <span class="info-value">{{ $warisan->kategori->nama ?? 'Umum' }}</span>
                 </li>
                 <li class="info-item">
                     <span class="info-label">Lokasi</span>
-                    <span class="info-value">{{ $warisan->lokasi }}</span>
+                    <span class="info-value"><a href="{{ route('peta.persebaran') }}" style="color:inherit; text-decoration:none;">Museum Pusaka Karo</a></span>
                 </li>
                 <li class="info-item">
                     <span class="info-label">Asal</span>
-                    <span class="info-value">{{ $warisan->asal ?? '-' }}</span>
+                    <span class="info-value">
+                        @if($warisan->latitude && $warisan->longitude)
+                            <a href="{{ route('peta.persebaran', ['coords' => $warisan->latitude . ',' . $warisan->longitude]) }}" style="color:inherit; text-decoration:none;">{{ $warisan->asal ?? '-' }}</a>
+                        @else
+                            {{ $warisan->asal ?? '-' }}
+                        @endif
+                    </span>
                 </li>
                 <li class="info-item">
                     <span class="info-label">Status</span>

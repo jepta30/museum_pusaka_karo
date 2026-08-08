@@ -106,9 +106,9 @@
 <!-- KPI Cards -->
 <div class="kpi-grid">
     <div class="kpi-card">
-        <div class="kpi-title">KATEGORI BUDAYA</div>
+        <div class="kpi-title">JENIS KOLEKSI</div>
         <div class="kpi-value">{{ $totalKategori ?? '0' }}</div>
-        <div class="kpi-desc">Total Kategori</div>
+        <div class="kpi-desc">Total Jenis Koleksi</div>
     </div>
     
     <div class="kpi-card">

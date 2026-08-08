@@ -26,7 +26,7 @@
             <tr>
                 <th>ID</th>
                 <th>Judul</th>
-                <th>Kategori</th>
+                <th>Jenis Koleksi</th>
                 <th>Lokasi</th>
                 <th>Asal</th>
                 <th>Kondisi</th>

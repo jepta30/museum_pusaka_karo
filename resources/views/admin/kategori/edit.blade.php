@@ -4,7 +4,7 @@
 
 <div class="card" style="max-width: 800px; margin: 0 auto;">
     <div class="chart-header">
-        Ubah Kategori Budaya
+        Ubah Jenis Koleksi
     </div>
 
     @if($errors->any())
@@ -23,7 +23,7 @@
         @method('PUT')
         
         <div class="form-group">
-            <label class="form-label">Nama Kategori</label>
+            <label class="form-label">Nama Jenis Koleksi</label>
             <input type="text" name="nama" class="form-control" value="{{ old('nama', $kategori->nama) }}" required>
         </div>
 

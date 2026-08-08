@@ -1,17 +1,17 @@
 @extends('layouts.admin')
 
-@section('header_title', 'Kategori Budaya')
+@section('header_title', 'Jenis Koleksi')
 
 @section('content')
 
 <div class="page-header">
     <div class="page-title">
-        <h3>Daftar Kategori</h3>
+        <h3>Daftar Jenis Koleksi</h3>
         <p>Kelola pengelompokan jenis koleksi budaya Karo.</p>
     </div>
     <div class="header-actions">
         <button type="button" class="btn-add" onclick="openModal('add')">
-            <i class="fa-solid fa-plus"></i> Tambah Kategori
+            <i class="fa-solid fa-plus"></i> Tambah Jenis Koleksi
         </button>
     </div>
 </div>
@@ -34,7 +34,7 @@
 @endif
 
 <form method="GET" class="filter-bar" style="margin-bottom: 20px;">
-    <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama kategori..." class="search-input" style="width: 300px;">
+    <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama jenis koleksi..." class="search-input" style="width: 300px;">
     <button type="submit" class="btn-search"><i class="fa-solid fa-search"></i> Cari</button>
 </form>
 
@@ -44,7 +44,7 @@
             <tr>
                 <th width="5%">NO</th>
                 <th width="10%">IKON</th>
-                <th width="25%">NAMA KATEGORI</th>
+                <th width="25%">NAMA JENIS KOLEKSI</th>
                 <th width="35%">DESKRIPSI</th>
                 <th width="15%">JUMLAH ITEM</th>
                 <th width="10%">AKSI</th>
@@ -83,7 +83,7 @@
             @empty
             <tr>
                 <td colspan="6" style="text-align: center; color: var(--text-gray); padding: 40px;">
-                    Belum ada data kategori budaya.
+                    Belum ada data jenis koleksi.
                 </td>
             </tr>
             @endforelse
@@ -93,7 +93,7 @@
     <!-- Footer / Pagination Area -->
     <div class="table-footer">
         <div>
-            Menampilkan {{ $kategoris->firstItem() ?? 0 }} sampai {{ $kategoris->lastItem() ?? 0 }} dari {{ $kategoris->total() }} kategori
+            Menampilkan {{ $kategoris->firstItem() ?? 0 }} sampai {{ $kategoris->lastItem() ?? 0 }} dari {{ $kategoris->total() }} jenis koleksi
         </div>
         
         <!-- Minimalist Pagination -->
@@ -124,7 +124,7 @@
 <div class="modal-overlay" id="kategoriModal">
     <div class="modal-content">
         <div class="modal-header">
-            <h4 id="modalTitle">TAMBAH KATEGORI BARU</h4>
+            <h4 id="modalTitle">TAMBAH JENIS KOLEKSI BARU</h4>
             <button class="btn-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
         </div>
         
@@ -134,17 +134,17 @@
             
             <div class="modal-body">
                 <div class="form-group">
-                    <label class="form-label">NAMA KATEGORI</label>
+                    <label class="form-label">NAMA JENIS KOLEKSI</label>
                     <input type="text" name="nama" id="inputNama" class="form-control" placeholder="mis. Pakaian Adat" required>
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label">DESKRIPSI</label>
-                    <textarea name="deskripsi" id="inputDeskripsi" class="form-control" style="height: 100px; resize: vertical;" placeholder="Tuliskan deskripsi kategori ini..." required></textarea>
+                    <textarea name="deskripsi" id="inputDeskripsi" class="form-control" style="height: 100px; resize: vertical;" placeholder="Tuliskan deskripsi jenis koleksi ini..." required></textarea>
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label">IKON / GAMBAR KATEGORI</label>
+                    <label class="form-label">IKON / GAMBAR JENIS KOLEKSI</label>
                     <div class="upload-area">
                         <i class="fa-solid fa-arrow-up-from-bracket upload-icon"></i>
                         <div class="upload-text">Seret file ke sini atau klik untuk unggah</div>
@@ -178,12 +178,12 @@
         document.getElementById('fileNameDisplay').textContent = '';
         
         if (mode === 'add') {
-            title.textContent = 'TAMBAH KATEGORI BARU';
+            title.textContent = 'TAMBAH JENIS KOLEKSI BARU';
             form.action = '{{ route("kategori.store") }}';
             method.value = 'POST';
             document.getElementById('inputIcon').required = true;
         } else if (mode === 'edit') {
-            title.textContent = 'UBAH DATA KATEGORI';
+            title.textContent = 'UBAH DATA JENIS KOLEKSI';
             form.action = '/kategori/' + data.kategori_id;
             method.value = 'PUT';
             document.getElementById('inputIcon').required = false;

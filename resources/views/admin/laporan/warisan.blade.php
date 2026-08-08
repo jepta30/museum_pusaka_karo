@@ -342,7 +342,7 @@
         <option value="bulanan" {{ $periode == 'bulanan' ? 'selected' : '' }}>Bulanan</option>
     </select>
     <select name="kategori_id" onchange="this.form.submit()">
-        <option value="all" {{ request('kategori_id') == 'all' || !request('kategori_id') ? 'selected' : '' }}>Semua Kategori</option>
+        <option value="all" {{ request('kategori_id') == 'all' || !request('kategori_id') ? 'selected' : '' }}>Semua Jenis Koleksi</option>
         @foreach($kategoris as $kat)
             <option value="{{ $kat->kategori_id }}" {{ request('kategori_id') == $kat->kategori_id ? 'selected' : '' }}>
                 {{ $kat->nama }}
@@ -374,7 +374,7 @@
         <thead>
             <tr>
                 <th>Judul</th>
-                <th>Kategori</th>
+                <th>Jenis Koleksi</th>
                 <th>Lokasi</th>
                 <th>Status</th>
                 <th>Dilihat</th>

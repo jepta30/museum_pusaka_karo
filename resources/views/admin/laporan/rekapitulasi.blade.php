@@ -40,16 +40,16 @@
     </div>
 </div>
 
-<div class="summary-grid">
+    <div class="summary-grid">
     <div class="summary-box"><div class="num">{{ $totalWarisan }}</div><div class="label">Total Koleksi Budaya</div></div>
-    <div class="summary-box"><div class="num">{{ $totalKategori }}</div><div class="label">Total Kategori</div></div>
+    <div class="summary-box"><div class="num">{{ $totalKategori }}</div><div class="label">Total Jenis Koleksi</div></div>
     <div class="summary-box"><div class="num">{{ $totalMedia }}</div><div class="label">Total Media</div></div>
     <div class="summary-box"><div class="num">{{ $totalKomentar }}</div><div class="label">Total Komentar</div></div>
 </div>
 
 <div class="grid-2">
     <div class="panel">
-        <h4>Koleksi Budaya per Kategori</h4>
+        <h4>Koleksi Budaya per Jenis Koleksi</h4>
         @php $maxTotal = $perKategori->max('total') ?: 1; @endphp
         @forelse($perKategori as $pk)
         <div class="bar-row">
@@ -58,7 +58,7 @@
             <div class="bar-value">{{ $pk->total }}</div>
         </div>
         @empty
-        <p style="color: var(--text-gray); font-size: 13px;">Belum ada data kategori.</p>
+        <p style="color: var(--text-gray); font-size: 13px;">Belum ada data jenis koleksi.</p>
         @endforelse
     </div>
 

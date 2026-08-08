@@ -60,9 +60,9 @@
         </div>
     </div>
     <div class="filter-item select">
-        <label class="filter-label">Kategori Budaya</label>
+        <label class="filter-label">Jenis Koleksi</label>
         <select name="kategori_id" class="select-input">
-            <option value="all">-- Semua Kategori --</option>
+            <option value="all">-- Semua Jenis Koleksi --</option>
             @foreach($kategoris as $kat)
                 <option value="{{ $kat->kategori_id }}" {{ request('kategori_id') == $kat->kategori_id ? 'selected' : '' }}>
                     {{ $kat->nama }}

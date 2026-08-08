@@ -58,7 +58,7 @@
         <div class="laporan-icon"><i class="fa-solid fa-chart-pie"></i></div>
         <div class="laporan-text">
             <h4>Rekapitulasi & Statistik</h4>
-            <p>Ringkasan agregat: jumlah warisan per kategori, media, dan rasio komentar disetujui.</p>
+            <p>Ringkasan agregat: jumlah warisan per jenis koleksi, media, dan rasio komentar disetujui.</p>
         </div>
     </a>
 

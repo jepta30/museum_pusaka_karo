@@ -18,14 +18,14 @@
 <body>
     <img src="{{ public_path('images/kop-surat.png') }}" class="kop-surat" alt="Kop Surat">
     <div class="subheader">
-        <div><strong>Laporan:</strong> Rekapitulasi Data Budaya per Kategori</div>
+        <div><strong>Laporan:</strong> Rekapitulasi Data Budaya per Jenis Koleksi</div>
         <div><strong>Tanggal Cetak:</strong> {{ now()->translatedFormat('d F Y') }}</div>
     </div>
     <table>
         <thead>
             <tr>
                 <th>No</th>
-                <th>Kategori Budaya</th>
+                <th>Jenis Koleksi</th>
                 <th>Jumlah Warisan Budaya</th>
             </tr>
         </thead>

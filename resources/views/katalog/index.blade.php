@@ -314,9 +314,9 @@
         </div>
         
         <div class="form-group category">
-            <label class="form-label">Kategori Budaya</label>
+            <label class="form-label">Jenis Koleksi</label>
             <select name="kategori_id" class="form-control">
-                <option value="all">Semua Kategori</option>
+                <option value="all">Semua Jenis Koleksi</option>
                 @foreach($kategoris as $kategori)
                     <option value="{{ $kategori->kategori_id }}" {{ request('kategori_id') == $kategori->kategori_id ? 'selected' : '' }}>
                         {{ $kategori->nama }}

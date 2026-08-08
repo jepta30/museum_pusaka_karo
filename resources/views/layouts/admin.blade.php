@@ -1128,7 +1128,7 @@
             </li>
             <li class="nav-item">
                 <a href="{{ route('kategori.index') }}" class="nav-link {{ request()->routeIs('kategori.*') ? 'active' : '' }}">
-                    <i class="fa-solid fa-layer-group"></i> Kategori Budaya
+                    <i class="fa-solid fa-layer-group"></i> Jenis Koleksi
                 </a>
             </li>
             <li class="nav-item">

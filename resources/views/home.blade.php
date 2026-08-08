@@ -614,11 +614,11 @@
         </div>
         <div class="stat-item">
             <div class="stat-number">{{ $totalKategori }}</div>
-            <div class="stat-label">Kategori Budaya</div>
+            <div class="stat-label">Jenis Koleksi</div>
         </div>
         <div class="stat-item">
             <div class="stat-number">{{ $totalTitik }}</div>
-            <div class="stat-label">Titik Persebaran</div>
+            <div class="stat-label">Titik Asal</div>
         </div>
     </div>
 </div>
@@ -643,7 +643,7 @@
 <!-- Category Section -->
 <section class="section">
     <div class="section-header">
-        <h2 class="section-title">Kategori Budaya</h2>
+        <h2 class="section-title">Jenis Koleksi</h2>
         <a href="{{ route('katalog.index') }}" class="link-all">Lihat Semua ></a>
     </div>
 

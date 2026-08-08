@@ -159,7 +159,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label">LOKASI PENEMUAN / KEBERADAAN</label>
+                        <label class="form-label">KEBERADAAN</label>
                         <input type="text" name="lokasi" id="inputLokasi" class="form-control" placeholder="mis. Kabanjahe, Tanah Karo" required>
                     </div>
                     
@@ -187,7 +187,7 @@
                 <div class="form-group" style="margin-bottom: 20px;">
                     <label class="form-label">TITIK KOORDINAT PETA (Latitude & Longitude)</label>
                     <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                        <button type="button" class="btn-outline" onclick="searchLocation()" style="font-size: 12px; padding: 8px 12px;"><i class="fa-solid fa-magnifying-glass-location"></i> Cari Lokasi di Peta</button>
+                        <button type="button" class="btn-outline" onclick="searchLocation()" style="font-size: 12px; padding: 8px 12px;"><i class="fa-solid fa-magnifying-glass-location"></i> Cari Asal di Peta</button>
                         <span id="mapStatus" style="font-size: 12px; color: var(--text-gray); align-self: center;">Anda bisa geser pin merah pada peta untuk koordinat yang lebih akurat.</span>
                     </div>
                     <div id="mapForm" style="height: 250px; width: 100%; border-radius: 12px; border: 1px solid rgba(216, 224, 235, 0.95); z-index: 1;"></div>
@@ -265,19 +265,19 @@
         if (!map) {
             initMap();
         }
-        const lokasi = document.getElementById('inputLokasi').value.trim();
+        const asal = document.getElementById('inputAsal').value.trim();
         const status = document.getElementById('mapStatus');
-        if (!lokasi) {
+        if (!asal) {
             status.innerText = "Ketikkan asal daerah terlebih dahulu.";
             return;
         }
-        status.innerText = "Mencari lokasi...";
+        status.innerText = "Mencari lokasi berdasarkan asal daerah...";
 
         const queries = [
-            `${lokasi}, Kabupaten Karo, Sumatera Utara, Indonesia`,
-            `${lokasi}, Sumatera Utara, Indonesia`,
-            `${lokasi}, Indonesia`,
-            lokasi
+            `${asal}, Kabupaten Karo, Sumatera Utara, Indonesia`,
+            `${asal}, Sumatera Utara, Indonesia`,
+            `${asal}, Indonesia`,
+            asal
         ];
 
         const trySearch = (index = 0) => {

@@ -251,11 +251,11 @@
                     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div>
                             <p class="text-sm uppercase tracking-[0.24em] text-orange-600">Interaktif & Real-time</p>
-                            <h2 class="mt-3 text-3xl font-semibold text-slate-900">Peta lokasi dan budaya.</h2>
+                            <h2 class="mt-3 text-3xl font-semibold text-slate-900">Peta Titik Asal Budaya</h2>
                         </div>
-                        <div class="text-sm text-slate-500">Klik marker untuk detail lokasi.</div>
+                        <div class="text-sm text-slate-500">Klik marker untuk melihat detail titik asal.</div>
                     </div>
-                    <p class="map-caption">Peta ini dibuat untuk membantu pengunjung memahami sebaran lokasi museum dan tempat penting warisan budaya Karo.</p>
+                    <p class="map-caption">Peta ini dibuat untuk membantu pengunjung memahami titik asal museum dan tempat penting warisan budaya Karo.</p>
                 </div>
             </div>
 
@@ -278,8 +278,16 @@
                         </div>
                         <div class="stat-card">
                             <h3>{{ count($markerPoints) }}</h3>
-                            <span>Titik Lokasi Budaya</span>
+                            <span>Titik Asal</span>
                         </div>
+                    </div>
+                    <div class="mt-6 flex flex-wrap gap-3">
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=3.12095,98.42346&travelmode=driving" target="_blank" rel="noopener" class="btn-direction">
+                            Arahkan ke Museum
+                        </a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=3.12095,98.42346&travelmode=walking" target="_blank" rel="noopener" class="btn-direction">
+                            Jalan ke Museum
+                        </a>
                     </div>
                 </div>
                 <div class="glass-panel detail-card">
@@ -290,11 +298,16 @@
                                 <li class="map-item" data-index="{{ $loop->index }}" data-coords="{{ implode(',', $point['coords']) }}">
                                     <div class="map-item-content">
                                         <h4 class="text-lg font-semibold text-slate-900">{{ $point['judul'] }}</h4>
-                                        <p class="text-slate-600">{{ $point['lokasi'] }}</p>
+                                        <p class="text-slate-600">{{ $point['asal'] ?? $point['lokasi'] }}</p>
                                     </div>
-                                    <a href="https://www.google.com/maps/dir/?api=1&origin=3.12095,98.42346&destination={{ implode(',', $point['coords']) }}&travelmode=driving" target="_blank" rel="noopener" class="btn-direction" onclick="event.stopPropagation()">
-                                        Arahkan
-                                    </a>
+                                    <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
+                                        <a href="https://www.google.com/maps/dir/?api=1&origin=3.12095,98.42346&destination={{ implode(',', $point['coords']) }}&travelmode=driving" target="_blank" rel="noopener" class="btn-direction" onclick="event.stopPropagation()">
+                                            Arahkan ke Titik Asal
+                                        </a>
+                                        <a href="https://www.google.com/maps/dir/?api=1&origin={{ implode(',', $point['coords']) }}&destination=3.12095,98.42346&travelmode=driving" target="_blank" rel="noopener" class="btn-direction" onclick="event.stopPropagation()">
+                                            Arahkan ke Museum
+                                        </a>
+                                    </div>
                                 </li>
                             @empty
                                 <li>
@@ -332,7 +345,15 @@
         const museumMarker = L.marker(center).addTo(map);
         museumMarker.bindPopup(`
             <div style="font-weight:700; margin-bottom: 6px;">Museum Pusaka Karo</div>
-            <div style="font-size:0.95rem; color:#475569;">Jl. Perwira No. 3, Gundaling I, Berastagi</div>
+            <div style="font-size:0.95rem; color:#475569; margin-bottom: 10px;">Jl. Perwira No. 3, Gundaling I, Berastagi</div>
+            <div style="display:flex; gap: 8px; flex-wrap: wrap; margin-top: 4px;">
+                <a href="https://www.google.com/maps/dir/?api=1&destination=3.12095,98.42346&travelmode=driving" target="_blank" rel="noopener" style="display:inline-flex; padding:8px 12px; border-radius:999px; background:#7a1b1b; color:#fff; text-decoration:none; font-size:0.9rem; font-weight:700;">
+                    Arahkan
+                </a>
+                <a href="https://www.google.com/maps/dir/?api=1&destination=3.12095,98.42346&travelmode=walking" target="_blank" rel="noopener" style="display:inline-flex; padding:8px 12px; border-radius:999px; background:#0f172a; color:#fff; text-decoration:none; font-size:0.9rem; font-weight:700;">
+                    Jalan
+                </a>
+            </div>
         `).openPopup();
 
         L.circle(center, {
@@ -350,10 +371,16 @@
             const marker = L.marker(point.coords).addTo(map);
             marker.bindPopup(`
                 <div style="font-weight:700; margin-bottom: 6px;">${point.judul}</div>
-                <div style="font-size:0.95rem; color:#475569; margin-bottom: 10px;">${point.lokasi}</div>
-                <a href="https://www.google.com/maps/dir/?api=1&origin=${center.join(',')}&destination=${point.coords.join(',')}&travelmode=driving" target="_blank" rel="noopener" style="display:inline-flex; padding:8px 12px; border-radius:999px; background:#7a1b1b; color:#fff; text-decoration:none; font-size:0.95rem; font-weight:700;">
-                    Arahkan
-                </a>
+                <div style="font-size:0.95rem; color:#475569; margin-bottom: 4px;">${point.asal ? 'Asal: ' + point.asal : point.lokasi}</div>
+                <div style="font-size:0.85rem; color:#64748b; margin-bottom: 10px;">Lokasi peta: ${point.lokasi}</div>
+                <div style="display:flex; gap: 8px; flex-wrap: wrap; margin-top: 4px;">
+                    <a href="https://www.google.com/maps/dir/?api=1&origin=${center.join(',')}&destination=${point.coords.join(',')}&travelmode=driving" target="_blank" rel="noopener" style="display:inline-flex; padding:8px 12px; border-radius:999px; background:#7a1b1b; color:#fff; text-decoration:none; font-size:0.95rem; font-weight:700;">
+                        Arahkan ke Titik Asal
+                    </a>
+                    <a href="https://www.google.com/maps/dir/?api=1&origin=${point.coords.join(',')}&destination=${center.join(',')}&travelmode=driving" target="_blank" rel="noopener" style="display:inline-flex; padding:8px 12px; border-radius:999px; background:#0f172a; color:#fff; text-decoration:none; font-size:0.95rem; font-weight:700;">
+                        Arahkan ke Museum
+                    </a>
+                </div>
             `);
             markers.push(marker);
             pointMarkers.push(marker);

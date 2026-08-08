@@ -201,38 +201,60 @@
     /* GALLERY GRID in Tab */
     .gallery-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
+        grid-template-columns: repeat(3, minmax(180px, 1fr));
+        gap: 18px;
     }
     
     .gallery-item {
         width: 100%;
-        aspect-ratio: 1;
-        border-radius: 8px;
+        border-radius: 12px;
         overflow: hidden;
-        background-color: #f1f5f9;
+        background-color: #f8fafc;
         position: relative;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     
-    .gallery-item img, .gallery-item video {
+    .gallery-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 25px rgba(15, 23, 42, 0.08);
+    }
+    
+    .gallery-item img,
+    .gallery-item video {
         width: 100%;
-        height: 100%;
+        min-height: 170px;
         object-fit: cover;
+        display: block;
+    }
+
+    .gallery-caption {
+        padding: 12px 14px;
+        background: #ffffff;
+        color: #334155;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        border-top: 1px solid rgba(226, 232, 240, 0.8);
+        min-height: 48px;
+    }
+
+    .gallery-item:not(.gallery-video):hover .gallery-caption {
+        background: #f1f5f9;
     }
 
     .play-icon {
         font-size: 24px;
         color: white;
-        background: var(--primary-red);
-        width: 60px;
-        height: 60px;
+        background: rgba(122, 27, 27, 0.95);
+        width: 52px;
+        height: 52px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding-left: 4px;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-        transition: transform 0.2s;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.1);
+        transition: transform 0.2s ease;
     }
 
     .gallery-video {
@@ -538,13 +560,21 @@
                     @if($media->jenis_media == 'foto')
                         <div class="gallery-item">
                             <img src="{{ Storage::url($media->file_media) }}" alt="{{ $media->keterangan }}">
+                            @if($media->keterangan)
+                                <div class="gallery-caption">{{ $media->keterangan }}</div>
+                            @endif
                         </div>
                     @elseif($media->jenis_media == 'video')
                         <div class="gallery-item gallery-video" onclick="playVideoPremium(this)">
                             <video src="{{ Storage::url($media->file_media) }}" class="video-element" preload="metadata"></video>
                             <div class="video-overlay">
-                                <div class="play-icon"><i class="fa-solid fa-play"></i></div>
+                                <div>
+                                    <div class="play-icon"><i class="fa-solid fa-play"></i></div>
+                                </div>
                             </div>
+                            @if($media->keterangan)
+                                <div class="gallery-caption">{{ $media->keterangan }}</div>
+                            @endif
                         </div>
                     @endif
                 @endforeach

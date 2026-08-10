@@ -17,8 +17,11 @@ class KoleksiController extends Controller
 
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where('nama_koleksi', 'LIKE', "%{$search}%")
-                  ->orWhere('nama_pemilik', 'LIKE', "%{$search}%");
+            $query->where(function ($sub) use ($search) {
+                $sub->where('nama_koleksi', 'LIKE', "%{$search}%")
+                    ->orWhere('nama_pemilik', 'LIKE', "%{$search}%")
+                    ->orWhere('nomor_koleksi', 'LIKE', "%{$search}%");
+            });
         }
 
         if ($request->filled('jenis') && $request->jenis != 'all') {
@@ -120,9 +123,24 @@ class KoleksiController extends Controller
      * Export koleksi ke CSV
      * ===== PERBAIKAN: Method ini dipanggil oleh route koleksi.export =====
      */
-    public function exportCsv(): StreamedResponse
+    public function exportCsv(Request $request): StreamedResponse
     {
-        $koleksis = Koleksi::orderBy('created_at', 'desc')->get();
+        $query = Koleksi::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($sub) use ($search) {
+                $sub->where('nama_koleksi', 'LIKE', "%{$search}%")
+                    ->orWhere('nama_pemilik', 'LIKE', "%{$search}%")
+                    ->orWhere('nomor_koleksi', 'LIKE', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('jenis') && $request->jenis != 'all') {
+            $query->where('jenis_koleksi', $request->jenis);
+        }
+
+        $koleksis = $query->get()->sortBy('nomor_koleksi', SORT_NATURAL)->values();
 
         $filename = 'buku-induk-koleksi-' . now()->format('Ymd_His') . '.csv';
 
@@ -164,12 +182,12 @@ class KoleksiController extends Controller
     {
         $query = Koleksi::query();
 
-        if ($request->filled('q')) {
-            $q = $request->q;
-            $query->where(function ($sub) use ($q) {
-                $sub->where('nama_koleksi', 'like', "%{$q}%")
-                    ->orWhere('nama_pemilik', 'like', "%{$q}%")
-                    ->orWhere('jenis_koleksi', 'like', "%{$q}%");
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($sub) use ($search) {
+                $sub->where('nama_koleksi', 'like', "%{$search}%")
+                    ->orWhere('nama_pemilik', 'like', "%{$search}%")
+                    ->orWhere('nomor_koleksi', 'like', "%{$search}%");
             });
         }
 
@@ -177,7 +195,10 @@ class KoleksiController extends Controller
             $query->where('jenis_koleksi', $request->jenis);
         }
 
-        $koleksis = $query->orderBy('nomor_koleksi')->get();
+        $koleksis = $query->get()->sortBy('nomor_koleksi', SORT_NATURAL)->values();
+
+        set_time_limit(300);
+        ini_set('memory_limit', '1G');
 
         $pdf = Pdf::loadView('admin.koleksi.pdf', compact('koleksis'))
             ->setPaper('a4', 'landscape'); // Use landscape for wide tables

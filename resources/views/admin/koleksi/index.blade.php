@@ -421,21 +421,23 @@
 
 {{-- FILTER --}}
 <div class="filter-section">
-    <div class="search-box">
-        <i class="fa-solid fa-search"></i>
-        <input type="text" placeholder="Cari nama koleksi / pemilik..." id="searchInput" onkeyup="filterTable()">
-    </div>
-    <select id="jenisFilter" onchange="filterTable()">
-        <option value="all">Semua Jenis</option>
-        @if(isset($jenisKoleksiOptions))
-            @foreach($jenisKoleksiOptions as $jenis)
-                <option value="{{ $jenis }}">{{ $jenis }}</option>
-            @endforeach
-        @endif
-    </select>
-    <button class="btn-filter" onclick="filterTable()">
-        <i class="fa-solid fa-filter"></i> Filter
-    </button>
+    <form action="{{ route('koleksi.index') }}" method="GET" style="display: flex; gap: 10px; width: 100%;" id="filterForm">
+        <div class="search-box" style="flex: 1;">
+            <i class="fa-solid fa-search"></i>
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nomor / nama koleksi..." id="searchInput">
+        </div>
+        <select name="jenis" id="jenisFilter" onchange="document.getElementById('filterForm').submit()">
+            <option value="all">Semua Jenis</option>
+            @if(isset($jenisKoleksiOptions))
+                @foreach($jenisKoleksiOptions as $jenis)
+                    <option value="{{ $jenis }}" {{ request('jenis') == $jenis ? 'selected' : '' }}>{{ $jenis }}</option>
+                @endforeach
+            @endif
+        </select>
+        <button type="submit" class="btn-filter">
+            <i class="fa-solid fa-filter"></i> Cari
+        </button>
+    </form>
 </div>
 
 {{-- TABLE --}}
@@ -670,33 +672,8 @@ function closeModal() {
 }
 
 function filterTable() {
-    var input = document.getElementById('searchInput');
-    var filter = input.value.toLowerCase();
-    var jenisFilter = document.getElementById('jenisFilter').value;
-    var table = document.getElementById('koleksiTable');
-    var tr = table.getElementsByTagName('tr');
-
-    for (var i = 1; i < tr.length; i++) {
-        var tdNama = tr[i].getElementsByTagName('td')[1];
-        var tdPemilik = tr[i].getElementsByTagName('td')[3];
-        var tdJenis = tr[i].getElementsByTagName('td')[2];
-        
-        if (tdNama && tdPemilik && tdJenis) {
-            var namaValue = tdNama.textContent || tdNama.innerText;
-            var pemilikValue = tdPemilik.textContent || tdPemilik.innerText;
-            var jenisValue = tdJenis.textContent || tdJenis.innerText;
-            
-            var matchSearch = namaValue.toLowerCase().indexOf(filter) > -1 || 
-                            pemilikValue.toLowerCase().indexOf(filter) > -1;
-            var matchJenis = jenisFilter === 'all' || jenisValue.toLowerCase() === jenisFilter.toLowerCase();
-            
-            if (matchSearch && matchJenis) {
-                tr[i].style.display = '';
-            } else {
-                tr[i].style.display = 'none';
-            }
-        }
-    }
+    // Digantikan dengan pencarian backend (form submit)
+    document.getElementById('filterForm').submit();
 }
 
 function confirmDelete(id) {

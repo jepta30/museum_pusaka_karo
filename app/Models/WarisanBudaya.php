@@ -24,6 +24,7 @@ class WarisanBudaya extends Model
         'gambar',
         'status',
         'jumlah_dilihat',
+        'nama_pemilik',
     ];
 
     public function kategori()

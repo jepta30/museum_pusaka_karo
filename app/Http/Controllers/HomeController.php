@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\WarisanBudaya;
 use App\Models\Kategori;
+use App\Models\SaranKritik;
 
 class HomeController extends Controller
 {
@@ -60,5 +61,18 @@ class HomeController extends Controller
         })->values()->all();
 
         return view('peta.persebaran', compact('warisans', 'markerPoints'));
+    }
+
+    public function storeSaran(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'pesan' => 'required|string'
+        ]);
+
+        SaranKritik::create($request->all());
+
+        return redirect()->back()->with('success', 'Terima kasih atas masukan dan saran Anda!');
     }
 }

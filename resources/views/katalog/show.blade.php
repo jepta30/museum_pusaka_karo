@@ -55,7 +55,7 @@
     .detail-media-container img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
     }
     
     .detail-info-card {
@@ -225,7 +225,7 @@
     .gallery-item video {
         width: 100%;
         min-height: 170px;
-        object-fit: cover;
+        object-fit: contain;
         display: block;
     }
 
@@ -436,7 +436,7 @@
     .related-image img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
     }
     
     .related-card-title {
@@ -507,6 +507,12 @@
                     <span class="info-label">Jenis Koleksi</span>
                     <span class="info-value">{{ $warisan->kategori->nama ?? 'Umum' }}</span>
                 </li>
+                @if($warisan->nama_pemilik)
+                <li class="info-item">
+                    <span class="info-label">Nama Pemilik/Penitip</span>
+                    <span class="info-value">{{ $warisan->nama_pemilik }}</span>
+                </li>
+                @endif
                 <li class="info-item">
                     <span class="info-label">Lokasi</span>
                     <span class="info-value"><a href="{{ route('peta.persebaran') }}" style="color:inherit; text-decoration:none;">Museum Pusaka Karo</a></span>

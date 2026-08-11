@@ -809,6 +809,84 @@
         line-height: 1.8;
     }
 
+    /* ===== SARAN SECTION ===== */
+    .saran-section {
+        background: #fff;
+        border-radius: 18px;
+        border: 1px solid rgba(15, 23, 42, 0.06);
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+        padding: 40px 45px;
+        margin-top: 45px;
+    }
+
+    .saran-section h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 26px;
+        color: var(--text-dark);
+        margin-bottom: 15px;
+    }
+
+    .saran-section p {
+        color: var(--text-gray);
+        font-size: 14.5px;
+        margin-bottom: 25px;
+        line-height: 1.6;
+    }
+
+    .saran-form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .saran-form .full-width {
+        grid-column: 1 / -1;
+    }
+
+    .saran-form label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 8px;
+    }
+
+    .saran-form input,
+    .saran-form textarea {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        font-family: 'Inter', sans-serif;
+        font-size: 14.5px;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+
+    .saran-form input:focus,
+    .saran-form textarea:focus {
+        border-color: var(--primary-red);
+    }
+
+    .btn-submit-saran {
+        background-color: var(--primary-red);
+        color: white;
+        border: none;
+        padding: 14px 30px;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 14.5px;
+        transition: background-color 0.2s, transform 0.2s;
+        display: inline-block;
+        margin-top: 10px;
+    }
+
+    .btn-submit-saran:hover {
+        background-color: var(--dark-red);
+        transform: translateY(-2px);
+    }
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 980px) {
         .visit-section {
@@ -828,6 +906,10 @@
         .timeline-grid {
             grid-template-columns: 1fr;
         }
+        .saran-form {
+            grid-template-columns: 1fr;
+        }
+    }
         .program-grid {
             grid-template-columns: 1fr;
         }
@@ -1280,6 +1362,40 @@ $todayKey = $dayMap[date('l')] ?? 'senin';
                 </span>
             </span>
         </div>
+        </div>
+    </div>
+
+    <!-- SARAN SECTION -->
+    <div class="saran-section" id="saran-section">
+        <h2>Kritik & Saran</h2>
+        <p>Kami sangat menghargai setiap masukan, kritik, dan saran dari Anda untuk pengembangan Museum Pusaka Karo menjadi lebih baik lagi.</p>
+        
+        @if(session('success'))
+            <div style="background-color: #dcfce7; color: #166534; padding: 15px; border-radius: 6px; margin-bottom: 20px; font-weight: 500;">
+                <i class="fa-solid fa-circle-check"></i> {{ session('success') }}
+            </div>
+        @endif
+        
+        <form action="{{ route('saran.store') }}" method="POST" class="saran-form">
+            @csrf
+            <div>
+                <label>Nama Lengkap <span style="color:red">*</span></label>
+                <input type="text" name="nama" required placeholder="Masukkan nama Anda">
+            </div>
+            <div>
+                <label>Email (Opsional)</label>
+                <input type="email" name="email" placeholder="Masukkan alamat email Anda">
+            </div>
+            <div class="full-width">
+                <label>Pesan / Masukan <span style="color:red">*</span></label>
+                <textarea name="pesan" rows="5" required placeholder="Tuliskan kritik dan saran Anda di sini..."></textarea>
+            </div>
+            <div class="full-width">
+                <button type="submit" class="btn-submit-saran">
+                    <i class="fa-solid fa-paper-plane" style="margin-right: 6px;"></i> Kirim Pesan
+                </button>
+            </div>
+        </form>
     </div>
 
 </div>

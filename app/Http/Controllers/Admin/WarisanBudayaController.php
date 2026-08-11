@@ -40,7 +40,8 @@ class WarisanBudayaController extends Controller
             'sejarah' => 'nullable|string',
             'gambar' => 'required|image|mimes:jpeg,png,jpg|max:5120',
             'latitude' => 'nullable|numeric',
-            'longitude' => 'nullable|numeric'
+            'longitude' => 'nullable|numeric',
+            'nama_pemilik' => 'nullable|string|max:100'
         ]);
 
         $gambarPath = $request->file('gambar')->store('warisan_images', 'public');
@@ -57,6 +58,7 @@ class WarisanBudayaController extends Controller
             'gambar' => $gambarPath,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
+            'nama_pemilik' => $request->nama_pemilik,
         ]);
 
         return redirect()->route('warisan.index')->with('success', 'Data Warisan Budaya berhasil ditambahkan.');
@@ -77,7 +79,8 @@ class WarisanBudayaController extends Controller
             'sejarah' => 'nullable|string',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
             'latitude' => 'nullable|numeric',
-            'longitude' => 'nullable|numeric'
+            'longitude' => 'nullable|numeric',
+            'nama_pemilik' => 'nullable|string|max:100'
         ]);
 
         if ($request->hasFile('gambar')) {
@@ -98,10 +101,9 @@ class WarisanBudayaController extends Controller
         $warisan->sejarah = $request->sejarah;
         if ($request->has('latitude')) {
             $warisan->latitude = $request->latitude;
-        }
-        if ($request->has('longitude')) {
             $warisan->longitude = $request->longitude;
         }
+        $warisan->nama_pemilik = $request->nama_pemilik;
         $warisan->save();
 
         return redirect()->route('warisan.index')->with('success', 'Data Warisan Budaya berhasil diperbarui.');

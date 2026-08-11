@@ -14,6 +14,9 @@ Route::get('/katalog', [KatalogController::class, 'index'])->name('katalog.index
 Route::get('/katalog/{id}', [KatalogController::class, 'show'])->name('katalog.show');
 Route::post('/katalog/{id}/komentar', [KatalogController::class, 'storeKomentar'])->name('katalog.komentar');
 
+// Tentang Kami - Saran/Kritik
+Route::post('/saran', [\App\Http\Controllers\HomeController::class, 'storeSaran'])->name('saran.store');
+
 // Buku Tamu (Pengunjung mengisi mandiri, tidak perlu login)
 Route::post('/buku-tamu', [\App\Http\Controllers\Admin\PengunjungController::class, 'storeMandiri'])->name('buku-tamu.store');
 
@@ -38,6 +41,10 @@ Route::middleware('auth')->group(function () {
     // Komentar hanya perlu index (moderasi), update (ubah status), dan destroy
     Route::resource('komentar', \App\Http\Controllers\Admin\KomentarController::class)
         ->only(['index', 'update', 'destroy']);
+
+    // Kritik & Saran
+    Route::resource('saran', \App\Http\Controllers\Admin\SaranController::class)
+        ->only(['index', 'destroy']);
 
     // Buku Tamu Pengunjung (BAB IV.4 poin 7)
     Route::resource('pengunjung', \App\Http\Controllers\Admin\PengunjungController::class)

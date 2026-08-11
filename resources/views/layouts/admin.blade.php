@@ -1147,6 +1147,11 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a href="{{ route('saran.index') }}" class="nav-link {{ request()->routeIs('saran.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-envelope-open-text"></i> Kritik & Saran
+                </a>
+            </li>
+            <li class="nav-item">
                 <a href="{{ route('pengunjung.index') }}" class="nav-link {{ request()->routeIs('pengunjung.*') ? 'active' : '' }}">
                     <i class="fa-solid fa-address-book"></i> Buku Tamu Pengunjung
                 </a>

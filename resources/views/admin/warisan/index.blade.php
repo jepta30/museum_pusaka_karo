@@ -154,6 +154,11 @@
                     </div>
                     
                     <div class="form-group">
+                        <label class="form-label">NAMA PEMILIK/PENITIP</label>
+                        <input type="text" name="nama_pemilik" id="inputNamaPemilik" class="form-control" placeholder="Contoh: Bpk. Tarigan">
+                    </div>
+                    
+                    <div class="form-group">
                         <label class="form-label">ASAL DAERAH / SUKU</label>
                         <input type="text" name="asal" id="inputAsal" class="form-control" placeholder="mis. Suku Karo">
                     </div>
@@ -319,6 +324,9 @@
         // Reset form
         form.reset();
         document.getElementById('fileNameDisplay').textContent = '';
+        document.getElementById('inputStatus').value = 'aktif';
+        document.getElementById('inputKondisi').value = '';
+        document.getElementById('inputNamaPemilik').value = '';
         document.getElementById('inputLatitude').value = '';
         document.getElementById('inputLongitude').value = '';
         document.getElementById('mapStatus').innerText = 'Anda bisa geser pin merah pada peta untuk koordinat yang lebih akurat.';
@@ -337,11 +345,12 @@
             // Populate data
             document.getElementById('inputJudul').value = data.judul;
             document.getElementById('inputKategori').value = data.kategori_id;
-            document.getElementById('inputLokasi').value = data.lokasi;
+            document.getElementById('inputLokasi').value = data.lokasi || '';
             document.getElementById('inputAsal').value = data.asal || '';
-            document.getElementById('inputStatus').value = data.status;
+            document.getElementById('inputStatus').value = data.status || 'aktif';
             document.getElementById('inputKondisi').value = data.kondisi || '';
-            document.getElementById('inputDeskripsi').value = data.deskripsi;
+            document.getElementById('inputNamaPemilik').value = data.nama_pemilik || '';
+            document.getElementById('inputDeskripsi').value = data.deskripsi || '';
             document.getElementById('inputSejarah').value = data.sejarah || '';
         }
         

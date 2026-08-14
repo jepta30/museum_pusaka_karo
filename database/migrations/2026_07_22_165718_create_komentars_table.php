@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('komentars', function (Blueprint $table) {
             $table->id('komentar_id');
             $table->unsignedBigInteger('warisan_budaya_id');
-            $table->string('nama', 25);
-            $table->string('email', 30);
+            $table->string('nama', 100);
+            $table->string('email', 100)->nullable();
             $table->text('isi_komentar');
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamps();

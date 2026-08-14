@@ -621,7 +621,7 @@
         
         <div class="comment-form-wrapper">
             <h4 style="margin-bottom: 20px; font-family: 'Playfair Display', serif; font-size: 20px;">Tinggalkan Jejak / Pertanyaan</h4>
-            <form action="{{ route('katalog.komentar', $warisan->warisan_budaya_id) }}" method="POST">
+            <form id="komentarForm" action="{{ route('katalog.komentar', $warisan->warisan_budaya_id) }}" method="POST">
                 @csrf
                 <div class="form-row">
                     <div class="form-group">
@@ -637,7 +637,7 @@
                     <label>Isi Komentar *</label>
                     <textarea name="isi_komentar" class="form-control" required style="min-height: 100px; resize:vertical;" placeholder="Tulis pendapat atau kenangan Anda tentang budaya ini..."></textarea>
                 </div>
-                <button type="submit" class="btn-submit">Kirim Komentar</button>
+                <button type="submit" class="btn-submit" id="btnSubmitKomentar">Kirim Komentar</button>
             </form>
         </div>
     </div>
@@ -720,5 +720,65 @@
             }
         }
     }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const komentarForm = document.getElementById('komentarForm');
+        if (komentarForm) {
+            komentarForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const btnSubmit = document.getElementById('btnSubmitKomentar');
+                const originalText = btnSubmit.innerHTML;
+                
+                // Loading state
+                btnSubmit.innerHTML = 'Mengirim...';
+                btnSubmit.disabled = true;
+
+                const formData = new FormData(this);
+
+                fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Reset loading state
+                    btnSubmit.innerHTML = originalText;
+                    btnSubmit.disabled = false;
+
+                    if (data.success) {
+                        // Reset form
+                        komentarForm.reset();
+                        
+                        // SweetAlert Success
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Terkirim',
+                            text: data.message || 'Terima kasih! Komentar Anda berhasil dikirim dan sedang menunggu persetujuan admin.',
+                            confirmButtonColor: '#7a1b1b',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                })
+                .catch(error => {
+                    // Reset loading state
+                    btnSubmit.innerHTML = originalText;
+                    btnSubmit.disabled = false;
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Terjadi kesalahan saat mengirim komentar. Silakan coba lagi.',
+                        confirmButtonColor: '#7a1b1b'
+                    });
+                });
+            });
+        }
+    });
 </script>
 @endpush

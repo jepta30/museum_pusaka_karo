@@ -66,6 +66,13 @@ class KatalogController extends Controller
             'status' => 'pending' // Menunggu persetujuan admin
         ]);
 
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Terima kasih! Komentar Anda berhasil dikirim dan sedang menunggu persetujuan admin.'
+            ]);
+        }
+
         return back()->with('success', 'Terima kasih! Komentar Anda berhasil dikirim dan sedang menunggu persetujuan admin.');
     }
 }

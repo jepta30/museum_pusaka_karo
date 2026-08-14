@@ -71,8 +71,15 @@ class HomeController extends Controller
             'pesan' => 'required|string'
         ]);
 
-        SaranKritik::create($request->all());
+        $saran = SaranKritik::create($request->all());
 
-        return redirect()->back()->with('success', 'Terima kasih atas masukan dan saran Anda!');
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Terimakasih telah mengisi saran dan pesan'
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Terimakasih telah mengisi saran dan pesan');
     }
 }

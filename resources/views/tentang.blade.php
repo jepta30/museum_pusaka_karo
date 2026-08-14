@@ -1376,7 +1376,7 @@ $todayKey = $dayMap[date('l')] ?? 'senin';
             </div>
         @endif
         
-        <form action="{{ route('saran.store') }}" method="POST" class="saran-form">
+        <form action="{{ route('saran.store') }}" method="POST" class="saran-form" id="saranForm">
             @csrf
             <div>
                 <label>Nama Lengkap <span style="color:red">*</span></label>
@@ -1391,7 +1391,7 @@ $todayKey = $dayMap[date('l')] ?? 'senin';
                 <textarea name="pesan" rows="5" required placeholder="Tuliskan kritik dan saran Anda di sini..."></textarea>
             </div>
             <div class="full-width">
-                <button type="submit" class="btn-submit-saran">
+                <button type="submit" class="btn-submit-saran" id="btnSubmitSaran">
                     <i class="fa-solid fa-paper-plane" style="margin-right: 6px;"></i> Kirim Pesan
                 </button>
             </div>
@@ -1402,25 +1402,81 @@ $todayKey = $dayMap[date('l')] ?? 'senin';
 
 @push('scripts')
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const locationMap = document.getElementById('locationMap');
-        if (!locationMap) {
-            return;
+        if (locationMap) {
+            const map = L.map('locationMap', {
+                scrollWheelZoom: false,
+                attributionControl: false,
+            }).setView([3.13220, 98.46650], 15);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+            }).addTo(map);
+
+            L.marker([3.13220, 98.46650]).addTo(map)
+                .bindPopup('<strong>Museum Pusaka Karo</strong><br>Jl. Perwira No. 3, Berastagi')
+                .openPopup();
         }
 
-        const map = L.map('locationMap', {
-            scrollWheelZoom: false,
-            attributionControl: false,
-        }).setView([3.13220, 98.46650], 15);
+        // Handle Form Saran / Kritik AJAX
+        const saranForm = document.getElementById('saranForm');
+        if (saranForm) {
+            saranForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const btnSubmit = document.getElementById('btnSubmitSaran');
+                const originalText = btnSubmit.innerHTML;
+                
+                // Loading state
+                btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim...';
+                btnSubmit.disabled = true;
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-        }).addTo(map);
+                const formData = new FormData(this);
 
-        L.marker([3.13220, 98.46650]).addTo(map)
-            .bindPopup('<strong>Museum Pusaka Karo</strong><br>Jl. Perwira No. 3, Berastagi')
-            .openPopup();
+                fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Reset loading state
+                    btnSubmit.innerHTML = originalText;
+                    btnSubmit.disabled = false;
+
+                    if (data.success) {
+                        // Reset form
+                        saranForm.reset();
+                        
+                        // SweetAlert Success
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: data.message || 'Terimakasih telah mengisi saran dan pesan',
+                            confirmButtonColor: '#7a1b1b',
+                            confirmButtonText: 'Tutup'
+                        });
+                    }
+                })
+                .catch(error => {
+                    // Reset loading state
+                    btnSubmit.innerHTML = originalText;
+                    btnSubmit.disabled = false;
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Terjadi kesalahan saat mengirim pesan. Silakan coba lagi.',
+                        confirmButtonColor: '#7a1b1b'
+                    });
+                });
+            });
+        }
     });
 </script>
 @endpush

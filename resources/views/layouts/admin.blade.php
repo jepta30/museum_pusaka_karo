@@ -1143,12 +1143,26 @@
             </li>
             <li class="nav-item">
                 <a href="{{ route('komentar.index') }}" class="nav-link {{ request()->routeIs('komentar.*') ? 'active' : '' }}">
-                    <i class="fa-regular fa-comments"></i> Komentar
+                    <div style="display: flex; align-items: center; width: 100%;">
+                        <i class="fa-regular fa-comments"></i> 
+                        <span>Komentar</span>
+                        @php $pendingKomentar = \App\Models\Komentar::where('status', 'pending')->count(); @endphp
+                        @if($pendingKomentar > 0)
+                            <span style="background-color: #c62828; color: white; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; margin-left: auto;">{{ $pendingKomentar }}</span>
+                        @endif
+                    </div>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="{{ route('saran.index') }}" class="nav-link {{ request()->routeIs('saran.*') ? 'active' : '' }}">
-                    <i class="fa-solid fa-envelope-open-text"></i> Kritik & Saran
+                    <div style="display: flex; align-items: center; width: 100%;">
+                        <i class="fa-solid fa-envelope-open-text"></i> 
+                        <span>Kritik & Saran</span>
+                        @php $totalSaran = \App\Models\SaranKritik::count(); @endphp
+                        @if($totalSaran > 0)
+                            <span style="background-color: #c62828; color: white; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; margin-left: auto;">{{ $totalSaran }}</span>
+                        @endif
+                    </div>
                 </a>
             </li>
             <li class="nav-item">

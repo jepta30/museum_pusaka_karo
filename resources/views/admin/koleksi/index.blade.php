@@ -156,10 +156,11 @@
         border-radius: 12px;
         border: 1px solid rgba(15, 23, 42, 0.06);
         box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-        overflow: hidden;
+        overflow-x: auto;
     }
     .data-table {
         width: 100%;
+        min-width: 1100px;
         border-collapse: collapse;
         font-size: 14px;
     }
@@ -452,6 +453,7 @@
                 <th>Cara Perolehan</th>
                 <th>Tempat Perolehan</th>
                 <th>Tanggal Masuk</th>
+                <th>Keterangan</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -466,6 +468,9 @@
                 <td>{{ $koleksi->tempat_perolehan ?? '-' }}</td>
                 <td style="color: var(--text-gray); font-size: 13px;">
                     {{ $koleksi->tanggal_masuk ?? '-' }}
+                </td>
+                <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ $koleksi->keterangan }}">
+                    {{ $koleksi->keterangan ?? '-' }}
                 </td>
                 <td>
                     <div class="action-buttons">
@@ -487,7 +492,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="7">
+                <td colspan="9">
                     <div class="empty-state">
                         <i class="fa-regular fa-box-open"></i>
                         <h4>Belum Ada Data Koleksi</h4>

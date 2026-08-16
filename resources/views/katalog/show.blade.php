@@ -621,7 +621,7 @@
         
         <div class="comment-form-wrapper">
             <h4 style="margin-bottom: 20px; font-family: 'Playfair Display', serif; font-size: 20px;">Tinggalkan Jejak / Pertanyaan</h4>
-            <form id="komentarForm" action="{{ route('katalog.komentar', $warisan->warisan_budaya_id) }}" method="POST">
+            <form id="komentarForm" action="{{ route('katalog.komentar', ['id' => $warisan->warisan_budaya_id], false) }}" method="POST">
                 @csrf
                 <div class="form-row">
                     <div class="form-group">

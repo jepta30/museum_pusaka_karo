@@ -55,4 +55,51 @@ class DashboardController extends Controller
             'chartData'
         ));
     }
+
+    public function getStats()
+    {
+        $totalKategori = Kategori::count();
+        $totalWarisanBudaya = WarisanBudaya::count();
+        $totalMedia = Media::count();
+        $totalKomentarPending = Komentar::where('status', 'pending')->count();
+        $totalPengunjung = \App\Models\Pengunjung::count();
+        $pengunjungHariIni = \App\Models\Pengunjung::whereDate('tanggal', now()->toDateString())->count();
+
+        // Statistik Pengunjung 14 Hari Terakhir
+        $chartLabels = [];
+        $chartData = [];
+        for ($i = 13; $i >= 0; $i--) {
+            $date = \Carbon\Carbon::now()->subDays($i)->format('Y-m-d');
+            $chartLabels[] = \Carbon\Carbon::parse($date)->format('d/m');
+            $chartData[] = 0;
+        }
+
+        $visitorStats = \App\Models\Pengunjung::where('tanggal', '>=', \Carbon\Carbon::now()->subDays(13)->format('Y-m-d'))
+            ->selectRaw('tanggal, count(*) as total')
+            ->groupBy('tanggal')
+            ->get();
+
+        foreach ($visitorStats as $stat) {
+            $formattedDate = \Carbon\Carbon::parse($stat->tanggal)->format('d/m');
+            $index = array_search($formattedDate, $chartLabels);
+            if ($index !== false) {
+                $chartData[$index] = $stat->total;
+            }
+        }
+
+        return response()->json([
+            'kpi' => [
+                'totalKategori' => $totalKategori,
+                'totalWarisanBudaya' => $totalWarisanBudaya,
+                'totalMedia' => $totalMedia,
+                'totalKomentarPending' => $totalKomentarPending,
+                'totalPengunjung' => $totalPengunjung,
+                'pengunjungHariIni' => $pengunjungHariIni
+            ],
+            'chart' => [
+                'labels' => $chartLabels,
+                'data' => $chartData
+            ]
+        ]);
+    }
 }

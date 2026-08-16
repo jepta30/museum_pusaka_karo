@@ -107,26 +107,35 @@
 <div class="kpi-grid">
     <div class="kpi-card">
         <div class="kpi-title">JENIS KOLEKSI</div>
-        <div class="kpi-value">{{ $totalKategori ?? '0' }}</div>
+        <div class="kpi-value" id="kpi-kategori">{{ $totalKategori ?? '0' }}</div>
         <div class="kpi-desc">Total Jenis Koleksi</div>
     </div>
     
     <div class="kpi-card">
         <div class="kpi-title">KOLEKSI BUDAYA</div>
-        <div class="kpi-value">{{ $totalWarisanBudaya ?? '0' }}</div>
+        <div class="kpi-value" id="kpi-warisan">{{ $totalWarisanBudaya ?? '0' }}</div>
         <div class="kpi-desc">Data Terarsip</div>
     </div>
     
     <div class="kpi-card">
         <div class="kpi-title">MEDIA DOKUMENTASI</div>
-        <div class="kpi-value">{{ $totalMedia ?? '0' }}</div>
+        <div class="kpi-value" id="kpi-media">{{ $totalMedia ?? '0' }}</div>
         <div class="kpi-desc">File Foto/Video</div>
     </div>
     
     <div class="kpi-card">
         <div class="kpi-title">KOMENTAR</div>
-        <div class="kpi-value">{{ $totalKomentarPending ?? '0' }}</div>
+        <div class="kpi-value" id="kpi-komentar">{{ $totalKomentarPending ?? '0' }}</div>
         <div class="kpi-desc">Perlu Moderasi</div>
+    </div>
+
+    <div class="kpi-card">
+        <div class="kpi-title">PENGUNJUNG HARI INI</div>
+        <div class="kpi-value" id="kpi-pengunjung">
+            @php $pengunjungHariIni = \App\Models\Pengunjung::whereDate('tanggal', now()->toDateString())->count(); @endphp
+            {{ $pengunjungHariIni }}
+        </div>
+        <div class="kpi-desc">Total Kunjungan</div>
     </div>
 </div>
 
@@ -191,27 +200,9 @@
                 </tr>
                 @endforeach
             @else
-                <!-- Data Palsu untuk Demo UI Sesuai Wireframe -->
                 <tr>
-                    <td>Anonim</td>
-                    <td>Koleksi museum ini sangat menarik dan tertata rapi. Sangat edukatif!</td>
-                    <td>{{ date('d/m/Y') }}</td>
-                    <td>
-                        <div class="action-icons">
-                            <a href="#"><i class="fa-solid fa-pen"></i></a>
-                            <button type="button"><i class="fa-regular fa-trash-can"></i></button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Budi Santoso</td>
-                    <td>Mohon diperbarui informasi mengenai sejarah pembuatan Piso Surit...</td>
-                    <td>{{ date('d/m/Y', strtotime('-1 days')) }}</td>
-                    <td>
-                        <div class="action-icons">
-                            <a href="#"><i class="fa-solid fa-pen"></i></a>
-                            <button type="button"><i class="fa-regular fa-trash-can"></i></button>
-                        </div>
+                    <td colspan="4" style="text-align: center; color: #6b7280; padding: 30px;">
+                        Belum ada komentar terbaru.
                     </td>
                 </tr>
             @endif
@@ -225,11 +216,11 @@
     document.addEventListener('DOMContentLoaded', function() {
         const ctx = document.getElementById('visitorChart').getContext('2d');
         
-        // Data Real-time dari Database
-        const labels = {!! json_encode($chartLabels) !!};
-        const chartData = {!! json_encode($chartData) !!};
+        // Data Real-time dari Database (Awal)
+        let labels = {!! json_encode($chartLabels ?? []) !!};
+        let chartData = {!! json_encode($chartData ?? []) !!};
 
-        new Chart(ctx, {
+        let myChart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
@@ -287,6 +278,34 @@
                 },
             }
         });
+
+        // Function untuk fetch data secara realtime (setiap 5 detik)
+        function updateDashboardRealtime() {
+            fetch('{{ route("dashboard.stats", [], false) }}', {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Update KPI Cards
+                document.getElementById('kpi-kategori').innerText = data.kpi.totalKategori;
+                document.getElementById('kpi-warisan').innerText = data.kpi.totalWarisanBudaya;
+                document.getElementById('kpi-media').innerText = data.kpi.totalMedia;
+                document.getElementById('kpi-komentar').innerText = data.kpi.totalKomentarPending;
+                document.getElementById('kpi-pengunjung').innerText = data.kpi.pengunjungHariIni;
+
+                // Update Chart
+                myChart.data.labels = data.chart.labels;
+                myChart.data.datasets[0].data = data.chart.data;
+                myChart.update('none'); // Update without animation for smoother refresh
+            })
+            .catch(error => console.error('Error fetching realtime stats:', error));
+        }
+
+        // Jalankan polling setiap 5 detik (5000ms)
+        setInterval(updateDashboardRealtime, 5000);
     });
 </script>
 @endpush

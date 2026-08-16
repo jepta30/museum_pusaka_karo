@@ -90,10 +90,10 @@
         <p style="color: var(--text-gray); font-size: 13px;">Belum ada data.</p>
         @endforelse
 
-        <div class="catatan">
+        {{-- <div class="catatan">
             <i class="fa-solid fa-circle-info"></i> Kolom "Kota" pada data mentah belum aktif — mendeteksi kota pengunjung
             butuh layanan geolokasi IP pihak ketiga yang hanya akurat saat situs sudah online di internet publik (tidak di localhost).
-        </div>
+        </div> --}}
     </div>
 </div>
 @endsection

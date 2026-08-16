@@ -28,6 +28,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Dashboard Admin (Dilindungi middleware)
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/stats', [DashboardController::class, 'getStats'])->name('dashboard.stats');
     
     // Resource route untuk Kategori (index, create, store, edit, update, destroy)
     Route::resource('kategori', \App\Http\Controllers\Admin\KategoriController::class)->except(['show']);

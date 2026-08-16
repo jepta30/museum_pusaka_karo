@@ -1376,7 +1376,7 @@ $todayKey = $dayMap[date('l')] ?? 'senin';
             </div>
         @endif
         
-        <form action="{{ route('saran.store') }}" method="POST" class="saran-form" id="saranForm">
+        <form action="{{ route('saran.store', [], false) }}" method="POST" class="saran-form" id="saranForm">
             @csrf
             <div>
                 <label>Nama Lengkap <span style="color:red">*</span></label>

@@ -22,6 +22,10 @@ class WarisanBudayaController extends Controller
             });
         }
         
+        if ($request->filled('kategori_id')) {
+            $query->where('kategori_id', $request->kategori_id);
+        }
+        
         $warisans = $query->latest()->paginate(10)->withQueryString();
         $kategoris = Kategori::all();
         return view('admin.warisan.index', compact('warisans', 'kategoris'));

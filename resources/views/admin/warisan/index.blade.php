@@ -42,9 +42,13 @@
 <form method="GET" class="filter-bar">
     <div class="filter-group">
         <input type="text" name="q" value="{{ request('q') }}" class="search-input" placeholder="Cari judul atau lokasi...">
-        <!-- Kategori filter is static for now, can implement later if needed, but we keep the visual -->
-        <select class="select-input" disabled style="opacity: 0.7;" title="Fitur filter kategori akan segera hadir">
-            <option>Semua Jenis Koleksi</option>
+        <select name="kategori_id" class="select-input">
+            <option value="">Semua Jenis Koleksi</option>
+            @foreach($kategoris as $kat)
+                <option value="{{ $kat->kategori_id }}" {{ request('kategori_id') == $kat->kategori_id ? 'selected' : '' }}>
+                    {{ $kat->nama }}
+                </option>
+            @endforeach
         </select>
         <button type="submit" class="btn-search"><i class="fa-solid fa-search"></i> Cari</button>
     </div>
@@ -238,9 +242,9 @@
     let map, marker;
     function initMap() {
         if (map) return;
-        map = L.map('mapForm').setView([3.12095, 98.42346], 12);
+        map = L.map('mapForm').setView([3.194752, 98.508299], 12);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
-        marker = L.marker([3.12095, 98.42346], { draggable: true }).addTo(map);
+        marker = L.marker([3.194752, 98.508299], { draggable: true }).addTo(map);
         
         marker.on('dragend', function(event) {
             var position = marker.getLatLng();
@@ -365,8 +369,8 @@
                 document.getElementById('inputLatitude').value = data.latitude;
                 document.getElementById('inputLongitude').value = data.longitude;
             } else if (mode === 'add') {
-                map.setView([3.12095, 98.42346], 12);
-                marker.setLatLng([3.12095, 98.42346]);
+                map.setView([3.194752, 98.508299], 12);
+                marker.setLatLng([3.194752, 98.508299]);
             }
         }, 150);
     }

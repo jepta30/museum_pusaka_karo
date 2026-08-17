@@ -265,11 +265,11 @@
                     <p class="text-slate-600 mb-6">Museum Pusaka Karo berada di pusat Berastagi dengan akses mudah menuju objek budaya terdekat.</p>
                     <div class="stat-grid">
                         <div class="stat-card">
-                            <h3>3.12095</h3>
+                            <h3>3.194752</h3>
                             <span>Latitude Museum</span>
                         </div>
                         <div class="stat-card">
-                            <h3>98.42346</h3>
+                            <h3>98.508299</h3>
                             <span>Longitude Museum</span>
                         </div>
                         <div class="stat-card">
@@ -282,10 +282,10 @@
                         </div>
                     </div>
                     <div class="mt-6 flex flex-wrap gap-3">
-                        <a href="https://www.google.com/maps/dir/?api=1&destination=3.12095,98.42346&travelmode=driving" target="_blank" rel="noopener" class="btn-direction">
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=3.194752,98.508299&travelmode=driving" target="_blank" rel="noopener" class="btn-direction">
                             Arahkan ke Museum
                         </a>
-                        <a href="https://www.google.com/maps/dir/?api=1&destination=3.12095,98.42346&travelmode=walking" target="_blank" rel="noopener" class="btn-direction">
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=3.194752,98.508299&travelmode=walking" target="_blank" rel="noopener" class="btn-direction">
                             Jalan ke Museum
                         </a>
                     </div>
@@ -301,10 +301,10 @@
                                         <p class="text-slate-600">{{ $point['asal'] ?? $point['lokasi'] }}</p>
                                     </div>
                                     <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
-                                        <a href="https://www.google.com/maps/dir/?api=1&origin=3.12095,98.42346&destination={{ implode(',', $point['coords']) }}&travelmode=driving" target="_blank" rel="noopener" class="btn-direction" onclick="event.stopPropagation()">
+                                        <a href="https://www.google.com/maps/dir/?api=1&origin=3.194752,98.508299&destination={{ implode(',', $point['coords']) }}&travelmode=driving" target="_blank" rel="noopener" class="btn-direction" onclick="event.stopPropagation()">
                                             Arahkan ke Titik Asal
                                         </a>
-                                        <a href="https://www.google.com/maps/dir/?api=1&origin={{ implode(',', $point['coords']) }}&destination=3.12095,98.42346&travelmode=driving" target="_blank" rel="noopener" class="btn-direction" onclick="event.stopPropagation()">
+                                        <a href="https://www.google.com/maps/dir/?api=1&origin={{ implode(',', $point['coords']) }}&destination=3.194752,98.508299&travelmode=driving" target="_blank" rel="noopener" class="btn-direction" onclick="event.stopPropagation()">
                                             Arahkan ke Museum
                                         </a>
                                     </div>
@@ -332,7 +332,7 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const center = [3.12095, 98.42346];
+        const center = [3.194752, 98.508299];
         const map = L.map('mapPersebaran', {
             zoomControl: true,
             attributionControl: false,
@@ -347,10 +347,10 @@
             <div style="font-weight:700; margin-bottom: 6px;">Museum Pusaka Karo</div>
             <div style="font-size:0.95rem; color:#475569; margin-bottom: 10px;">Jl. Perwira No. 3, Gundaling I, Berastagi</div>
             <div style="display:flex; gap: 8px; flex-wrap: wrap; margin-top: 4px;">
-                <a href="https://www.google.com/maps/dir/?api=1&destination=3.12095,98.42346&travelmode=driving" target="_blank" rel="noopener" style="display:inline-flex; padding:8px 12px; border-radius:999px; background:#7a1b1b; color:#fff; text-decoration:none; font-size:0.9rem; font-weight:700;">
+                <a href="https://www.google.com/maps/dir/?api=1&destination=3.194752,98.508299&travelmode=driving" target="_blank" rel="noopener" style="display:inline-flex; padding:8px 12px; border-radius:999px; background:#7a1b1b; color:#fff; text-decoration:none; font-size:0.9rem; font-weight:700;">
                     Arahkan
                 </a>
-                <a href="https://www.google.com/maps/dir/?api=1&destination=3.12095,98.42346&travelmode=walking" target="_blank" rel="noopener" style="display:inline-flex; padding:8px 12px; border-radius:999px; background:#0f172a; color:#fff; text-decoration:none; font-size:0.9rem; font-weight:700;">
+                <a href="https://www.google.com/maps/dir/?api=1&destination=3.194752,98.508299&travelmode=walking" target="_blank" rel="noopener" style="display:inline-flex; padding:8px 12px; border-radius:999px; background:#0f172a; color:#fff; text-decoration:none; font-size:0.9rem; font-weight:700;">
                     Jalan
                 </a>
             </div>
